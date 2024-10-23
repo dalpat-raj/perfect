@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+@keyframes filteradd {
+  0%   {left: -25%;}
+  25%  {left: -18.75%;}
+  50%  {left: -12.5%;}
+  75%  {left: -6.25%;}
+  100% {left: 0%;}
+}
+
+
+@keyframes extraadd {
+  0%   {right: -75%;}
+  25%  {right: -56.25%;}
+  50%  {right: -37.5%;}
+  75%  {right: -18.75%;}
+  100% {right: 0%;}
+}
+
+@keyframes addCart {
+  0%   {right: -25%;}
+  25%  {right: -18.75%;}
+  50%  {right: -12.5%;}
+  75%  {right: -6.25%;}
+  100% {right: 0%;}
+}
+
+@keyframes addCartExtra {
+  0%   {left: -75%;}
+  25%  {left: -56.25%;}
+  50%  {left: -37.5%;}
+  75%  {left: -18.75%;}
+  100% {left: 0%;}
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.caveat{
+  font-family: var(--font-caveat);
+}
+
+.active{
+  display: block;
+}
+
+.unActive{
+  display: none;
+}
+
+
+.image__hover__main {
+  position: relative;
+}
+
+.image__hover__main:hover .col__1 {
+  opacity: 0;
+}
+
+.image__hover__main:hover .col__2 {
+  opacity: 1;
+}
+
+
+.col__2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* Ensure it covers the entire area */
+  height: 100%; /* Ensure it covers the entire area */
+}
+
+.col__2 {
+  opacity: 0; /* Start hidden */
+}
+
+
+@media only screen and (max-width: 768px){
+  .image__hover__main:hover .col__1{
+    opacity: 1;
+  }
+}
+
+
+.addFilter{
+  animation: filteradd 0.5s linear alternate;
+}
+
+.addExtra{
+  animation: extraadd 0.5s linear alternate;
+}
+
+.addCart{
+  animation: addCart 0.5s linear alternate;
+}
+
+.addCartExtra{
+  animation: addCartExtra 0.5s linear alternate;
+}
+
+.collll{
+  position: relative;
+}
+
+.collll:hover>.second{
+  bottom: 20px !important;
+  right: -50%;
+
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+
