@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import React from 'react'
-import logo from "@/public/logo.jpg"
 import Menu from '@/app/ui/homePage/Menu'
 import MobileMenu from '@/app/ui/homePage/MobileMenu'
 import Link from 'next/link'
@@ -23,7 +22,7 @@ const Navbar = async(props: Props) => {
                 <div className='w-[140px] max-sm:w-[100px]'>
                 <Link href="/">
                     <Image 
-                    src={logo} 
+                    src={"/logo.jpg"} 
                     alt='logo'
                     width={0}
                     height={0}
