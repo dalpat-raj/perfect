@@ -2,9 +2,9 @@ import { getProductByCollection } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { caveat } from '../Fonts'
+import { caveat } from '@/app/ui/Fonts'
+import { formatTitle } from '@/lib/helpers'
 
-type Props = {}
 
 interface iphoneProps {
     id: number,
@@ -12,16 +12,9 @@ interface iphoneProps {
     images: string[]
 }
 
-const IphoneZone = async (props: Props) => {
+const IphoneZone = async () => {
 
     const iphoneProduct: iphoneProps[] = await getProductByCollection("iPhone");
-
-    const formatTitle = (title: string) => {
-        return title
-            .toLowerCase()
-            .replace(/ /g, '-') // Replace spaces with hyphens
-            .replace(/[^\w-]+/g, ''); // Remove special characters
-    };
     
   return (
     <div className='bg-gray-100'>

@@ -31,7 +31,7 @@ const CustomerCard = ({customer}: {customer: CustomerWithOrderCount}) => {
                     )
                 }
                 </div>
-                <p className=''>{customer.fullName}</p>
+                <p className=''>{customer.name}</p>
             </div>
         </HoverCardTrigger>
         <HoverCardContent>

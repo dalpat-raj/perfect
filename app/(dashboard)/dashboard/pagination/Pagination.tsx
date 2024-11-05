@@ -1,10 +1,9 @@
 'use client';
-
-import { generatePagination } from '@/lib/formDatePage';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { generatePagination } from '@/lib/helpers';
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
     const pathname = usePathname();

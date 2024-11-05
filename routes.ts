@@ -13,7 +13,11 @@ export const authRoutes = [
 export const apiAuthPrifix = "/api/auth";
 
 export const privateRoutes = [
-    '/checkout'
+    '/checkout',
+    '/profile',
+    '/profile/orders',
+    '/profile/address',
+    '/profile/reviews',
 ]
 
 export const DEFAULT_LOGIN_REDIRECT = "/";

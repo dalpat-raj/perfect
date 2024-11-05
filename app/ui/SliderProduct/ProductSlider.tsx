@@ -6,10 +6,14 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { AllEventData } from '@/lib/definations'
+import { Product } from '@/lib/definations'
 import ProductCard from '../product/ProductCard'
 
-const ProductSlider = ({products}: {products: AllEventData | any}) => {
+interface ProductProps {
+  products: Product[]
+}
+
+const ProductSlider: React.FC<ProductProps> = ({products}) => {
   return (
     <Carousel plugins={[
         Autoplay({

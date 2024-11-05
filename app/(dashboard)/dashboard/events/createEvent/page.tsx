@@ -1,9 +1,8 @@
 import CreateEvent from '@/app/ui/dashboard/event/createEvent/CreateEvent'
 import React from 'react'
 
-type Props = {}
 
-const page = (props: Props) => {
+const page = () => {
   return (
     <div>
       <CreateEvent/>

@@ -1,10 +1,8 @@
 import AllOrders from '@/app/ui/dashboard/orders/allOrders/AllOrders'
-import { AllOrderSkeleton } from '@/app/ui/skeletons'
-import React, { Suspense } from 'react'
+import React from 'react'
 
-type Props = {}
 
-const page = (props: Props) => {
+const page = () => {
   return (
       <AllOrders/>
     

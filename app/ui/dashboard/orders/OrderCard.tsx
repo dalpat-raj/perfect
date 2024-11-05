@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import clsx from 'clsx';
 import { UserOrders} from '@/lib/definations';
-import { formatDate } from '@/lib/formDatePage';
+import { formatDate } from '@/lib/helpers';
 
 
 type Props = {
@@ -16,7 +16,7 @@ const OrderCard = ({order}:Props) => {
     <Link href={`/dashboard/orders/${order.id}`}>
     <div className='grid grid-cols-8 items-center max-sm:grid-cols-4 shadow-custom-shadow rounded-xl mb-4 px-2 py-2'>
         <div className='text-[14px] font-semibold col-span-1 text-gray-600'>#{order.id}</div>
-        <div className='text-[14px] col-span-1 text-gray-600 max-sm:hidden'>{order?.user?.fullName}</div>
+        <div className='text-[14px] col-span-1 text-gray-600 max-sm:hidden'>{order?.user?.name}</div>
         <div className='text-[14px] col-span-1 text-gray-600'>Rs. {order.totalAmount.toFixed(2)}</div>
         <div className='text-[14px] col-span-1 text-gray-600 max-sm:hidden'>{order.paymentInfoId}</div>
         <div className='text-[14px] col-span-1 text-gray-600'>{formatDate(new Date(order.createdAt))}</div>
@@ -31,7 +31,7 @@ const OrderCard = ({order}:Props) => {
       )}>
         {order.status}
         </div>
-        <div className='text-[14px] col-span-1 text-gray-600 max-sm:hidden'><button className='text-[13px] text-white bg-blackOverlay py-1 px-4 rounded-sm'>View</button></div>
+        <div className='text-[14px] col-span-1 max-sm:hidden'><button className='text-[13px] text-white bg-[#333] py-1 px-4 rounded-sm'>View</button></div>
     </div>
     </Link>
   )

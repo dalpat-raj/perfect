@@ -1,19 +1,22 @@
+"use client"
 import Image from 'next/image'
-import React from 'react'
-
+import React, { useTransition } from 'react'
 import { TfiSettings } from "react-icons/tfi";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import Link from 'next/link';
 import NavLinks from './NavLinks';
 import { LogoutButton } from '../homePage/auth/logout-button';
+import { Logout } from '@/action/auth';
 
 
-
-type Props = {}
-
-const SideNav = (props: Props) => {
-
-
+const SideNav = () => {
+    const [isPending, startTransition] = useTransition();
+    
+    const onClick = () => {
+        startTransition(()=>{
+            Logout();
+        })
+    }
   return (
     <div className='pl-12 pt-8 max-md:px-4 max-sm:px-2'>
         <div>
@@ -44,9 +47,9 @@ const SideNav = (props: Props) => {
                 </Link>
               
                 <LogoutButton>
-                <div className='flex justify-start gap-2 items-center text-gray-400'>
+                <div onClick={()=>onClick()} className='flex justify-start gap-2 items-center text-gray-400'>
                     <RiLogoutCircleRLine size={20}/>
-                    <p className='text-[14px]'>Sign Out</p>
+                    <p className='text-[14px]'>{isPending ? "Wait" : "Sign Out"}</p>
                 </div>
                 </LogoutButton>
                 

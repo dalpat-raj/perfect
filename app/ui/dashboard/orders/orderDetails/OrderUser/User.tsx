@@ -1,16 +1,16 @@
 // import { User } from '@/lib/definations'
 import { Address } from '@/lib/definations';
+import { formatDate } from '@/lib/helpers';
 import clsx from 'clsx'
 import Image from 'next/image'
 import React from 'react'
 
 interface UserData {
-  id: number; 
-  fullName: string;
+  id: string; 
+  name: string | null;
   email: string; 
   password: string | null;
   image: string | null;
-  authProviderId: string | null;
   role: string;
   addressId: number | null;
   createdAt: Date;
@@ -35,7 +35,7 @@ const User = ({users, address}: {users: UserData | null, address: Address | null
         </div>
         <div className='flex justify-start gap-2 items-center mb-1'>
             <p className='text-[13px] font-semibold text-gray-700'>Name:</p>
-            <p className='text-[13px] text-gray-800'>{users?.fullName}</p>
+            <p className='text-[13px] text-gray-800'>{users?.name}</p>
         </div>
         <div className='flex justify-start gap-2 items-center mb-1'>
             <p className='text-[13px] font-semibold text-gray-700'>Email:</p>
@@ -47,7 +47,7 @@ const User = ({users, address}: {users: UserData | null, address: Address | null
         </div>
         <div className='flex justify-start gap-2 items-center mb-1'>
             <p className='text-[13px] font-semibold text-gray-700'>Join Us:</p>
-            <p className='text-[13px] text-gray-800'>{users?.createdAt?.toLocaleDateString()}</p>
+            <p className='text-[13px] text-gray-800'>{formatDate(users?.createdAt)}</p>
         </div>
     </div>
   )

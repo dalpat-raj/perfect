@@ -1,10 +1,11 @@
-import { AddBanner, EditBanner } from "@/action/banner"
+import { createBanner } from "@/action/banner"
 import Label from "../../label/Label";
 import { useState } from "react";
 import { UploadDropzone } from "@/lib/uploadthing";
 import Image from "next/image";
 import { RxCross1 } from "react-icons/rx";
-import { BannerData } from "@/lib/definations";
+import { caveat } from "@/app/ui/Fonts";
+import { toast } from "sonner";
 
 type Props = {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
@@ -13,10 +14,10 @@ type Props = {
 
 export function BannerForm({setOpen, setLoading}: Props) {
 
-    const [images, setImages] = useState<string[] | any>([])
+    const [images, setImages] = useState<string[]>([])
     const [uploading, setUploading] = useState(false);
 
-    const handleUploadProgress=(p: number)=>{
+    const handleUploadProgress=()=>{
         setUploading(false)
       }
     
@@ -35,10 +36,13 @@ export function BannerForm({setOpen, setLoading}: Props) {
         setLoading(true)
         const formData = new FormData(event.currentTarget);
         try {
-            const bannerAddAction = AddBanner.bind(null, images);
+            const bannerAddAction = createBanner.bind(null, images);
             const data = await bannerAddAction(formData);
-        } catch (error) {
-            console.error('Error submitting form:', error);
+            if(data?.success) toast.success(data.success)
+            if(data?.error) toast.error(data.error)
+        } catch (error: any) {
+            console.log(error?.message);
+            toast.error('Error submitting form 😢')
         } finally {
             setLoading(false)
         }
@@ -53,7 +57,7 @@ export function BannerForm({setOpen, setLoading}: Props) {
    <div className="w-full h-full flex justify-center items-center">
         <div className="w-2/4 max-sm:w-5/6 bg-white shadow-custom-shadow rounded-md p-6">
         <div className="w-full flex justify-between items-center">
-            <h4 className="text-[16px] font-semibold text-gray-800">Create Banner</h4>
+            <h4 className={`${caveat.className} text-[26px] font-bold text-gray-700`}>Create Banner</h4>
             <div onClick={()=>setOpen(false)} className="cursor-pointer"><RxCross1 size={20}/></div>
         </div>
         <form onSubmit={handleSubmit}>
@@ -78,7 +82,7 @@ export function BannerForm({setOpen, setLoading}: Props) {
                         </div>
                         <div className="flex gap-2">
                             {
-                                images.map((img: any,i: number)=>(
+                                images.map((img,i)=>(
                                     <div className="w-full h-auto rounded-sm" key={i}>
                                         <Image
                                         src={img}
@@ -98,8 +102,8 @@ export function BannerForm({setOpen, setLoading}: Props) {
                         <UploadDropzone
                             endpoint="imageUploader"
                             onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
-                            onUploadError={(error) => alert("Upload error:")}
-                            onUploadProgress={(p: number)=>handleUploadProgress(p)}
+                            onUploadError={() => alert("Upload error ❌")}
+                            onUploadProgress={()=>handleUploadProgress()}
                         /> 
                     </div>
                 )
@@ -107,7 +111,7 @@ export function BannerForm({setOpen, setLoading}: Props) {
             </div>
       
 
-            <button type="submit" className="w-full rounded-lg bg-gray-500 text-white text-[14px] px-2 py-1">Create banner</button>
+            <button type="submit" className="w-full rounded-lg bg-[#080808] hover:bg-gray-800 text-white text-[14px] px-2 py-1">Create banner</button>
         </form>
         </div>
    </div>

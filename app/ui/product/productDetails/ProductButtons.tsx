@@ -1,23 +1,27 @@
 "use client"
-import { CartItem, Product } from '@/lib/definations';
+import { Product } from '@/lib/definations';
 import { addToCart } from '@/lib/store/features/cart/cartSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import React, { useState } from 'react'
 import { CiShoppingCart } from 'react-icons/ci';
 import { FaMinus, FaPlus } from 'react-icons/fa6';
-import { toast } from 'sonner';
+import ButtonWithSpinner from '../../button/ButtonWithSpinner';
 
-type Props = {}
+type Props = {
+    productDetail: Product
+}
 
-const ProductButtons = ({productDetail}: {productDetail : Product | null}) => {
+const ProductButtons: React.FC<Props> = ({productDetail}) => {
+    const [loading, setLoading] = useState(false)
     const [qty, setQty] = useState<number>(1)
     const [modell, setModel] = useState<string | undefined>(productDetail?.model[0])
 
     const dispatch = useAppDispatch();
 
      
-    const AddToCartHandler = (productDetail: Product | null) => {
-        toast.success("added")
+    const AddToCartHandler = async (productDetail: Product | null) => {
+        setLoading(true)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         if (!productDetail) {
             alert("Product details missing");
             return;
@@ -32,12 +36,12 @@ const ProductButtons = ({productDetail}: {productDetail : Product | null}) => {
             modelNumber: productDetail.modelNumber,
             image: productDetail.images[0],
             color: productDetail.color,
-            rating: productDetail.rating,
-            model: productDetail.model[0],  // Assuming you have a model
+            rating: productDetail?.rating || 0,
+            model: productDetail.model[0], 
             quantity: qty,
         };
         dispatch(addToCart(cartItem));
-        
+        setLoading(false)
     };
     
 
@@ -64,10 +68,12 @@ const ProductButtons = ({productDetail}: {productDetail : Product | null}) => {
             </div>
         </div>
 
-        <button onClick={()=>AddToCartHandler(productDetail)} className='w-full transition ease-in-out duration-200 hover:bg-[#333333] bg-[#181818] flex items-center justify-center gap-4 text-white font-bold py-3'>
-            <CiShoppingCart size={30}/>
-            <p>Add To Cart - RS. {productDetail?.sellingPrice}</p>
-        </button>
+        <div onClick={()=>AddToCartHandler(productDetail)} className='w-full h-10 flex items-center justify-center gap-4'>
+        <ButtonWithSpinner loading={loading} >
+        <CiShoppingCart size={30}/>
+            <p className='text-[18px]'>Add To Cart - RS. {productDetail?.sellingPrice.toFixed(2)}</p>
+        </ButtonWithSpinner>
+        </div>
 
     </div>
   )

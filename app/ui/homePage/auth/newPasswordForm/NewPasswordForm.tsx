@@ -45,7 +45,6 @@ const NewPasswordForm = () => {
         NewPassword(values, token)
       .then((data)=>{
         setError(data?.error)
-        toast.error(data?.error)
         if(data?.success){
           router.push("/auth/sign-in")
           toast.success(data?.success)

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "./db";
 import { Collections, FormData, Product} from "./definations";
+import { subMonths, format } from 'date-fns';
 
 export const getUserByEmail = async (email: string) => {
   try {
@@ -19,34 +20,6 @@ export const getUserById = async (id: string | undefined) => {
     return null;
   }
 };
-
-// remove later
-export const getVerificationTokenByToken = async (
-  token: string
-) => {
-  try {
-    const verificationToken = await db.verificationToken.findUnique({
-      where: {token}
-    });
-    return verificationToken;
-  } catch (error) {
-    return null
-  }
-}
-
-// remove later
-export const getVerificationTokenByEmail = async (
-  email: string
-) => {
-  try {
-    const verificationToken = await db.verificationToken.findFirst({
-      where: {email}
-    });
-    return verificationToken;
-  } catch (error) {
-    return null
-  }
-}
 
 
 export const getPasswordResetTokenByToken = async (token: string) => {
@@ -74,7 +47,36 @@ export const getPasswordResetTokenByEmail = async (email: string) => {
 export const currentUser = async () => {
   const session = await auth();
 
-  return session?.user;
+  return session?.user || null;
+}
+
+export const getCurrentUser = async () => {
+  const session = await auth();
+  const email = session?.user.email
+  const user = await db.user.findFirst({
+      where: {
+        email: email
+      },
+      include: {
+        address: true,
+      }
+    })
+
+  return user;
+}
+export const getCurrentUserReviews = async () => {
+  const session = await auth();
+  const email = session?.user.email
+  const user = await db.user.findFirst({
+      where: {
+        email: email
+      },
+      include: {
+        reviews: true,
+      }
+    })
+
+  return user;
 }
 
 export const currentRole = async () => {
@@ -83,6 +85,7 @@ export const currentRole = async () => {
   return session?.user?.role;
 }
 
+
 export async function getProductDetails(title: string){
   const originalTitle = title.replace(/-/g, ' ');
 
@@ -90,55 +93,58 @@ export async function getProductDetails(title: string){
     const product = await db.product.findFirst({
       where: {
         title: {
-            equals: originalTitle,
-            mode: 'insensitive', // Make the search case-insensitive
+          equals: originalTitle,
+          mode: 'insensitive',
         },
       },
-  
       include: {
-        review: true,
-      }
-    })
-  
-    if(!product){
-      throw new Error('Product not found')
+        review: {
+          orderBy: [
+            {
+              createdAt: 'desc',
+            },
+          ],
+          take: 10,
+        },
+      },
+    });
+
+    if (!product) {
+      return { error: 'Product not found' };
     }
-  
+
+    // Sort reviews manually after fetching them
+    product.review.sort((a, b) => {
+      const aHasImages = a.images.length > 0 ? 1 : 0;
+      const bHasImages = b.images.length > 0 ? 1 : 0;
+
+      // Sort by presence of images first, then by createdAt
+      return bHasImages - aHasImages || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
     return product;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch Product details.');
+    return({error: 'Failed to fetch Product details.'});
   }
   
 }
 
-export async function fetchCardData() {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-    try {
-      const totalProductsPromiss = db.product.count()
-      const totalCustomersPromiss = db.user.count()
-      const totalOrdersPromiss = db.order.count()
+// export async function getProductDetailsById(id: number | string){
+
+//   try {
+//     const product = await db.product.findFirst({
+//       where: {
+//         id: Number(id)
+//       },
+
+//     })
   
-      const data = await Promise.all([
-        totalProductsPromiss,
-        totalCustomersPromiss,
-        totalOrdersPromiss,
-      ]);
-      
-      const totalProducts = Number(data[0] ?? '0');
-      const totalCustomers = Number(data[1] ?? '0');
-      const totalOrders = Number(data[2] ?? '0');
-      
-      return {
-        totalProducts,
-        totalCustomers,
-        totalOrders
-      };
-    } catch (error) {
-      console.error('Database Error:', error);
-      throw new Error('Failed to fetch card data.');
-    }
-}
+//     return product;
+//   } catch (error: any) {
+//     throw new Error("product not found")
+//   }
+  
+// }
 
 export async function editProducts({id,formData}: {id: number, formData: FormData}){
   try {
@@ -213,7 +219,7 @@ export async function getProductByCollection(titles: string) {
 }
 
 export async function FetchSimilarProducts(collection: string | undefined): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const where: any = {};
   
   try {
@@ -284,7 +290,6 @@ export async function getMyOrders(id: string){
 }
 
 export async function getOrderDetails(id: number) {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
   try {
     const order = await db.order.findUnique({
       where: {
@@ -315,36 +320,35 @@ export async function getOrderDetails(id: number) {
   }
 }
 
-export async function getOrderByType(ordersType: string) {
-  try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+// export async function getOrderByType(ordersType: string) {
+//   try {
+//     await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const orders = await db.order.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      where: {
-        status: ordersType,
-      },
-      include:{
-        user: {
-          select: {
-            name: true,
-          }
-        },
-        paymentInfo: true,
-      },
-      take: 7, 
-    });
+//     const orders = await db.order.findMany({
+//       orderBy: {
+//         createdAt: 'desc',
+//       },
+//       where: {
+//         status: ordersType,
+//       },
+//       include:{
+//         user: {
+//           select: {
+//             name: true,
+//           }
+//         },
+//         paymentInfo: true,
+//       },
+//       take: 7, 
+//     });
 
-    return orders;
+//     return orders;
 
-  } catch (error) {
-    console.error("Error fetching orders:", error);
-    throw new Error("Failed to fetch orders");
-  }
-}
-
+//   } catch (error) {
+//     console.error("Error fetching orders:", error);
+//     throw new Error("Failed to fetch orders");
+//   }
+// }
 
 export async function getReviews(){
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -478,7 +482,6 @@ export async function getBanner(){
   
 }
 
-
 export async function getBannerForHome(){
   try {
       const banners = await db.banner.findMany({
@@ -498,4 +501,111 @@ export async function getBannerForHome(){
     throw new Error("banner does not exists");
   } 
   
+}
+
+
+
+// dashboard 
+export async function fetchCardData() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const totalProductsPromiss = db.product.count()
+      const totalCustomersPromiss = db.user.count()
+      const totalOrdersPromiss = db.order.count()
+  
+      const data = await Promise.all([
+        totalProductsPromiss,
+        totalCustomersPromiss,
+        totalOrdersPromiss,
+      ]);
+      
+      const totalProducts = Number(data[0] ?? '0');
+      const totalCustomers = Number(data[1] ?? '0');
+      const totalOrders = Number(data[2] ?? '0');
+      
+      return {
+        totalProducts,
+        totalCustomers,
+        totalOrders
+      };
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch card data.');
+    }
+}
+
+export async function OrderCountAdmin() {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  try {
+    const totalConfirmPromiss = db.order.count({where: { status: 'Order Confirmed' }})
+    const totalPickupPromiss = db.order.count({where: { status: 'pickup' }})
+    const totalShippedPromiss = db.order.count({where: { status: 'shipped' }})
+    const totalDeliverdPromiss = db.order.count({where: { status: 'delivered' }})
+    const totalCnacledPromiss = db.order.count({where: { status: 'cancled' }})
+    const totalRefuncPromiss = db.order.count({where: { status: 'refunded' }})
+
+
+    const data = await Promise.all([
+      totalConfirmPromiss,
+      totalPickupPromiss,
+      totalShippedPromiss,
+      totalDeliverdPromiss,
+      totalCnacledPromiss,
+      totalRefuncPromiss,
+    ]);
+    
+
+    
+    const totalConfirm = Number(data[0] ?? '0');
+    const totalPickup = Number(data[1] ?? '0');
+    const totalShipped = Number(data[2] ?? '0');
+    const totalDelivered = Number(data[3] ?? '0');
+    const totalCancled = Number(data[4] ?? '0');
+    const totalRefunded = Number(data[5] ?? '0');
+    
+    return {
+      totalConfirm,
+      totalPickup,
+      totalShipped,
+      totalDelivered,
+      totalCancled,
+      totalRefunded,
+    };
+  } catch (error) {
+    return ({error: 'Failed to fetch card data.'})
+  }
+}
+
+export async function getMonthlyRevenueLast12Months() {
+  const twelveMonthsAgo = subMonths(new Date(), 12);
+  const now = new Date();
+
+  // Generate an array of months for the last 12 months
+  const months = Array.from({ length: 12 }, (_, i) => {
+    const month = subMonths(now, i);
+    return format(month, 'yyyy-MM');
+  }).reverse(); // Reverse to start from the oldest month
+
+  const orders = await db.order.findMany({
+    where: {
+      status: 'delivered',
+      deliverAt: {
+        gte: twelveMonthsAgo,
+      },
+    },
+  });
+
+  // Initialize revenue data
+  const revenueData = months.map(month => ({ month, totalRevenue: 0 }));
+
+  // Calculate total revenue for each month
+  orders.forEach(order => {
+    const orderMonth = format(order.deliverAt, 'yyyy-MM');
+    const monthData = revenueData.find(data => data.month === orderMonth);
+    if (monthData) {
+      monthData.totalRevenue += order.totalAmount;
+    }
+  });
+
+  return revenueData;
 }

@@ -4,7 +4,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 import Menu from './Menu';
 
-type Props = {}
+
 
 const MobileMenu = () => {
     const [open, setOpen] = useState<boolean>(false)

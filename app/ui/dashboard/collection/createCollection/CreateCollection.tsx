@@ -1,5 +1,6 @@
 'use client'
 import { createCollction } from '@/action/collection'
+import { caveat } from '@/app/ui/Fonts'
 import Label from '@/app/ui/label/Label'
 import LoaderBall from '@/app/ui/loader/BallLoader'
 import { UploadButton } from '@/lib/uploadthing'
@@ -7,16 +8,15 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import { IoCamera } from 'react-icons/io5'
 
-type Props = {}
 
-const CreateCollection = (props: Props) => {
+const CreateCollection = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [image, setImage] = useState<string>('')
     const [uploading, setUploading] = useState(false);
     const [imageUploaded, setImageUploaded] = useState(false);
 
 
-    const handleUploadProgress=(p: number)=>{
+    const handleUploadProgress=()=>{
         setUploading(true)
       }
     
@@ -52,9 +52,9 @@ const CreateCollection = (props: Props) => {
 
   return (
     <div className='p-6 max-sm:p-0 flex justify-center'>
-        <div className='w-2/4 max-sm:w-full bg-gray-300 shadow-custom-shadow p-6'>
-        <div className='w-full'>
-            <h2 className={`text-center text-[20px] font-bold text-gray-600`}>Create Collections</h2>
+        <div className='w-2/4 max-sm:w-full rounded-md shadow-custom-shadow p-6'>
+        <div className='w-full text-center'>
+            <h2 className={`${caveat.className} text-[26px] font-bold text-gray-700`}>Create Collections</h2>
         </div>
 
         <div className='mt-4'>
@@ -77,7 +77,7 @@ const CreateCollection = (props: Props) => {
                     endpoint="imageUploader"
                     onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
                     onUploadError={(error) => console.error("Upload error:", error)}
-                    onUploadProgress={(p: number)=>handleUploadProgress(p)}
+                    onUploadProgress={()=>handleUploadProgress()}
                     disabled={imageUploaded}
                     /> 
                 </div>
@@ -115,7 +115,7 @@ const CreateCollection = (props: Props) => {
 
             </div>
             <div>
-                <button className="w-full bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-black transition">Create</button>
+                <button className="w-full bg-[#333] text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">Create</button>
             </div>
             </form>
         </div>

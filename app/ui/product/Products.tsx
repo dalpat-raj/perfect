@@ -87,26 +87,21 @@ const Products = ({ titles }: { titles: string }) => {
 
   return (
     <div>
-      {/* Filter Button */}
       <div>
         <FilterButton setOpenFilter={setOpenFilter} openFilter={openFilter} handleFilterChange={handleFilterChange} totalProducts={totalProducts} />
       </div>
 
-      {/* Product Grid */}
       <div className='mt-4'>
         <div className='grid grid-cols-4 gap-4 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2'>
           
-          {/* Show products only after first load is done */}
           {!isFirstLoad && products.map((item, i) => (
             <ProductCard key={i} prod={item} />
           ))}
 
-          {/* Show loading skeletons during first load */}
           {isFirstLoad && Array(8).fill(0).map((_, i) => (
             <ProductFilterSkeletons key={i} />
           ))}
 
-          {/* Show skeletons if fetching more products */}
           {!isFirstLoad && isFetching && Array(8).fill(0).map((_, i) => (
             <ProductFilterSkeletons key={i} />
           ))}
@@ -114,7 +109,6 @@ const Products = ({ titles }: { titles: string }) => {
         </div>
       </div>
 
-      {/* Intersection Observer Target */}
       <div ref={loadMoreRef}></div>
     </div>
   );

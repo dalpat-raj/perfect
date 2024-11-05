@@ -2,9 +2,7 @@ import Collection from '@/app/ui/dashboard/collection/Collection'
 import LoaderBall from '@/app/ui/loader/BallLoader'
 import React, { Suspense } from 'react'
 
-type Props = {}
-
-const page = (props: Props) => {
+const page = () => {
   return (
     <Suspense fallback={<LoaderBall/>}>
       <Collection/>

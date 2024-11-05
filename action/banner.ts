@@ -1,30 +1,32 @@
 "use server";
 import { db } from "@/lib/db";
 import { revalidatePath } from 'next/cache';
+import { currentRole } from "@/lib/data";
+import { UserRole } from "@prisma/client";
 
 
-
-export async function AddBanner(images: string[] | any ,formData: FormData) {
+export async function createBanner(images: string[] | any ,formData: FormData) {
     const url = formData.get('url') as string;
-
+    const role = await currentRole();
     try {
+        if (role !== UserRole.ADMIN) {
+            return {error: "User not verify!"}
+        }
         
         if(!url || !images){
-            throw new Error('All fields are require!')
+            return({error: 'All fields are required!'})
         }
 
-        const banner = await db.banner.create({
+        await db.banner.create({
             data: {
                 url: url,
                 images: images
             },
         });
-
-        revalidatePath('/dashboard/banner');
-        return banner; 
-        
+        revalidatePath("/dashboard/banner")
+        return {success: "Banner Created ✅"}; 
     } catch (error) {
-        throw new Error("Failed to create coupon");
+        return({error: "Database Error failed to create coupon ❌"});
     }
 }
 
@@ -35,22 +37,20 @@ export async function EditBanner(id:number, images: string[] | any ,formData: Fo
     try {
         
         if(!url || !images){
-            throw new Error('All fields are required!')
+            return ({error: 'All fields are required!'})
         }
 
-        const banner = await db.banner.update({
+        await db.banner.update({
             where:{id: Number(id)},
             data: {
                 url: url,
                 images: images
             },
         });
-
-        revalidatePath('/dashboard/banner');
-        return banner; 
-        
+        revalidatePath("/dashboard/banner")
+        return {success: "Updated ✅"};
     } catch (error) {
-        throw new Error("Failed to edit banner");
+        return({error: "Database Error failed to edit coupon ❌"});
     }
 }
 
@@ -60,17 +60,15 @@ export async function DeleteBanner(formData: FormData) {
     try {
         
         if(!id){
-            throw new Error('pease retry')
+            return({error: 'pease retry'})
         }
 
-        const banner = await db.banner.delete({
+        await db.banner.delete({
             where:{id: Number(id)},
         });
-
-        revalidatePath('/dashboard/banner');
-        return banner; 
-        
+        revalidatePath("/dashboard/banner")
+        return {success: "Deleted ✅"};
     } catch (error) {
-        throw new Error("Failed to delete banner");
+        return({error: "Database Error failed to delete coupon ❌"});
     }
 }

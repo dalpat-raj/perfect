@@ -1,13 +1,15 @@
-import Reviews from '@/app/ui/dashboard/reviews/Reviews'
-import React, { Suspense } from 'react'
+import ReviewsUi from '@/app/ui/dashboard/reviews/Reviews'
+import { getReviews } from '@/lib/data'
+import React from 'react'
 
-type Props = {}
 
-const page = (props: Props) => {
+const page = async() => {
+  const Allreviews = await getReviews()
+  
   return (
-    <Suspense fallback={"...loading"}>
-      <Reviews/>
-    </Suspense>
+     <div>
+       <ReviewsUi reviews={Allreviews}/>
+     </div>
   )
 }
 

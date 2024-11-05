@@ -1,16 +1,17 @@
+import React, { Suspense } from 'react'
 import Checkout from '@/app/ui/homePage/cart/checkout/Checkout'
-import { auth } from '@/auth';
-import React from 'react'
+import LoaderBall from '@/app/ui/loader/BallLoader';
+import { getCurrentUser } from '@/lib/data';
 
-type Props = {}
 
-const page = async(props: Props) => {
-    const session = await auth();
-    const user = session?.user;
+const page = async() => {
+  const user = await getCurrentUser();
     
   return (
     <div className='w-full px-12 pr-0 max-md:px-4 max-sm:px-2'>
+        <Suspense fallback={<LoaderBall/>}>
         <Checkout user={user}/>
+        </Suspense>
     </div>
   )
 }

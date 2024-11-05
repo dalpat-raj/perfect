@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+import { unknown } from "zod";
 
 
 
@@ -22,6 +23,6 @@ export async function GET(request: Request) {
     
     return NextResponse.json(coupon)
     } catch (error) {
-    return NextResponse.error()
+        return NextResponse.json({ message: 'Failed to check coupon code 😢', error: error }, { status: 500 }); 
     }
 }

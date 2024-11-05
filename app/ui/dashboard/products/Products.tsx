@@ -1,23 +1,18 @@
 'use client';
 
 import Pagination from '@/app/(dashboard)/dashboard/pagination/Pagination';
-import ProductCard from '@/app/ui/product/ProductCard';
 import { Product } from '@/lib/definations';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ProductsCardSkeletons } from '../../skeletons';
-import { CiEdit } from 'react-icons/ci';
 import ProductsCard from './ProductsCard';
 import LoaderBall from '../../loader/BallLoader';
 
-type Props = {}
 
-const Products = (props: Props) => {
+const Products = () => {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
   const limit = 8;
-
+  const [loading, setLoading] = useState<boolean>(false)
   const [isFetching, setIsFetching] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -41,11 +36,12 @@ const Products = (props: Props) => {
       setTotalPages(Math.ceil(data.totalProducts / limit)); 
     } catch (error) {
       setError('Failed to fetch products');
-      console.error('Error fetching products:', error);
     } finally {
       setIsFetching(false);
     }
   };
+
+
 
   useEffect(() => {
     fetchProducts(page);
@@ -71,12 +67,12 @@ const Products = (props: Props) => {
 
  
     {
-      isFetching ? (
+      isFetching || loading ? (
         <LoaderBall/>
       ) : (
       <div className="px-2">
         {products.map((item, i) => (
-          <ProductsCard product={item} key={i} />
+          <ProductsCard product={item} key={i}/>
         ))}
       </div>
       )

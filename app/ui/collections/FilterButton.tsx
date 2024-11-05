@@ -1,5 +1,5 @@
 "use client"
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent } from 'react'
 import { CiFilter } from 'react-icons/ci'
 import FilterSidebar from './filterSidebar/FilterSidebar';
 import clsx from 'clsx';

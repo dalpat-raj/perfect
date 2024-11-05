@@ -1,7 +1,46 @@
 import bcrypt from "bcryptjs";
-export function saltAndHashPassword(password: any) {
-  const saltRounds = 10; // Adjust the cost factor according to your security requirements
-  const salt = bcrypt.genSaltSync(saltRounds); // Synchronously generate a salt
-  const hash = bcrypt.hashSync(password, salt); // Synchronously hash the password
-  return hash; // Return the hash directly as a string
+export function saltAndHashPassword(password: string) {
+  const saltRounds = 10;
+  const salt = bcrypt.genSaltSync(saltRounds); 
+  const hash = bcrypt.hashSync(password, salt); 
+  return hash; 
 }
+
+export const formatTitle = (title: string) => {
+  return title
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, ''); 
+};
+
+export const formatDate = (date: Date | undefined) => {
+  return new Intl.DateTimeFormat('en-GB', {
+    weekday: 'short',   
+    day: 'numeric',   
+    month: 'short',   
+  }).format(date);
+};
+
+
+export const generatePagination = (currentPage: number, totalPages: number) => {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  if (currentPage <= 3) {
+    return [1, 2, 3, '...', totalPages - 1, totalPages];
+  }
+
+  if (currentPage >= totalPages - 2) {
+    return [1, 2, '...', totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [
+    1,
+    '...',
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    '...',
+    totalPages,
+  ];
+};

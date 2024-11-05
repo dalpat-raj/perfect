@@ -4,7 +4,6 @@ import React from 'react'
 import CollectionButton from './CollectionButton';
 
 
-type Props = {}
 
 type Collction = {
     id: number,
@@ -12,15 +11,12 @@ type Collction = {
     image: string | null,
 }
 
-const Collection = async(props: Props) => {
+const Collection = async() => {
 
     const collections:Collction[] | null = await getAdminCollctions();
 
   return (
-    <div className='px-4 my-4 relative'>
-        <div className='my-4 text-center'>
-            <h2 className='text-[20px] font-bold'>Our Collections</h2>
-        </div>
+    <div className='p-4 relative'>
         {
             collections?.map((item, i)=>(
                 <div className='flex justify-between items-center border border-gray-200 my-4 rounded-lg px-4' key={i}>

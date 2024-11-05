@@ -1,14 +1,11 @@
-
-
-
 export interface User {
     id: string; // Will be created on the database
-    name: string;
+    name: string | null;
     email: string; // Stored in cents
     emailVerified: Date | null,
     password: string | null;
     image: string | null;
-    role: string | any;
+    role: ["ADMIN" | "USER"];
     addressId: number | null;
     createdAt: Date,
     updatedAt: Date,
@@ -24,22 +21,90 @@ export interface User {
 
 export interface Address {
   id: number;
-  userId: number | null;
+  userId: string | null;
   completeAddress: string;
   nearbyLandmark: string;
-  phone: number;
+  phone: string;
   city: string;
   state: string;
-  pinCode: number | null;
+  pinCode: string | null;
 };
 
+export interface CheckoutAddress {
+  email: string;
+  country: string;
+  name: string,
+  completeAddress: string,
+  nearbyLandmark: string,
+  city: string,
+  state: string,
+  pinCode: string,
+  phone: string,
+  saveAddress: boolean,
+  paymentMethod: string,
+};
+
+export type UserProfile = {
+  id: string; // Will be created on the database
+  name: string | undefined;
+  email: string; // Stored in cents
+  emailVerified: Date | null,
+  password: string | null;
+  image: string | null;
+  role: ["ADMIN" | "USER"];
+  addressId: number | null;
+  createdAt: Date,
+  updatedAt: Date,
+  address: {
+    id: number;
+    userId: string | null;
+    completeAddress: string;
+    nearbyLandmark: string;
+    phone: string;
+    city: string;
+    state: string;
+    pinCode: string;
+  } | null
+}
+
+export interface SessionUser {
+  name?: string | null;
+  email: string;
+  image?: string | null | undefined;
+  id?: string | undefined;
+  role: 'USER' | 'ADMIN'; // Adjust roles based on your needs
+}
+
+export type UserReviews = {
+  id: string; // Will be created on the database
+  name: string | null;
+  email: string; // Stored in cents
+  emailVerified: Date | null,
+  password: string | null;
+  image: string | null;
+  role: ["ADMIN" | "USER"];
+  addressId: number | null;
+  createdAt: Date,
+  updatedAt: Date,
+  reviews: Array<{
+    id: number;
+    name: string;
+    email: string;
+    message: string;
+    images: string[] | null;
+    productId: number;
+    rating: number;
+    createdAt: Date;
+  }>
+}
+
 export type CustomerWithOrderCount = {
-  id: number;
-  name: string | any;
+  id: string;
+  name: string | null;
   email: string;
   password: string | null;
   image: string | null;
-  role: string | null;
+  role: ["ADMIN" | "USER"];
   createdAt: Date;
   addressId: number | null;
   _count: string[] | any; // Adding the order count
@@ -88,10 +153,9 @@ export interface Product {
   model: string[];
   feature: string[];
   images: string[];
-  rating: number;
-  reviewId: number | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date; // You might also use Date if you're handling date objects
+  updatedAt: Date; // Same as above
+  rating: number | null;
   review: Review[];
 }
 
@@ -100,11 +164,12 @@ export interface Review {
   name: string;
   email: string;
   message: string;
-  image: string | null;
+  images: string[] | null;
   productId: number;
   rating: number;
-  createdAt: Date;
+  createdAt: Date; // You might also use Date here
 }
+
 
 export interface CustomFormData {
   title: string;
@@ -121,12 +186,10 @@ export interface CustomFormData {
 }
 
 export interface SelectModelProps {
-  selectedCollection: string;  // assuming it's a string (e.g., "iphone", "samsung")
   formData: {
     model: string[];
   };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // typing for input change handler
-  setFormData: React.Dispatch<React.SetStateAction<any>>;  // typing for state setter
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;  // typing for state setter
 }
 
 export interface AddFeaturelProps {
@@ -204,7 +267,7 @@ export interface UserOrders {
   discountPrice: number | null,
   status: string,
   paymentInfoId: number | null,
-  userId: number | any,
+  userId: number | null,
   createdAt: Date,
   deliverAt: Date,
   statusHistory: Array<{
@@ -228,7 +291,7 @@ export interface UserOrders {
       quantity: number,
     }>,
   user: {
-    id: number,
+    id: string,
     name: string | null,
     email: string,
     password: string | null,
@@ -238,6 +301,21 @@ export interface UserOrders {
     addressId: number | null,
   } | null,
 }
+
+export type OrderSingleItem = {
+  color: string,
+  id: number,
+  image: string,
+  model: string,
+  modelNumber: string,
+  orderId: number,
+  price: number,
+  productId: number,
+  quantity: number,
+  rating: number,
+  stock: number,
+  title: string,
+  }
 
 
 
@@ -256,6 +334,14 @@ export interface AdminOrders {
     name: string,
   } | null,
 }
+
+export interface EventCreate {
+  title: string,
+  description: string,
+  discount: number,
+  endDate: Date,
+}
+
 
 export interface AllEventData {
   id: number,
@@ -290,15 +376,19 @@ export interface AllEventData {
   }>
 }
 
+export interface CouponCreate {
+  code: string,
+  discount: number,
+  expirationDate: Date,
+}
 export interface AllCouponData {
   id: number,
   code: string,
   discount: number,
-  isActive: Date,
+  isActive: boolean,
   expirationDate: Date,
   createdAt: Date,
   updatedAt: Date,
-
 }
 
 export interface BannerData {

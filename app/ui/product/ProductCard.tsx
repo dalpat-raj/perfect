@@ -1,9 +1,9 @@
-'use client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/lib/definations';
 import Rating from '../rating/Rating';
+import { formatTitle } from '@/lib/helpers';
 
 interface ProductCardProps {
     prod: Product;
@@ -16,14 +16,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ prod }) => {
     const discountPercentage = prod.originalPrice && prod.sellingPrice
         ? (((prod.originalPrice - prod.sellingPrice) / prod.originalPrice) * 100).toFixed(0)
         : '0';
-
-
-    const formatTitle = (title: string) => {
-        return title
-            .toLowerCase()
-            .replace(/ /g, '-') // Replace spaces with hyphens
-            .replace(/[^\w-]+/g, ''); // Remove special characters
-    };
 
     return (
         <Link href={`/products/${formatTitle(prod.title)}`} className='relative'>
@@ -61,13 +53,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ prod }) => {
             </div>
             {prod.rating >= 1 && (
                 <div className='flex items-center gap-2 pl-2'>
-                    <Rating rating={prod.rating} />
-                    <p className='text-[14px]'>({prod.review?.length || 0})</p>
+                    <Rating rating={prod?.rating} />
+                    <p className='text-[14px]'>({prod?.review?.length || 0})</p>
                 </div>
             )}
             <div className='py-2 flex gap-4'>
-                <p className='text-[13px]'>Rs. {prod.sellingPrice}</p>
-                <p className='text-[13px] line-through'>Rs. {prod.originalPrice}</p>
+                <p className='text-[13px]'>Rs. {prod.sellingPrice.toFixed(2)}</p>
+                <p className='text-[13px] line-through'>Rs. {prod.originalPrice.toFixed(2)}</p>
             </div>
         </Link>
     );

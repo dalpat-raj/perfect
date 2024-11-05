@@ -1,10 +1,12 @@
 import { AllCouponData } from '@/lib/definations'
-import { formatDate } from '@/lib/formDatePage';
+import { formatDate } from '@/lib/helpers'
 import React from 'react'
 
-type Props = {}
+type CouponProps = {
+    AllCoupons: AllCouponData;
+}
 
-const CouponCard = ({AllCoupons}: {AllCoupons: AllCouponData }) => {
+const CouponCard: React.FC<CouponProps> = ({AllCoupons}) => {
     
   return (
     <div className='border border-gray-200 mb-4 p-2 rounded-md'>
@@ -19,7 +21,7 @@ const CouponCard = ({AllCoupons}: {AllCoupons: AllCouponData }) => {
                 <p className='text-[13px] text-gray-700'>{AllCoupons.discount}</p>
             </div>
             <div className='max-sm:hidden'>
-                <p className='text-[13px] text-gray-700 max-sm:hidden'>{formatDate(AllCoupons.isActive)}</p>
+                <p className='text-[13px] text-gray-700 max-sm:hidden'>{AllCoupons.isActive}</p>
             </div>
             <div className='max-sm:hidden'>
                 <p className='text-[13px] text-gray-700 max-sm:hidden'>{formatDate(AllCoupons.createdAt)}</p>

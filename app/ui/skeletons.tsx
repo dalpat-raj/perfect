@@ -1,5 +1,3 @@
-import FilterButton from "./collections/FilterButton";
-
 const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
 
@@ -9,9 +7,8 @@ const shimmer =
     return (
       <div className='w-full my-8 max-md:my-4 px-12 max-md:px-4 max-sm:px-2'>
         <div className='text-center mb-4 max-sm:mb-2'>
-            <h2 className='text-[1.5rem] font-semibold'>Tranding Item's</h2>
+            <h2 className='text-[1.5rem] font-semibold'>Tranding Items</h2>
         </div>
-
         <div className='w-full flex items-center justify-center gap-12 max-sm:gap-4 m-auto mb-4'>
           <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>
           <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>

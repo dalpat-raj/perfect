@@ -12,9 +12,8 @@ import { sideNavData } from '@/lib/placeholder_data'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 
-type Props = {}
 
-const DropDown = (props: Props) => {
+const DropDown = () => {
     const pathname = usePathname();
   return (
     <DropdownMenu>

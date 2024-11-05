@@ -2,7 +2,6 @@ import OrderDetail from '@/app/ui/dashboard/orders/orderDetails/OrderDetail'
 import { OrderDetailsSkeleton } from '@/app/ui/skeletons';
 import React, { Suspense } from 'react'
 
-type Props = {}
 
 const page = ({ params }: { params: { id: number } }) => {
   const id = params.id;

@@ -6,13 +6,14 @@ import Pagination from '@/app/(dashboard)/dashboard/pagination/Pagination';
 import { useSearchParams } from 'next/navigation';
 import TopNav from '../TopNav';
 import LoaderBall from '@/app/ui/loader/BallLoader';
+import { toast } from 'sonner';
 
-type Props = {};
 
-const AllOrders = (props: Props) => {
+const AllOrders = () => {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
   const limit = 6;
+  
 
   const [orderType, setOrderType] = useState<string>('Order Confirmed')
   const [isFetching, setIsFetching] = useState(false);
@@ -27,20 +28,25 @@ const AllOrders = (props: Props) => {
     if(orderType) query.append('status', orderType);
     query.append('page', currentPage.toString());
     query.append('limit', limit.toString());
-    console.log(orderType);
     
     try {
       const response = await fetch(`/api/createOrder?${query.toString()}`, { method: 'GET' });
-      const data = await response.json();
-      setOrders(data.orders);
-      setTotalPages(Math.ceil(data.totalOrders / limit)); // Use Math.ceil to get the correct total pages
+      const {orders, totalOrders, error} = await response.json();
+      if(error){
+        toast.error(error?.error);
+      }
+      setOrders(orders);      
+      setTotalPages(Math.ceil(totalOrders / limit));
     } catch (error) {
-      console.error('Failed to fetch orders:', error);
+      console.log(error);
+      
+      toast.error('An unexpected error occurred');
     } finally {
       setIsFetching(false);
     }
   };
 
+  
   useEffect(() => {
     fetchOrders(page);
   }, [page, orderType]);
@@ -50,6 +56,7 @@ const AllOrders = (props: Props) => {
       <LoaderBall/>
     )
   }
+  
 
   return (
     <div className="">
@@ -86,3 +93,6 @@ const AllOrders = (props: Props) => {
 };
 
 export default AllOrders;
+
+
+

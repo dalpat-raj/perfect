@@ -15,14 +15,15 @@ interface OrderRequestBody {
     nearbyLandmark: string;
     city: string;
     state: string;
-    pinCode: number;
-    phone: number;
+    pinCode: string;
+    phone: string;
   };
-  userId?: number; 
+  userId?: string; 
   saveAddress?: boolean; 
 }
 
 export async function POST(request: Request) {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   try {
     const body: OrderRequestBody = await request.json();
     const {
@@ -35,10 +36,9 @@ export async function POST(request: Request) {
       userId,
       saveAddress, 
     } = body;
-    console.log(address);
     
     let isId = userId && userId;
-
+    
     if (saveAddress) {
       const user = await saveAddressForUser(address, userId);
         if(user){
@@ -46,6 +46,7 @@ export async function POST(request: Request) {
         }
     }else{
       const existingUser = await db.user.findUnique({ where: { email: address.email } });
+      
 
       if (!existingUser) {
        const user = await db.user.create({
@@ -58,8 +59,8 @@ export async function POST(request: Request) {
                 nearbyLandmark: address.nearbyLandmark,
                 city: address.city,
                 state: address.state,
-                pinCode: Number(address.pinCode),
-                phone: Number(address.phone),
+                pinCode: address.pinCode,
+                phone: address.phone,
               },
             },
           },
@@ -70,14 +71,14 @@ export async function POST(request: Request) {
     
     const order = await db.order.create({
       data: {
-        subTotal,
-        shippingCharge,
-        totalAmount,
-        discountPrice,
+        subTotal: Math.round(subTotal * 100) / 100,
+        shippingCharge: Math.round(shippingCharge * 100) / 100,
+        totalAmount: Math.round(totalAmount * 100) / 100,
+        discountPrice: Math.round(discountPrice * 100) / 100,
         items: {
           create: items,
         },
-        userId: isId , // Set userId if available
+        userId: isId ,
       },
     });
 
@@ -89,13 +90,9 @@ export async function POST(request: Request) {
       },
     });
     
-    return NextResponse.json("order", { status: 201 }); 
+    return NextResponse.json({success: "Order Success ✅"}, { status: 201 }); 
   } catch (error) {
-    console.error("Error creating the order:", error);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    ); // 500 Internal Server Error
+    return NextResponse.json({ message: 'Failed to placed order', error: error }, { status: 500 }); 
   }
 }
 
@@ -107,9 +104,9 @@ async function saveAddressForUser(address: {
   nearbyLandmark: string;
   city: string;
   state: string;
-  pinCode: number;
-  phone: number;
-}, userId?: number) {
+  pinCode: string;
+  phone: string;
+}, userId?: string) {
   if (userId) {
     await db.user.update({
       where: { id: userId },
@@ -121,16 +118,16 @@ async function saveAddressForUser(address: {
               nearbyLandmark: address.nearbyLandmark,
               city: address.city,
               state: address.state,
-              pinCode: Number(address.pinCode),
-              phone: Number(address.phone),
+              pinCode: address.pinCode,
+              phone: address.phone,
             },
             update: {
               completeAddress: address.completeAddress,
               nearbyLandmark: address.nearbyLandmark,
               city: address.city,
               state: address.state,
-              pinCode: Number(address.pinCode),
-              phone: Number(address.phone),
+              pinCode: address.pinCode,
+              phone: address.phone,
             },
           },
         },
@@ -150,8 +147,8 @@ async function saveAddressForUser(address: {
               nearbyLandmark: address.nearbyLandmark,
               city: address.city,
               state: address.state,
-              pinCode: Number(address.pinCode),
-              phone: Number(address.phone),
+              pinCode: address.pinCode,
+              phone: address.phone,
             },
           },
         },
@@ -168,16 +165,16 @@ async function saveAddressForUser(address: {
                 nearbyLandmark: address.nearbyLandmark,
                 city: address.city,
                 state: address.state,
-                pinCode: Number(address.pinCode),
-                phone: Number(address.phone),
+                pinCode: address.pinCode,
+                phone: address.phone,
               },
               update: {
                 completeAddress: address.completeAddress,
                 nearbyLandmark: address.nearbyLandmark,
                 city: address.city,
                 state: address.state,
-                pinCode: Number(address.pinCode),
-                phone: Number(address.phone),
+                pinCode: address.pinCode,
+                phone: address.phone,
               },
             },
           },
@@ -201,29 +198,31 @@ export async function GET(request: Request) {
     if (status) {
       where.status = status; 
     }
+ 
 
-    const orders = await db.order.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      where: Object.keys(where).length ? where : undefined,
-      include:{
-        user: {
-          select: {
-            name: true,
-          }
+    const [orders, totalOrders] = await db.$transaction([
+      db.order.findMany({
+        orderBy: {
+          createdAt: 'desc',
         },
-        paymentInfo: true,
-      },
-      skip: (page - 1) * limit,
-      take: limit, 
-    });
-    
-    const totalOrders = await db.order.count();    
+        where: Object.keys(where).length ? where : undefined,
+        include:{
+          user: {
+            select: {
+              name: true,
+            }
+          },
+          paymentInfo: true,
+        },
+        skip: (page - 1) * limit,
+        take: limit, 
+      }),
+      
+      db.order.count({where: {status: status}})
+    ]);
 
     return NextResponse.json({ orders, totalOrders });
   } catch (error) {
-    console.error('Error fetching orders:', error); 
-    return NextResponse.json({ message: 'Error fetching orders', error: error }, { status: 500 }); 
+    return NextResponse.json({ error: 'Error fetching orders'}, { status: 500 }); 
   }
 }

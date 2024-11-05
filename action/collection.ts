@@ -1,15 +1,19 @@
 'use server'
-
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { currentRole } from "@/lib/data";
+import { UserRole } from "@prisma/client";
 
 
 
 export async function createCollction(image: string,formData: FormData) {
     const title = formData.get('title') as string;
-    
+    const role = await currentRole()
     try {
-     await db.collection.create({
+        if (role !== UserRole.ADMIN) {
+            return {error: "User not verify!"}
+        }
+        await db.collection.create({
             data:{
                 title,
                 image,

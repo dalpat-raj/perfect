@@ -1,53 +1,48 @@
 "use client"
-import { startTransition, useEffect, useState } from "react";
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { SelectModel } from "./SelectModel";
 import AddFeature from "./AddFeature";
 import Input from "../../input/Input";
 import Label from "../../label/Label";
-import {editProducts} from "../../../../lib/data"
 import axios from "axios"
 import { useRouter } from 'next/navigation'
-import type { FormData, Product } from "@/lib/definations";
+import type { FormData } from "@/lib/definations";
 import { UploadButton } from "@/lib/uploadthing";
 import Image from "next/image";
-import { db } from "@/lib/db";
+import { toast } from "sonner";
 
-interface ProductCardProps {
-  product: Product | null;
-}
 
-const productToFormData = async (product: Product): Promise<FormData> => {
-  const fileImages = await Promise.all(
-    product.images.map(async (url) => {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      return new File([blob], url, { type: blob.type });
-    })
-  );
+// const productToFormData = async (product: Product): Promise<FormData> => {
+//   const fileImages = await Promise.all(
+//     product.images.map(async (url) => {
+//       const response = await fetch(url);
+//       const blob = await response.blob();
+//       return new File([blob], url, { type: blob.type });
+//     })
+//   );
 
-  return {
-    title: product.title,
-    description: product.description,
-    modelNumber: product.modelNumber,
-    stock: product.stock,
-    originalPrice: product.originalPrice,
-    sellingPrice: product.sellingPrice,
-    collection: product.collection,
-    model: product.model,
-    color: product.color,
-    feature: product.feature,
-    images: fileImages,
-    // map other fields...
-  };
-};
+//   return {
+//     title: product.title,
+//     description: product.description,
+//     modelNumber: product.modelNumber,
+//     stock: product.stock,
+//     originalPrice: product.originalPrice,
+//     sellingPrice: product.sellingPrice,
+//     collection: product.collection,
+//     model: product.model,
+//     color: product.color,
+//     feature: product.feature,
+//     images: fileImages,
+//     // map other fields...
+//   };
+// };
 
-const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
+const CreateProductForm = () => {
   
   const [addFeature, setAddFeature] = useState<string>("")
   const [imagesShow, setImagesShow] = useState<string[]>([])
   const [createProduct, setCreateProduct] = useState(false);
-  const [editProduct, setEditProduct] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [formData,setFormData] = useState<FormData>({
     title:'',
@@ -65,19 +60,7 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchFormData = async () => {
-      if (product) {
-        const formDataFromProduct: FormData = await productToFormData(product);
-        setFormData(formDataFromProduct);
-        setImagesShow(product.images);
-      }
-    };
-
-    fetchFormData();
-  }, [product]);
-
-  const handleUploadProgress=(p: number)=>{
+  const handleUploadProgress=()=>{
     setUploading(true)
   }
 
@@ -100,40 +83,18 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
       setCreateProduct(true);
         
         const response = await axios.post("/api/addProduct",formData)
-        // if (response) {
-        //   router.push('/dashboard/products')
-        // } else {
-        //   console.error("Failed to create product");
-        // }
-      }catch(error){
-        console.error("Error:", error);
+        if (response) {
+          router.push('/dashboard/products')
+        } else {
+          toast.error("Failed to create product");
+        }
+      }catch(error: any){
+        toast.error(error?.response?.data?.message);
+        
       } finally {
         setCreateProduct(false);
       }
   };
-
-  const handleEdit:React.MouseEventHandler<HTMLButtonElement> = async (e) => {
-    e.preventDefault();
-    const id = product?.id;
-
-
-    const urls = formData.images.map((file: { name: string }) => file.name);
-      
-    // if(urls?.length !== 0){
-    //   setFormData((prevData) => ({
-    //     ...prevData,
-    //     images: [...urls],
-    //   }));
-    // }
-
-    try {
-      const response = await axios.put(`/api/editProduct/${id}`,formData)
-      console.log(response);
-    
-    } catch (error) {
-      console.error('Error updating product:', error);
-    }
-  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -145,7 +106,7 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
 
   const handleFeature: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (addFeature.trim() === '') {
-      alert("Feature cannot be empty");
+      toast.error("Feature cannot be empty");
       return; // Prevent adding an empty feature
     }
 
@@ -163,7 +124,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
       <h1 className="text-2xl font-bold mb-6 text-gray-600 text-center">Make Your Product's</h1>
      
         <div className="grid grid-cols-2 grid-rows-2 gap-4"> 
-        {/* Name */}
         <div className="col-span-1">
           <Label htmlFor="title" title="Name" />
           <Input
@@ -176,7 +136,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
           />
         </div>
 
-        {/* Description */}
         <div className="col-span-1">
           <Label htmlFor="description" title="Description"/>
           <Input
@@ -188,7 +147,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
           />
         </div>
 
-        {/* model number  */}
         <div className="col-span-1">
           <Label htmlFor="modelNumber" title="Model Number" />
           <Input
@@ -201,7 +159,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
           />
         </div>
 
-        {/* stocks */}
         <div className="col-span-1">
           <Label htmlFor="stock" title={"Stock Quantity"}/>
           <Input
@@ -216,7 +173,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
         </div>
 
         <div className="grid grid-cols-2 gap-4 mt-4">
-          {/* original price  */}
         <div className="col-span-1">
           <Label htmlFor="originalPrice" title="Original Price" />
           <Input
@@ -228,7 +184,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
             onChange={handleChange}
           />
         </div>
-        {/* selling Price */}
         <div className="col-span-1">
           <Label htmlFor="sellingPrice" title="Selling Price" />
           <Input
@@ -243,7 +198,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
         </div>
 
         <div className="grid grid-cols-2 gap-4 mt-4">
-          {/* Model */}
           <div>
             <Label htmlFor="collection" title="Collections" />
             <select
@@ -264,17 +218,13 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
               <option value="chargerCabel">Charger Cabel</option>
             </select>
           </div>
-          {/* Conditional iPhone Model Field */}
           <SelectModel 
-            selectedCollection={formData?.collection} 
             formData={formData }
-            handleChange={handleChange} 
             setFormData={setFormData}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4 mt-4">
-         {/* color  */}
          <div>
           <Label htmlFor="color" title="Color" />
           <Input 
@@ -284,7 +234,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
             onChange={handleChange}
           />
         </div>
-        {/* Feature */}
         <div className="relative">
           <Label htmlFor="feature" title="Features" />
           <Input
@@ -336,48 +285,20 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
               endpoint="imageUploader"
               onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
               onUploadError={(error) => console.error("Upload error:", error)}
-              onUploadProgress={(p: number)=>handleUploadProgress(p)}
+              onUploadProgress={()=>handleUploadProgress()}
             />      
           </div> 
       }
       
-      {
-        product?.id && (
-          <div className="mt-4">
-            <UploadButton
-              endpoint="imageUploader"
-              onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
-              onUploadError={(error) => console.error("Upload error:", error)}
-              onUploadProgress={(p: number)=>handleUploadProgress(p)}
-            />      
-          </div>
-        )
-      }
-
-      {/* Submit Button */}
-      {
-        product?.id ? (
-          <div className="mt-4">
-            <button
-              onClick={handleEdit}
-              className="w-full bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-black transition"
-              disabled={editProduct}
-            >
-            {editProduct ? "Submitting..." : "Edit Product"}
-          </button> 
-          </div>
-        ) : (
-          <div className="mt-4">
-            <button
-              onClick={handleSubmit}
-              className="w-full bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition"
-              disabled={createProduct}
-            >
-            {createProduct ? "Submitting..." : "Create Product"}
-          </button> 
-          </div>
-        )
-      }
+        <div className="mt-4">
+          <button
+            onClick={handleSubmit}
+            className="w-full bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition"
+            disabled={createProduct}
+          >
+          {createProduct ? "Submitting..." : "Create Product"}
+        </button> 
+        </div>
      
     </div>
   );
@@ -385,3 +306,6 @@ const CreateProductForm: React.FC<ProductCardProps> = ({product}) => {
 
 
 export default CreateProductForm;
+
+
+

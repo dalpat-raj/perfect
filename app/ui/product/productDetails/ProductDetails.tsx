@@ -4,23 +4,27 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { AiOutlineGift } from "react-icons/ai";
 import { FiTruck } from 'react-icons/fi';
 import ProdDetailMenu from './ProdDetailMenu';
-import { Product, User } from '@/lib/definations';
+import { Product } from '@/lib/definations';
 import ProductButtons from './ProductButtons';
 import Rating from '../../rating/Rating';
 import { auth } from '@/auth';
 
+interface ProductDetailsProps {
+    productDetail: Product;
+  }
 
-const ProductDetails =async ({productDetail}:{ productDetail: Product | any}) => {
+const ProductDetails: React.FC<ProductDetailsProps> = async ({productDetail}) => {
     const session = await auth()
+    
   return (
     <div>
         <div>
-            <h2 className='text-[27px] fon font-extrabold'>{productDetail?.title}</h2>
+            <h2 className={`text-[27px] font-semibold`}>{productDetail?.title}</h2>
             <p className='text-gray-400 font-bold'>{productDetail?.modelNumber}</p>
         </div>
         <div className='flex items-center gap-2 mt-2'>
             <div className='flex'>
-            <Rating rating={productDetail.rating}/>
+            <Rating rating={productDetail?.rating}/>
             </div>
             <p className='text-[14px]'>({productDetail?.review?.length})</p>
         </div>
@@ -59,10 +63,12 @@ const ProductDetails =async ({productDetail}:{ productDetail: Product | any}) =>
             </div>
         </div>
 
+        <div className='mt-4'>
         <ProdDetailMenu 
         user={session?.user}
         product={productDetail}
         />
+        </div>
         
 
     </div>

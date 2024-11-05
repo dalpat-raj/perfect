@@ -5,14 +5,12 @@ import TredingMenu from './TredingMenu'
 import Link from 'next/link'
 import { Product } from '@/lib/definations'
 import { ProductFilterSkeletons } from '../skeletons'
-import { caveat } from '../Fonts'
 
 
 const TradingCover = () => {
-  const [fetching, setFetching] = useState(true)
+  const [fetching, setFetching] = useState<boolean>(true)
   const [products, setProducts] = useState<Product[]>([])
-  const [collection, setCollection] = useState('')
-
+  const [collection, setCollection] = useState<string>('')
 
   const fetchProducts = async () => {
     setFetching(true)
@@ -40,7 +38,7 @@ const TradingCover = () => {
   return (
     <div className='w-full my-8 max-md:my-4 px-12 max-md:px-4 max-sm:px-2 max-sm:mb-12'>
         <div className='text-center mb-4 max-sm:mb-2'>
-            <h2 className={`${caveat.className} text-[37px] font-bold`}>Tranding Item's</h2>
+            <h2 className={` text-[37px] font-bold`}>Tranding Item's</h2>
         </div>
 
         <div>
@@ -48,9 +46,14 @@ const TradingCover = () => {
         </div>
 
         <div className='grid grid-cols-5 gap-4 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2'>
-          {fetching ? <ProductFilterSkeletons  /> : products.map((item, i) => (
+          {
+            fetching && <ProductFilterSkeletons  />
+          }
+          {
+            !fetching && products.map((item, i) => (
               <ProductCard key={i} prod={item} />
-          ))}
+          ))
+          }
         </div>
         
 

@@ -1,7 +1,6 @@
 import { AddFeaturelProps } from '@/lib/definations'
 import React from 'react'
 
-type Props = {}
 
 const AddFeature:React.FC<AddFeaturelProps> = ({formData}) => {
   return (

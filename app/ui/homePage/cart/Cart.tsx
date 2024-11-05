@@ -28,10 +28,10 @@ const Cart = (props: Props) => {
     }, [cart]);  
 
   return (
-    <div className='w-full grid grid-cols-12 max-sm:grid-cols-1 gap-6 my-8'>
+    <div className='w-full grid grid-cols-12 max-sm:grid-cols-1 gap-6 my-8 max-sm:my-4'>
         {
              cartItem?.length ? (
-                <div className='no-scrollbar col-span-7 px-4 shadow-lg'>
+                <div className='no-scrollbar col-span-7 p-4 shadow-custom-shadow rounded-md flex flex-col gap-4'>
                 {
                   cartItem?.map((item, i)=>(
                     <CartItemCard item={item} quantityChangeHandler={quantityChangeHandler} key={i}/>
@@ -53,7 +53,7 @@ const Cart = (props: Props) => {
 
         {
         cartItem && (
-        <div className='col-span-4 max-sm:col-span-7'>
+        <div className='col-span-4 max-sm:col-span-7 max-sm:shadow-custom-shadow rounded-md overflow-hidden'>
             <div className='p-4 bg-gray-100'>
                 <div className='flex justify-between items-center'>
                     <p className='text-[18px] font-semibold'>Total</p>
@@ -61,7 +61,7 @@ const Cart = (props: Props) => {
                 </div>
                 <p className='text-[14px] text-gray-500'>Tax and Shipping calculated at checkout</p>
                 <button className=' w-full mt-4 bg-[#333] block py-2 text-white font-semibold text-[14px] rounded-lg'>
-                <Link href={"/cart/checkout"}>PROCESS TO CHAECKOUT</Link>
+                <Link href={"/checkout"}>PROCESS TO CHAECKOUT</Link>
                 </button>
             </div>
         </div>

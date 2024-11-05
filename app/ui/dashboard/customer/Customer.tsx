@@ -1,13 +1,11 @@
 import { getCustomers } from '@/lib/data'
 import React from 'react'
 import CustomerCard from './CustomerCard.';
-import { CustomerWithOrderCount } from '@/lib/definations';
 
 
-type Props = {}
 
-const Customer = async (props: Props) => {
-    const customers: CustomerWithOrderCount[] = await getCustomers();
+const Customer = async () => {
+    const customers = await getCustomers();
     
   return (
     <div className='p-4 mt-4'>

@@ -1,9 +1,7 @@
 import CreateCoupon from '@/app/ui/dashboard/coupon/createCoupon/CreateCoupon'
 import React from 'react'
 
-type Props = {}
-
-const page = (props: Props) => {
+const page = () => {
   return (
     <div>
         <CreateCoupon/>

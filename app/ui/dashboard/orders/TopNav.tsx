@@ -1,9 +1,8 @@
 "use client"
+import React from 'react'
 import { OrderTopNavData } from '@/lib/placeholder_data'
 import { Input } from "@/components/ui/input"
 import clsx from 'clsx'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
 
 type Props = {
     orderType: string,

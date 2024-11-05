@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { RxCross1 } from 'react-icons/rx';
 
 interface FilterSidebarProps {
@@ -26,10 +26,6 @@ const FilterSidebar = ({ setOpenFilter, handleFilterChange }: FilterSidebarProps
             className="w-full mt-p-2 block appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-base leading-5 text-gray-700 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Collection</option>
-            <option value="Oppo">
-              <input type="checkbox" />
-              <p>Oppo</p>
-            </option>
             <option value="iPhone">iPhone</option>
             <option value="Samsung">Samsung</option>
           </select>

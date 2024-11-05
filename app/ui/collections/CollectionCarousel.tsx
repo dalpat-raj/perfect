@@ -10,8 +10,11 @@ import Autoplay from "embla-carousel-autoplay"
 import { Collections } from '@/lib/definations'
 import CollProdCard from './CollProdCard'
 
+interface CollctionProps {
+  collections: Collections[];
+}
 
-const CollectionCarousel = ({collections}: {collections: Collections[] | any}) => {
+const CollectionCarousel: React.FC<CollctionProps> = ({collections}) => {
     
     return (
     <Carousel plugins={[
@@ -21,7 +24,7 @@ const CollectionCarousel = ({collections}: {collections: Collections[] | any}) =
         ]} 
         className="w-full">
         <CarouselContent className="-ml-1">
-          {collections?.map((item: any, index: number) => (
+          {collections?.map((item, index) => (
             <CarouselItem key={index} className="pl-1 max-sm:basis-4/6 max-md:basis-2/6 max-lg:basis-1/3 lg:basis-1/4 ">
               <div className="p-1">
                 <Card>

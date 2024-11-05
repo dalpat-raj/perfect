@@ -1,11 +1,12 @@
 import React from 'react'
 import { CartItem } from '@/lib/definations';
-import Link from 'next/link';
 import { RxCross1 } from 'react-icons/rx';
 import CartItemCard from './CartItemCard';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { addToCart } from '@/lib/store/features/cart/cartSlice';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface OpenCartSidebarProps {
     setOpenCart: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +14,7 @@ interface OpenCartSidebarProps {
   }
 
 const Cart = ({setOpenCart, cartItem}: OpenCartSidebarProps) => {
-
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const totalPrice  = cartItem?.reduce(
@@ -24,6 +25,15 @@ const Cart = ({setOpenCart, cartItem}: OpenCartSidebarProps) => {
   const quantityChangeHandler = (item: CartItem) => {
     dispatch(addToCart(item));
   };
+
+  const handleCheckout=()=>{
+    setOpenCart(false)
+    router.push("/checkout")
+  }
+  const handleCart=()=>{
+    setOpenCart(false)
+    router.push("/cart")
+  }
 
 
   return (
@@ -41,7 +51,7 @@ const Cart = ({setOpenCart, cartItem}: OpenCartSidebarProps) => {
 
       {
         cartItem?.length ? (
-          <div className='overflow-scroll no-scrollbar h-[62vh] max-sm:h-[70vh]'>
+          <div className='overflow-scroll no-scrollbar h-[62vh] max-sm:h-[70vh] flex flex-col gap-3 mt-2'>
           {
             cartItem?.map((item, i)=>(
               <CartItemCard item={item} quantityChangeHandler={quantityChangeHandler} key={i}/>
@@ -70,10 +80,10 @@ const Cart = ({setOpenCart, cartItem}: OpenCartSidebarProps) => {
           <p className='text-[14px] font-semibold'>Rs. {totalPrice?.toFixed(2)}</p>
         </div>
         <p className='text-[14px] text-gray-500'>Tax and Shipping calculated at checkout</p>
-        <button disabled={cartItem?.length !== 0} onClick={()=>setOpenCart(false)} className='mt-4 w-full bg-[#333] block py-2 text-white font-semibold text-[14px] rounded-lg'>
-          {cartItem?.length >= 1 ? <Link href={"/checkout"}>PROCESS TO CHAECKOUT</Link> : <Link href={"/products"}>Click To Add Product</Link>}
+        <button onClick={handleCheckout} className='mt-4 w-full bg-[#333] block py-2 text-white font-semibold text-[14px] rounded-lg'>
+          PROCESS TO CHAECKOUT
         </button>
-        <button onClick={()=>setOpenCart(false)} className=' mt-4 w-full block py-2 border border-gray-600 font-semibold text-[14px] rounded-lg'><Link href={"/cart"}>VIEW CART</Link></button>
+        <button onClick={handleCart} className=' mt-4 w-full block py-2 border border-gray-600 font-semibold text-[14px] rounded-lg'>VIEW CART</button>
       </div>
         )
       }

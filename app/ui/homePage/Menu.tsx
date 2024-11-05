@@ -5,9 +5,8 @@ import { AiOutlineInstagram, AiOutlineYoutube } from 'react-icons/ai';
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { RiFacebookBoxLine } from 'react-icons/ri';
 
-type Props = {}
 
-const Menu = (props: Props) => {
+const Menu = () => {
     const [show, setShow] = useState<Number>(1)
     const [homeMenu, setHomeMenu] = useState<boolean>(false)
     const [appleMenu, setAppleMenu] = useState<boolean>(false)

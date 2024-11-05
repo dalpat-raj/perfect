@@ -4,11 +4,14 @@ import { FetchSimilarProducts } from '@/lib/data'
 import { Product } from '@/lib/definations'
 import ProductSlider from '../../SliderProduct/ProductSlider'
 
+interface CollectionProps {
+  collection: string
+}
 
-const SimilarProd = async({collection}: {collection: string | undefined}) => {
+const SimilarProd: React.FC<CollectionProps> = async({collection} ) => {
 
-  const products: Product[] = await FetchSimilarProducts(collection)
-
+  const products = await FetchSimilarProducts(collection)
+  
   return (
     <div className='w-full my-12 max-md:my-4 '>
       <div className='text-center mb-8'>

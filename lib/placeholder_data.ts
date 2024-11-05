@@ -1,7 +1,7 @@
 import { IoHomeOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
 import { TbUsers } from "react-icons/tb";
-import { MdOutlineShoppingCart, MdOutlineLocalOffer } from "react-icons/md";
+import { MdOutlineShoppingCart } from "react-icons/md";
 import { HiOutlineDuplicate } from "react-icons/hi";
 import { CiCalendar, CiImageOn } from "react-icons/ci";
 import { RiCouponLine  } from "react-icons/ri";
@@ -9,31 +9,36 @@ import { IoIosStarHalf   } from "react-icons/io";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { GoGift } from 'react-icons/go'
 import { IoLocationOutline } from 'react-icons/io5'
+import { FaRegStar } from "react-icons/fa";
 
 
 export const userProfileOption = [
   {
     title: "Profile",
     icon: TbUsers,
-    url: "/user/profile"
-  },
-  {
-    title: "Cart",
-    icon: MdOutlineShoppingCart,
-    url: "/cart"
+    url: "/profile"
   },
   {
       title: "My Orders",
       icon: GoGift,
-      url: "/user/orders"
+      url: "/profile/orders"
   },
   
   {
-      title: "Addresss",
+      title: "My Addresss",
       icon: IoLocationOutline,
-      url: "/user/address"
+      url: "/profile/address"
   },
-
+  {
+      title: "My Rating & Review",
+      icon: FaRegStar,
+      url: "/profile/reviews"
+  },
+  {
+      title: "My Coupon",
+      icon: IoLocationOutline,
+      url: "/profile/coupon"
+  },
 ]
 
 export const sideNavData = [

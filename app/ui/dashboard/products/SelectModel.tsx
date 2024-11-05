@@ -1,16 +1,9 @@
 import { SelectModelProps } from '@/lib/definations'
-import clsx from 'clsx'
 import React,{useState} from 'react'
 import Label from '../../label/Label'
 
-interface ParaProps {
-    setFormData: React.Dispatch<React.SetStateAction<any>>
-}
-
 export const SelectModel:React.FC<SelectModelProps>=({ 
-  selectedCollection,
   formData,
-  handleChange,
   setFormData,
 })=>{
 

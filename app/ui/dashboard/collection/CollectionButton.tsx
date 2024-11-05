@@ -21,7 +21,7 @@ const CollectionButton = ({items}: {items:Collction}) => {
     const [imageUploaded, setImageUploaded] = useState(false);
 
 
-    const handleUploadProgress=(p: number)=>{
+    const handleUploadProgress=()=>{
         setUploading(true)
       }
     
@@ -78,7 +78,7 @@ const CollectionButton = ({items}: {items:Collction}) => {
                         <p className=''>wait</p>
                     </div>
                 ) : (
-                    <button className='text-[13px] text-white bg-blackOverlay py-1 px-4 rounded-sm'>Edit</button>
+                    <button className='text-[13px] text-white bg-[#333] py-1 px-4 rounded-sm'>Edit</button>
                 )
             }
 
@@ -89,7 +89,7 @@ const CollectionButton = ({items}: {items:Collction}) => {
                     </div>
                 ) : (
                     <form onSubmit={handleDelete}>
-                        <button className='text-[13px] text-white bg-blackOverlay py-1 px-4 rounded-sm'>Delete</button>
+                        <button className='text-[13px] text-white bg-[#333] py-1 px-4 rounded-sm'>Delete</button>
                     </form>
                 )
             }
@@ -163,7 +163,7 @@ const CollectionButton = ({items}: {items:Collction}) => {
                                             </div>
                                         </div>
                                         <div>
-                                            <button type='submit' className="w-full bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-black transition">{ isLoading ? "wait" : 'Edit'}</button>
+                                            <button type='submit' className="w-full bg-[#333] text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">{ isLoading ? "wait" : 'Edit'}</button>
                                         </div>
                                     </form>
                                 </div>

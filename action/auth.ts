@@ -6,11 +6,9 @@ import { db } from "@/lib/db";
 import { saltAndHashPassword } from "@/lib/helpers";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema, NewPasswordSchema, RegisterSchema, ResetSchema } from "@/schema";
-import { generateVerificationToken } from "@/lib/tokens";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { generatePasswordResetToken } from "@/lib/tokens";
 import { AuthError } from "next-auth";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 
@@ -33,6 +31,7 @@ export const Login= async(
       password,
       redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
+
     return {success: "login success"}
   } catch (error: any) {
     if (error instanceof AuthError) {
@@ -73,8 +72,6 @@ export const Register= async(values:z.infer<typeof RegisterSchema>) => {
     }
   });
 
-  const verificationToken = await generateVerificationToken(email)
-
   return {success: "Register success"}
 };
 
@@ -103,7 +100,7 @@ export const Reset = async (values: z.infer<typeof ResetSchema>) => {
     passwordResetToken.token,
   )
 
-  return { success: "Reset email sent!" }
+  return { success: "Check your email box!" }
 }
 
 export const NewPassword = async (
@@ -153,3 +150,4 @@ export const NewPassword = async (
 
   return { success: "Password Updated!" }
 }
+

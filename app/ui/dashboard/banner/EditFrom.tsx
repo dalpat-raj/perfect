@@ -1,11 +1,12 @@
 import { EditBanner } from "@/action/banner"
-import { IoCamera } from "react-icons/io5"
 import Label from "../../label/Label";
 import { useState } from "react";
 import { UploadDropzone } from "@/lib/uploadthing";
 import Image from "next/image";
 import { RxCross1 } from "react-icons/rx";
 import { BannerData } from "@/lib/definations";
+import { caveat } from "@/app/ui/Fonts";
+import { toast } from "sonner";
 
 type Props = {
     editData: BannerData | any,
@@ -15,10 +16,10 @@ type Props = {
 
 export function EditForm({editData, setEditOpen, setLoading}: Props) {
     
-    const [images, setImagess] = useState<string[] | any>(editData?.images)
+    const [images, setImagess] = useState<string[]>(editData?.images)
     const [uploading, setUploading] = useState(false);
 
-    const handleUploadProgress=(p: number)=>{
+    const handleUploadProgress=()=>{
         setUploading(false)
       }
     
@@ -39,8 +40,11 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
         try {
             const bannerEditAction = EditBanner.bind(null, editData?.id, images);
             const data = await bannerEditAction(formData);
+            if(data?.success) toast.success(data.success)
+            if(data?.error) toast.error(data.error)
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.log(error);
+            toast.error('Error submitting form 😢')
         } finally {
             setLoading(false)
         }
@@ -55,7 +59,7 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
    <div className="w-full h-full flex justify-center items-center">
         <div className="w-2/4 max-sm:w-5/6 bg-white shadow-custom-shadow rounded-md p-6">
         <div className="w-full flex justify-between items-center">
-            <h4 className="text-[16px] font-semibold text-gray-800">Create Banner</h4>
+            <h2 className={`${caveat.className} text-[26px] font-bold text-gray-700`}>Edit Banner</h2>
             <div onClick={()=>setEditOpen(false)} className="cursor-pointer"><RxCross1 size={20}/></div>
         </div>
         <form onSubmit={handleSubmit}>
@@ -81,7 +85,7 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
                         </div>
                         <div className="flex gap-2">
                             {
-                                images?.map((img: any,i: number)=>(
+                                images?.map((img,i)=>(
                                     <div className="w-full h-auto rounded-sm" key={i}>
                                         <Image
                                         src={img || '/e22.jpg'}
@@ -101,8 +105,8 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
                         <UploadDropzone
                             endpoint="imageUploader"
                             onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
-                            onUploadError={(error) => alert("Upload error:")}
-                            onUploadProgress={(p: number)=>handleUploadProgress(p)}
+                            onUploadError={() => alert("Upload error:")}
+                            onUploadProgress={()=>handleUploadProgress()}
                         /> 
                     </div>
                 )
@@ -110,7 +114,7 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
             </div>
       
 
-            <button type="submit" className="w-full rounded-lg bg-gray-500 text-white text-[14px] px-2 py-1">Create banner</button>
+            <button type="submit" className="w-full rounded-lg bg-[#333] text-white text-[14px] px-2 py-1">Create banner</button>
         </form>
         </div>
    </div>

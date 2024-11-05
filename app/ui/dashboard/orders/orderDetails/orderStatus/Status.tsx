@@ -28,7 +28,7 @@ const Status = ({order}: Props) => {
 
 
   return (
-    <div className='flex justify-center items-center max-sm:justify-start'>
+    <div className='w-full'>
         <form onSubmit={handleSubmit}>
             <div className='w-full'>
             <select name="status" className='bg-gray-100 focus:outline-0 py-1 px-4 text-[14px] font-semibold border border-gray-300 w-full rounded-lg mb-2'>

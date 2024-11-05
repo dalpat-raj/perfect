@@ -1,10 +1,6 @@
 import Products from '@/app/ui/product/Products'
-import { CollectionDataSkeletons } from '@/app/ui/skeletons'
-import React, { Suspense, useEffect } from 'react'
 
-type Props = {}
-
-const page = (props: Props) => {
+const page = () => {
 
   
   return (

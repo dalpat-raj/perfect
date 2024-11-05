@@ -68,7 +68,6 @@ const ResetForm = () => {
           
         </div>
         <div className="mt-4">
-            <FormError message={error}/>
             <FormSuccess message={success}/>
             <button
             disabled={isPending}

@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlineDotsVertical } from "react-icons/hi";
@@ -9,31 +9,28 @@ import DropDown from './DropDown';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useCurrentUser } from '@/hooks/use-current-user';
+import { caveat } from '@/app/ui/Fonts';
   
 
-type Props = {}
+const TopNav = () => {
+  const url = usePathname();  
+  const parts = url.split('/');
+  const endpoint = parts[parts.length - 1];
 
-const TopNav = (props: Props) => {
-  const [endpoint, setEndpoint] = useState<string>();
-  const url = usePathname();
-  
-  useEffect(()=>{
-    const parts = url.split('/');
-    const endpoint = parts[parts.length - 1]; // "products"
-    setEndpoint(endpoint)
-  },[url])
+  const user = useCurrentUser();    
   
   return (
     <>
         <div>
-         <h2 className={`text-[26px] max-sm:text-[20px] font-bold text-gray-600 capitalize`}>{endpoint}</h2>
+         <h2 className={`${caveat.className} text-[32px] leading-none max-sm:text-[24px] font-bold text-gray-900 capitalize`}>{endpoint}</h2>
         </div>
             
             <div className={clsx("block",{
                 'hidden': endpoint !== "products"
             })}>
               <Link href="/dashboard/products/createProduct">
-              <div className='flex justify-center items-center gap-2 rounded-lg bg-gray-500 text-white text-[14px] px-2 py-1'>
+              <div className='flex justify-center items-center gap-2 rounded-lg bg-[#333] text-white text-[14px] px-2 py-1'>
                 <FaPlus size={18}/>
                 <p>Add Product</p>
               </div>
@@ -44,7 +41,7 @@ const TopNav = (props: Props) => {
                 'hidden': endpoint !== "events"
             })}>
               <Link href="/dashboard/events/createEvent">
-              <div className='flex justify-center items-center gap-2 rounded-lg bg-gray-500 text-white text-[14px] px-2 py-1'>
+              <div className='flex justify-center items-center gap-2 rounded-lg bg-[#333] text-white text-[14px] px-2 py-1'>
                 <FaPlus size={18}/>
                 <p>Add Event</p>
               </div>
@@ -55,7 +52,7 @@ const TopNav = (props: Props) => {
                 'hidden': endpoint !== "coupon"
             })}>
               <Link href="/dashboard/coupon/createCoupon">
-              <div className='flex justify-center items-center gap-2 rounded-lg bg-gray-500 text-white text-[14px] px-2 py-1'>
+              <div className='flex justify-center items-center gap-2 rounded-lg bg-[#333] text-white text-[14px] px-2 py-1'>
                 <FaPlus size={18}/>
                 <p>Add Coupon</p>
               </div>
@@ -66,7 +63,7 @@ const TopNav = (props: Props) => {
                 'hidden': endpoint !== "collection"
             })}>
               <Link href="/dashboard/collection/createCollection">
-              <div className='flex justify-center items-center gap-2 rounded-lg bg-gray-500 text-white text-[14px] px-2 py-1'>
+              <div className='flex justify-center items-center gap-2 rounded-lg bg-[#333] text-white text-[14px] px-2 py-1'>
                 <FaPlus size={18}/>
                 <p>Add Collection</p>
               </div>
@@ -86,14 +83,14 @@ const TopNav = (props: Props) => {
           <div className='flex justify-end items-center gap-4 text-gray-500 max-sm:gap-2'>
             <div><HiOutlineDotsVertical size={20}/></div>
             <div><IoIosNotificationsOutline size={20}/></div>
-            <div className='relative overflow-hidden w-[33px] h-[33px]'>
+            <div className='relative rounded-full overflow-hidden w-[33px] h-[33px]'>
                 <Image
-                src={"/e2.jpg"}
-                alt='Admin Logo'
-                width={0}
-                height={0}
-                sizes='100vw'
-                style={{width: "100%", height: "100%", borderRadius: "50%"}}
+                 src={user?.image || "/e22.jpg"}
+                 alt=''
+                 width={0}
+                 height={0}
+                 sizes='100vw'
+                 style={{width: '100%', height: '100%', objectFit: 'cover'}}
                 />
                 <DropDown />
             </div>

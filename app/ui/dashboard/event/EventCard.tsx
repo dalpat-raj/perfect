@@ -1,10 +1,12 @@
 import { AllEventData } from '@/lib/definations'
-import { formatDate } from '@/lib/formDatePage';
+import { formatDate } from '@/lib/helpers'
 import React from 'react'
 
-type Props = {}
+type EventProps = {
+    AllEvents: AllEventData
+}
 
-const EventCard = ({AllEvents}: {AllEvents: AllEventData }) => {
+const EventCard: React.FC<EventProps> = ({AllEvents}) => {
     
   return (
     <div className='border border-gray-200 mb-4 p-2 rounded-md'>

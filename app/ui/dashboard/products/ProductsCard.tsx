@@ -1,38 +1,36 @@
 'use client'
 import { deleteProduct } from '@/action/product'
 import { Product } from '@/lib/definations'
-import { formatDate } from '@/lib/formDatePage'
 import Image from 'next/image'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { CiEdit } from 'react-icons/ci'
-import LoaderBall from '../../loader/BallLoader'
+import React, { useTransition } from 'react'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { formatDate } from '@/lib/helpers'
 
 type Props = {
-    product: Product
+    product: Product,
 }
 
 const ProductsCard = ({product}: Props) => {
-    const [loading, setLoading] = useState<boolean>(false)
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
     const img1 = product.images[0]
     const img2 = product.images[1]
     const img3 = product.images[2]
 
-    const handleDelete = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); 
-        setLoading(true)
-        const formData = new FormData(event.currentTarget); 
-        try {
-          await deleteProduct(formData);     
-        } catch (error) {
-          console.error('Something went wrong', error);
-        } finally {
-          setLoading(false)
-        }
-    }
-
-    if(loading){
-        return <LoaderBall/>
+    const handleDelete = async (id:number) => {
+        startTransition(()=>{
+            deleteProduct(id)
+            .then((res)=>{
+                if(res.success) toast.success(res.success)
+                if(res.error) toast.success(res.error)
+            }).catch(()=>{
+                toast.error('Error submitting form 😢')
+            }).finally(()=>{
+                router.push("/dashboard/products")
+            })
+        })
+        
     }
 
   return (
@@ -86,16 +84,12 @@ const ProductsCard = ({product}: Props) => {
         <div className='text-[14px] font-semibold col-span-1 text-gray-600 max-sm:hidden'>#{product.collection}</div>
         <div className='text-[14px] font-semibold col-span-1 text-gray-600'>{product.modelNumber}</div>
         <div className='text-[14px] font-semibold col-span-1 text-gray-600'>{formatDate(new Date(product.createdAt))}</div>
-        <div className='text-[14px] col-span-1 text-gray-600 max-sm:hidden flex items-center gap-2'>
-            <button className='text-[13px] text-white bg-blackOverlay py-1 px-2 rounded-sm'>
-            <Link href={`/dashboard/products/edit/${product?.id}`}>
-                <CiEdit size={20} />
-            </Link>
-            </button>
-            <form onSubmit={handleDelete}>
-             <input type="text" name='id'  defaultValue={product.id} className='hidden'/>
-             <button type='submit' className='text-[13px] text-white bg-blackOverlay py-1 px-2 rounded-sm'>Delete</button>
-            </form>
+        <div className='text-[14px] col-span-1 text-gray-600 max-sm:hidden '>
+             <button 
+             disabled={isPending}
+             type='submit' 
+             onClick={()=>handleDelete(product?.id)} 
+             className='text-[13px] text-white bg-[#333] py-1 px-2 rounded-sm'>{isPending ? "wait" : "Delete"}</button>
         </div>
     </div>
   )
