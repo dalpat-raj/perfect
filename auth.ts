@@ -5,7 +5,7 @@ import { db } from "./lib/db";
 import Credentials from "next-auth/providers/credentials"
 import { getUserByEmail, getUserById } from "./lib/data";
 import { LoginSchema } from "@/schema"
-import bcrypt from 'bcryptjs'
+// import bcrypt from 'bcryptjs'
 
 export const {
   handlers: {GET, POST},
@@ -81,14 +81,15 @@ export const {
           const user = await getUserByEmail(email)
           if(!user || !user.password) return null;
 
-          const passwordsMatch = bcrypt.compare(password, user.password)
+          // const passwordsMatch = bcrypt.compare(password, user.password)
+          const passwordsMatch = password === user.password
           
           if(passwordsMatch) return user;
         }
         return null;
       }
     })
-  ],  
+  ],
 })
 
 

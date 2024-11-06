@@ -3,7 +3,7 @@
 import { signIn, signOut } from "@/auth";
 import { getPasswordResetTokenByToken, getUserByEmail } from "@/lib/data";
 import { db } from "@/lib/db";
-import { saltAndHashPassword } from "@/lib/helpers";
+// import { saltAndHashPassword } from "@/lib/helpers";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema, NewPasswordSchema, RegisterSchema, ResetSchema } from "@/schema";
 import { sendPasswordResetEmail } from "@/lib/mail";
@@ -55,7 +55,8 @@ export const Register= async(values:z.infer<typeof RegisterSchema>) => {
   }
 
   const {name, email, password } = validatedFields.data;
-  const hasedPassword = saltAndHashPassword(password)
+  // const hasedPassword = saltAndHashPassword(password)
+  const hasedPassword = password
 
   
   const existingUser = await getUserByEmail(email);
@@ -137,7 +138,8 @@ export const NewPassword = async (
     return { error: "Email does not exists!" }
   }
 
-  const hashPassword = saltAndHashPassword(password);
+  const hashPassword = password;
+  // const hashPassword = saltAndHashPassword(password);
 
   await db.user.update({
     where: { id: existingUser.id },
