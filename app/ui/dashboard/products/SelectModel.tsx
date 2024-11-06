@@ -1,6 +1,14 @@
-import { SelectModelProps } from '@/lib/definations'
 import React,{useState} from 'react'
 import Label from '../../label/Label'
+import { FormData } from '@/lib/definations';
+
+
+interface SelectModelProps {
+  formData: {
+    model: string[];
+  };
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;  // typing for state setter
+}
 
 export const SelectModel:React.FC<SelectModelProps>=({ 
   formData,
@@ -9,9 +17,6 @@ export const SelectModel:React.FC<SelectModelProps>=({
 
   const [addModel, setAddModel] = useState<string>()
 
-  interface FormData {
-    model: string[];
-}
   const handleAddModel:React.MouseEventHandler<HTMLButtonElement>=(e)=>{
     e.preventDefault()
     if(!addModel){
@@ -19,7 +24,7 @@ export const SelectModel:React.FC<SelectModelProps>=({
     }
     setFormData((prevFormData: FormData) => ({
       ...prevFormData,
-      model: [...prevFormData.model, addModel] // Correctly updating the model array
+      model: [...prevFormData.model, addModel] 
     }));
     setAddModel("")
   }

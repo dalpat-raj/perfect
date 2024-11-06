@@ -2,7 +2,6 @@ import { CartItem } from '@/lib/definations';
 import Image from 'next/image';
 import React from 'react'
 
-type Props = {}
 
 const ItemCard = ({item}: {item: CartItem}) => {
 

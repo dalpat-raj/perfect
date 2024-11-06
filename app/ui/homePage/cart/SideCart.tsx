@@ -5,7 +5,6 @@ import CartItemCard from './CartItemCard';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { addToCart } from '@/lib/store/features/cart/cartSlice';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 interface OpenCartSidebarProps {

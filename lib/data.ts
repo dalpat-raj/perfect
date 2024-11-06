@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { db } from "./db";
+import { db } from "@/lib/db";
 import { Collections, FormData, Product} from "./definations";
 import { subMonths, format } from 'date-fns';
 
@@ -85,6 +85,17 @@ export const currentRole = async () => {
   return session?.user?.role;
 }
 
+export async function getProducts () {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  const products = await db.product.findMany({
+    include: {
+      review: true,
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+  })
+  return products
+}
 
 export async function getProductDetails(title: string){
   const originalTitle = title.replace(/-/g, ' ');

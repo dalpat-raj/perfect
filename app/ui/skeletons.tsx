@@ -9,16 +9,10 @@ const shimmer =
         <div className='text-center mb-4 max-sm:mb-2'>
             <h2 className='text-[1.5rem] font-semibold'>Tranding Items</h2>
         </div>
-        <div className='w-full flex items-center justify-center gap-12 max-sm:gap-4 m-auto mb-4'>
-          <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>
-          <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>
-          <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>
-          <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>
-          <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>
-          <p className="bg-gray-200 h-6 w-20 rounded-lg"></p>
-        </div>
         
-        <div className='mt-6 grid grid-cols-4 gap-4 grid-rows-2 max-md:grid-cols-3 max-sm:grid-cols-2'>
+        <div className='mt-6 grid grid-cols-5 gap-4 grid-rows-2 max-md:grid-cols-3 max-sm:grid-cols-2'>
+          <ProductSCardSkeletons/>
+          <ProductSCardSkeletons/>
           <ProductSCardSkeletons/>
           <ProductSCardSkeletons/>
           <ProductSCardSkeletons/>

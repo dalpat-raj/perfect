@@ -10,7 +10,7 @@ const page = async() => {
   return (
     <div className='w-full px-12 pr-0 max-md:px-4 max-sm:px-2'>
         <Suspense fallback={<LoaderBall/>}>
-        <Checkout user={user}/>
+          <Checkout user={user}/>
         </Suspense>
     </div>
   )

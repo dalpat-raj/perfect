@@ -7,7 +7,6 @@ import Input from "../../input/Input";
 import Label from "../../label/Label";
 import axios from "axios"
 import { useRouter } from 'next/navigation'
-import type { FormData } from "@/lib/definations";
 import { UploadButton } from "@/lib/uploadthing";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -44,7 +43,7 @@ const CreateProductForm = () => {
   const [imagesShow, setImagesShow] = useState<string[]>([])
   const [createProduct, setCreateProduct] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [formData,setFormData] = useState<FormData>({
+  const [formData,setFormData] = useState({
     title:'',
     description:'',
     modelNumber:'',

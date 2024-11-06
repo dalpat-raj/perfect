@@ -4,10 +4,10 @@ import clsx from 'clsx'
 import React from 'react'
 
 type Props = {
-  order: UserOrders | null
+  order: UserOrders;
 }
 
-const Summary = ({order}: Props) => {
+const Summary: React.FC<Props> = ({order}) => {
 
   return (
     <div>

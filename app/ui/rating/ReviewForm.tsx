@@ -15,7 +15,6 @@ import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner';
 import { CiImageOn } from "react-icons/ci";
 import { z } from 'zod';
 import { UploadButton } from '@/lib/uploadthing';
-// import "@uploadthing/react/styles.css";
 
 type ProductDetailsProps = {
   setReviewBox: React.Dispatch<React.SetStateAction<boolean>>,

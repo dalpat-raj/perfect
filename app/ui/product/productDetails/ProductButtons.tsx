@@ -71,7 +71,7 @@ const ProductButtons: React.FC<Props> = ({productDetail}) => {
         <div onClick={()=>AddToCartHandler(productDetail)} className='w-full h-10 flex items-center justify-center gap-4'>
         <ButtonWithSpinner loading={loading} >
         <CiShoppingCart size={30}/>
-            <p className='text-[18px]'>Add To Cart - RS. {productDetail?.sellingPrice.toFixed(2)}</p>
+            <p className='text-[18px] font-semibold'>Add To Cart - RS. {productDetail?.sellingPrice.toFixed(2)}</p>
         </ButtonWithSpinner>
         </div>
 

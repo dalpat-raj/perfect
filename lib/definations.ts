@@ -5,7 +5,7 @@ export interface User {
     emailVerified: Date | null,
     password: string | null;
     image: string | null;
-    role: ["ADMIN" | "USER"];
+    role: string;
     addressId: number | null;
     createdAt: Date,
     updatedAt: Date,
@@ -72,17 +72,17 @@ export interface SessionUser {
   email: string;
   image?: string | null | undefined;
   id?: string | undefined;
-  role: 'USER' | 'ADMIN'; // Adjust roles based on your needs
+  role: 'USER' | 'ADMIN'; 
 }
 
 export type UserReviews = {
-  id: string; // Will be created on the database
+  id: string; 
   name: string | null;
-  email: string; // Stored in cents
+  email: string; 
   emailVerified: Date | null,
   password: string | null;
   image: string | null;
-  role: ["ADMIN" | "USER"];
+  role: string;
   addressId: number | null;
   createdAt: Date,
   updatedAt: Date,
@@ -104,7 +104,7 @@ export type CustomerWithOrderCount = {
   email: string;
   password: string | null;
   image: string | null;
-  role: ["ADMIN" | "USER"];
+  role: string;
   createdAt: Date;
   addressId: number | null;
   _count: string[] | any; // Adding the order count
@@ -113,8 +113,8 @@ export type CustomerWithOrderCount = {
 
 export interface InputProps {
   type?: React.InputHTMLAttributes<HTMLInputElement>['type'];  // Standard input types
-  placeholder?: string;  // Placeholder text is optional
-  name?: string;  // Name attribute is optional
+  placeholder?: string; 
+  name?: string;  
   id?: React.InputHTMLAttributes<HTMLInputElement>['id'];
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -183,13 +183,6 @@ export interface CustomFormData {
   model: string[];
   feature: string[];
   images: File[]; 
-}
-
-export interface SelectModelProps {
-  formData: {
-    model: string[];
-  };
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>;  // typing for state setter
 }
 
 export interface AddFeaturelProps {
@@ -267,7 +260,7 @@ export interface UserOrders {
   discountPrice: number | null,
   status: string,
   paymentInfoId: number | null,
-  userId: number | null,
+  userId: string | null,
   createdAt: Date,
   deliverAt: Date,
   statusHistory: Array<{

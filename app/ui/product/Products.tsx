@@ -5,7 +5,6 @@ import ProductCard from './ProductCard';
 import { Product } from '@/lib/definations';
 import { ProductFilterSkeletons } from '../skeletons';
 
-type Props = {}
 
 const Products = ({ titles }: { titles: string }) => {
   const [openFilter, setOpenFilter] = useState(false);

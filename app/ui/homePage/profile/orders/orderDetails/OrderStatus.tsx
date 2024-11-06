@@ -7,11 +7,7 @@ type StatusHistory = {
   changedAt: Date;
 };
 
-const OrderStatus = ({
-  statusHistory,
-}: {
-  statusHistory: StatusHistory[] | [];
-}) => {
+const OrderStatus: React.FC<StatusHistory[] | any> = ({statusHistory}) => {
   const steps = [
     { name: "Order Confirmed", date: "Thu, 18th Jul" },
     { name: "pickup", date: "Sun, 21st Jul" },
@@ -19,7 +15,7 @@ const OrderStatus = ({
     { name: "delivered", date: "Sun, 21st Jul" },
   ];
 
-  const completedStatuses = statusHistory.map((history) => history.status);
+  const completedStatuses = statusHistory.map(history => history.status);
 
   return (
     <div className="flex justify-between items-center max-sm:flex-col">
