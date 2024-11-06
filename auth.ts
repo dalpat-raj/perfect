@@ -5,8 +5,7 @@ import { db } from "./lib/db";
 import Credentials from "next-auth/providers/credentials"
 import { getUserByEmail, getUserById } from "./lib/data";
 import { LoginSchema } from "@/schema"
-import bcrypt from "bcryptjs"
-
+import bcrypt from 'bcryptjs'
 
 export const {
   handlers: {GET, POST},
@@ -62,7 +61,7 @@ export const {
       token.role = existingUser.role;
       return token;
       
-    }
+    },
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
@@ -82,15 +81,14 @@ export const {
           const user = await getUserByEmail(email)
           if(!user || !user.password) return null;
 
-          const passwordsMatch = await bcrypt.compare(password, user.password);
+          const passwordsMatch = bcrypt.compare(password, user.password)
           
           if(passwordsMatch) return user;
         }
         return null;
       }
     })
-  ],
-  
+  ],  
 })
 
 
