@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import CheckoutItems from './checkoutItems/CheckoutItems';
 import CheckoutForm from './checkoutForm/CheckoutForm';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';

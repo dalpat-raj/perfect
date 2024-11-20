@@ -3,40 +3,35 @@ import { currentRole } from "@/lib/data";
 import { UserRole } from "@prisma/client";
 import { db } from "@/lib/db";
 import { revalidatePath } from 'next/cache';
-
-
 import { z } from 'zod';
 import { reviewSchema } from "@/schema";
- 
-const FormSchema = z.object({
-    id: z.number().optional(), 
-    name: z.string(),
-    email: z.string().email(),
-    message: z.string(),
-    rating: z.coerce.number(), 
-    image: z.any(),
-    date: z.string().optional(),
-  });
- 
-const CreateReview = FormSchema.omit({ id: true,rating: true, date: true });
+  
 
 export async function reviewAdd(values: z.infer<typeof reviewSchema>, id: number, rating: number, imagesShow: string[] ) {
     const validatedFields = reviewSchema.safeParse(values);
-    if(!validatedFields.success){
+    if (!validatedFields.success || !validatedFields.data) {
       return { error: "Invalid fields!" };
     }
     
-    const { name, email, message} = validatedFields.data;       
+    const { name, email, message} = validatedFields.data;    
+    if (!Array.isArray(imagesShow)) {
+      return { error: "Invalid image data!" };
+    }
 
-    try {    
+    try {   
+      const averageRating = await calculateAverageRating(id, rating);
+      if (isNaN(averageRating)) {
+          return { error: "Invalid rating calculation!" };
+      } 
+
         const [newReview, updatedProduct] = await db.$transaction([
           db.review.create({
             data: {
               name: name,
               email: email,
               message: message,
-              productId: Number(id),
-              rating: Number(rating),
+              productId: id,
+              rating: rating,
               images: imagesShow,
             },
           }),
@@ -45,7 +40,7 @@ export async function reviewAdd(values: z.infer<typeof reviewSchema>, id: number
             where: { id: id },
             data: {
               rating: {
-                set: await calculateAverageRating(id, rating),
+                set: averageRating,
               },
             },
           }),
@@ -54,31 +49,34 @@ export async function reviewAdd(values: z.infer<typeof reviewSchema>, id: number
         if(!newReview){
           return {error: "Opps... Please Retry ❌"}
         }
-
+        
         revalidatePath(`/products/${id}`);
         return {success: "Review Added ✅"};       
     } catch (error) {
-        if (error instanceof z.ZodError) {
+      console.log(error);
+      
+        // if (error instanceof z.ZodError) {
           return {error: "Something went wrong ❌"}
-          } else {
-            return {error: "Something went wrong ❌"}
-          }
-        }
+        //   } else {
+        //     return {error: "Something went wrong ❌"}
+        //   }
+    }
 }
 
 
-async function calculateAverageRating(productId: number | undefined, newRating: number): Promise<number> {
+async function calculateAverageRating(productId: number, newRating: number): Promise<number> {
+  
   const reviews = await db.review.findMany({
     where: { productId },
     select: { rating: true },
   });
 
-  if (reviews.length === 0) {
+  if (reviews?.length === 0) {
     return newRating;  
   }
 
-  const totalReviews = reviews.length + 1; 
-  const sumOfRatings = reviews.reduce((sum, review) => sum + review.rating, 0) + newRating;  
+  const totalReviews = reviews?.length + 1; 
+  const sumOfRatings = reviews?.reduce((sum, review) => sum + review.rating, 0) + newRating;  
   return sumOfRatings / totalReviews;
 }
 

@@ -1,6 +1,4 @@
 import { currentUser, getMyOrders } from '@/lib/data';
-import { UserOrders } from '@/lib/definations';
-import React from 'react'
 import OrderCard from './OrderCard';
 
 
@@ -8,7 +6,7 @@ import OrderCard from './OrderCard';
 const Orders = async() => {
     const user = await currentUser()
     
-    const orders: UserOrders[] = await getMyOrders(user?.id as string);
+    const orders = await getMyOrders(user?.id as string);
     
   return (
     <div>

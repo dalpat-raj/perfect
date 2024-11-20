@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useTransition } from 'react';
+import React, { useEffect, useRef, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PhoneSchema } from '@/schema';
@@ -19,6 +19,8 @@ interface UserData {
 const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+
     const { 
       register, 
       handleSubmit, 
@@ -44,6 +46,13 @@ const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
         })
       });
     }
+
+    useEffect(() => {
+      if (open && phoneInputRef.current) {
+        phoneInputRef.current.focus(); // Focus the input element
+      }
+    }, [open]);
+
   return (
     <div className='w-2/5 max-lg:w-full'>
         <div className='mb-4 flex items-center gap-6'>
@@ -62,7 +71,8 @@ const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
                           type="number"
                           name='phone'
                           placeholder='+91 00000 00000'
-                          className='w-full py-2 px-4 border border-gray-200 bg-white rounded-sm outline-none focus:border-gray-400 text-sm text-gray-500'
+                          className='w-full py-2 px-4 border border-gray-200 bg-white rounded-sm outline-none focus:border-gray-500 text-sm text-gray-500'
+                          ref={phoneInputRef}
                       />
                       ) : (
                         <input

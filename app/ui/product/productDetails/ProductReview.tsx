@@ -1,19 +1,17 @@
 "use client"
-import React, { useState } from 'react'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
+import { ImageSkeleton } from '@/app/ui/skeletons'
 import Rating from '@/app/ui/rating/Rating'
-import ReviewForm from '@/app/ui/rating/ReviewForm'
+const ReviewForm = dynamic(()=> import('@/app/ui/rating/ReviewForm'), {ssr: false}) 
 import { Product, SessionUser } from '@/lib/definations'
 import { formatDate } from '@/lib/helpers'
 import Image from 'next/image'
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-import ProdReviewImage from './ProdReviewImg'
   
 
 interface ProductDetailsProps {
@@ -23,6 +21,7 @@ interface ProductDetailsProps {
 
 const ProductReview: React.FC<ProductDetailsProps> = ({user, product}) => {
     const [reviewBox, setReviewBox] = useState<boolean>(false);
+    const [imageLoading, setImageLoading] = useState(true);
 
 if(reviewBox){
     return (
@@ -76,14 +75,18 @@ if(reviewBox){
                                 <div key={i} >
                                 <Dialog>
                                 <DialogTrigger>
+                                    <div className='w-[70px] h-[70px]'>
+                                    { imageLoading && <ImageSkeleton />}
                                     <Image
                                     src={item}
                                     alt={i+item}
                                     width={0}
                                     height={0}
                                     sizes='100vw'
-                                    style={{width: "70px", height: "70px", objectFit: "cover"}}
+                                    style={{width: "100%", height: "100%", objectFit: "cover"}}
+                                    onLoad={()=>setImageLoading(false)}
                                     />
+                                    </div>
                                 </DialogTrigger>
                                 <DialogContent>
                                     <div className='h-[70vh]'>

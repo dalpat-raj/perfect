@@ -1,25 +1,33 @@
-import React from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import React from 'react';
+import { Product } from '@/lib/definations';
 
-type Props = {}
+interface SearchProps {
+  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+}
 
-const Search = (props: Props) => {
+const Search: React.FC<SearchProps> = ({setIsFetching, setProducts}) => {
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleSearch = useDebouncedCallback((term) => {
+  const handleSearch = useDebouncedCallback((term: string) => {
+    
+    setProducts([])
+    setIsFetching(true)
     const params = new URLSearchParams(searchParams);
+    
     if (term) {
       params.set('query', term);
     } else {
       params.delete('query');
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  },150);
 
 
   return (
@@ -27,7 +35,7 @@ const Search = (props: Props) => {
       <input 
       type="text"
       placeholder='Search here' 
-      className='w-[92vw] max-md:w-[90vw] max-lg:w-[86vw] text-sm border border-gray-300 outline-0 rounded-xl pl-2 py-[8px]'
+      className='z-50 w-full text-sm border border-gray-300 outline-0 rounded-xl pl-2 py-[8px] bg-gray-100'
       onChange={(e) => {
         handleSearch(e.target.value);
       }}

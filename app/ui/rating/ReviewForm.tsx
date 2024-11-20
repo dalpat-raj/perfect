@@ -15,10 +15,11 @@ import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner';
 import { CiImageOn } from "react-icons/ci";
 import { z } from 'zod';
 import { UploadButton } from '@/lib/uploadthing';
+import { ImageSkeleton } from '../skeletons'
 
 type ProductDetailsProps = {
   setReviewBox: React.Dispatch<React.SetStateAction<boolean>>,
-  user: SessionUser | undefined,
+  user: SessionUser | null,
   product: Product,
 }
 
@@ -28,6 +29,8 @@ const ReviewForm: React.FC<ProductDetailsProps> = ({setReviewBox, user, product}
   const [rating, setRating] = useState<number>(0)
   const [imagesShow, setImagesShow] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
+  const [imageLoading, setImageLoading] = useState(true);
+  const [imageLoading1, setImageLoading1] = useState(true);
   const { 
     register, 
     handleSubmit, 
@@ -35,7 +38,7 @@ const ReviewForm: React.FC<ProductDetailsProps> = ({setReviewBox, user, product}
   } = useForm<Review>({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
-      name: user?.name ? user.name : "",
+      name: user?.name ? user?.name : "",
       email: user?.email,
     }
   })
@@ -54,12 +57,12 @@ const ReviewForm: React.FC<ProductDetailsProps> = ({setReviewBox, user, product}
       return
     }
     startTransition(() => {
-      reviewAdd(data, product.id, rating, imagesShow)
+      reviewAdd(data, product?.id, rating, imagesShow)
       .then((res)=>{
         setReviewBox(false)
         if (res?.success) toast.success(res.success)
         if(res?.error) toast.error(res.error)
-      }).catch(()=>{
+      }).catch((error)=>{
         setReviewBox(false)
         toast.error('Error something wrong 😢');
       })
@@ -76,15 +79,17 @@ const ReviewForm: React.FC<ProductDetailsProps> = ({setReviewBox, user, product}
 
       <div className='border-2 border-gray-200 p-2 mt-2'>
               <div className='flex justify-start items-center gap-4'>
-                <div>
-                      <Image
-                      src={product?.images[0] ? product?.images[0] : "/e22.........png"}
-                      alt='al'
-                      width={0}
-                      height={0}
-                      sizes='100vw'
-                      style={{width: '50px', height: '50px', objectFit: 'cover'}}
-                      />
+                <div className='w-[50px] h-[50px]'>
+                  { imageLoading1 && <ImageSkeleton/>}
+                  <Image
+                  src={product?.images[0] ? product?.images[0] : "/e22.png"}
+                  alt='al'
+                  width={0}
+                  height={0}
+                  sizes='100vw'
+                  style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                  onLoad={()=>setImageLoading1(false)}
+                  />
                 </div>
                 <div>
                   <p className='text-[14px] font-bold'>{product?.title}</p>
@@ -178,15 +183,18 @@ const ReviewForm: React.FC<ProductDetailsProps> = ({setReviewBox, user, product}
                   <div className="flex justify-start gap-2 items-center my-2 mb-4 overflow-x-scroll no-scrollbar">
                   {
                     imagesShow?.map((item,i)=>(
+                      <div className='w-[50px] h-[50px]' key={i}>
+                      { imageLoading && <ImageSkeleton/> }
                       <Image
                       src={item || '/e22.jpg'}
                       alt={`Image ${i + 1}`}
-                      key={i}
                       width={0}
                       height={0}
                       sizes="100vw"
-                      style={{width:"50px", height:"50px", objectFit: "cover"}}
+                      style={{width:"100%", height:"100%", objectFit: "cover"}}
+                      onLoad={()=>setImageLoading(false)}
                       />
+                      </div>
                     ))
                   }
                 </div>

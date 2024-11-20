@@ -1,6 +1,7 @@
-import OrderDetails from '@/app/ui/homePage/profile/orders/orderDetails/OrderDetails'
-import React from 'react'
+import dynamic from "next/dynamic"
+import LoaderBall from "@/app/ui/loader/BallLoader"
 
+const OrderDetails = dynamic(()=> import('@/app/ui/homePage/profile/orders/orderDetails/OrderDetails'), {loading:()=><LoaderBall/>}) 
 
 const page = ({params} : {params : {id: number}}) => {
     const id = params.id

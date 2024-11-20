@@ -1,8 +1,7 @@
-
-import Addresses from '@/app/ui/homePage/profile/address/Address'
+import dynamic from 'next/dynamic';
+const Addresses = dynamic(()=> import('@/app/ui/homePage/profile/address/Address'), {loading:()=><LoaderBall/>})
 import { getCurrentUser } from '@/lib/data'
-import React from 'react'
-
+import LoaderBall from '@/app/ui/loader/BallLoader';
 
 const page = async() => {
   const user = await getCurrentUser();

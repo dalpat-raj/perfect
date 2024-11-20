@@ -219,12 +219,10 @@ export async function getProductByCollection(titles: string) {
     where: {
       collection: titles, // Filter by collection
     },
-    select: {
-      id: true,
-      title: true,
-      images: true,
+    include:{
+      review: true,
     },
-    take: 4,
+    take: 10,
   });
   return products;
 }
@@ -278,6 +276,7 @@ export async function getCustomers() {
 }
 
 export async function getMyOrders(id: string){
+  await new Promise((resolve) => setTimeout(resolve, 100));
   try {
     const orders = await db.order.findMany({
       orderBy: {
@@ -301,6 +300,7 @@ export async function getMyOrders(id: string){
 }
 
 export async function getOrderDetails(id: number) {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   try {
     const order = await db.order.findUnique({
       where: {

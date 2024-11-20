@@ -1,16 +1,16 @@
-import React from 'react'
+
 import {  getUniqueCollections } from '@/lib/data'
-import { caveat } from '../Fonts'
-import CollectionCarousel from './CollectionCarousel'
+import { caveat } from '@/app/ui/Fonts'
+import CollectionCarousel from '@/app/ui/collections/CollectionCarousel'
 
 
 const Collections = async () => {
   const collections = await getUniqueCollections();
   
   return (
-    <div className='w-full'>
+    <div className='w-full my-8 max-md:my-8 max-sd:my-4 px-12 max-md:px-4 max-sm:px-2'>
         <div className='text-center mb-8'>
-            <h2 className={`${caveat.className} text-[37px] font-bold`}>Our Collections</h2>
+            <h2 className={`${caveat.className} text-[37px] max-sm:text-[24px] font-bold`}>Our Collections</h2>
         </div>
         <div className='w-full'>
             <CollectionCarousel collections={collections} />

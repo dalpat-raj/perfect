@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useTransition } from 'react'
+import React, { useState, useTransition, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EmailSchema } from '@/schema';
@@ -18,7 +18,9 @@ interface UserEmailData {
 
 const EmailForm: React.FC<UserEmailData> = ({userId, userEmail}) => {
     const [isPending, startTransition] = useTransition();
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const emailInputRef = useRef<HTMLInputElement>(null);
+
     const { 
       register, 
       handleSubmit, 
@@ -44,6 +46,13 @@ const EmailForm: React.FC<UserEmailData> = ({userId, userEmail}) => {
         })
       });
     }
+
+    useEffect(() => {
+      if (open && emailInputRef.current) {
+        emailInputRef.current.focus(); // Focus the input element
+      }
+    }, [open]);
+
   return (
     <div className='w-2/5 max-lg:w-full'>
         <div className='mb-4 flex items-center gap-6'>
@@ -62,7 +71,8 @@ const EmailForm: React.FC<UserEmailData> = ({userId, userEmail}) => {
                             type="email"
                             name='email'
                             placeholder='Example@gmail.com'
-                            className='w-full py-2 px-4 border border-gray-200 bg-white rounded-sm outline-none focus:border-gray-400 text-sm text-gray-500'
+                            className='w-full py-2 px-4 border border-gray-200 bg-white rounded-sm outline-none focus:border-gray-500 text-sm text-gray-500'
+                            ref={emailInputRef}
                         />
                     ) : (
                         <input

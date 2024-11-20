@@ -2,7 +2,6 @@ const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
 
 
-
   export function TradingCoverSkeletons(){
     return (
       <div className='w-full my-8 max-md:my-4 px-12 max-md:px-4 max-sm:px-2'>
@@ -29,6 +28,34 @@ const shimmer =
 
     </div>
     )
+  }
+
+  export function ProductSliderSkeleton() {
+    return (
+        <div className={` relative overflow-hidden rounded-x p-2 shadow-sm w-full py-12 max-sm:py-6 px-12 max-md:px-4 max-sm:px-2`}>
+          <div className='flex justify-between items-center mb-8  max-sm:mb-6'>
+              <h2 className={`${shimmer} h-8 w-36 bg-gray-100`}></h2>
+              <button className={`${shimmer} h-8 w-24 bg-gray-100`}></button>
+          </div>
+          <div className='grid grid-cols-4 gap-4 max-md:grid-cols-4 max-sm:grid-cols-2'>
+          <div className=""><ProductSCardSkeletons/></div>          
+          <div className=""><ProductSCardSkeletons/></div>          
+          <div className="max-sm:hidden"><ProductSCardSkeletons/></div>          
+          <div className="max-sm:hidden"><ProductSCardSkeletons/></div>          
+        </div>
+      </div>
+    )
+  }
+
+  export function SearchProductSkeleton() {
+   return (
+    <div className={`${shimmer} relative overflow-hidden`}>
+    <div className={`flex items-center gap-4 mb-2`}>
+      <div className='w-[70px] h-[80px] bg-gray-100 rounded-lg'></div>
+      <p className="w-36 h-6 bg-gray-100 rounded-lg"></p>
+    </div>
+    </div>
+   )
   }
 
   export function CardSkeleton() {
@@ -95,7 +122,7 @@ const shimmer =
   export function ProductSCardSkeletons(){
     return(
       <div className={`${shimmer} relative bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
-    <div className='h-[40vh] max-sm:h-[30vh] w-full bg-gray-100'>
+    <div className='h-[50vh] max-sm:h-[35vh] w-full bg-gray-100'>
           <div className='absolute top-0 right-0 uppercase bg-gray-200 px-2 py-1'>
               <p className='text-white text-[13px] font-semibold tracking-tightest h-5 w-16'></p>
           </div>
@@ -227,35 +254,35 @@ const shimmer =
   }
 
 
-  export function ProductCardImageSkeleton(){
-    return (
-      <div className={`${shimmer} relative w-full bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
-      <div className='h-[40vh] max-sm:h-[30vh] bg-gray-100'>
-            <div className='absolute top-0 right-0 uppercase bg-gray-200 px-2 py-1'>
-                <p className='text-white text-[13px] font-semibold tracking-tightest h-5 w-16'></p>
-            </div>
-        </div>
-      </div>
-    )
-  }
+  // export function ProductCardImageSkeleton(){
+  //   return (
+  //     <div className={`${shimmer} relative w-full bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
+  //     <div className='h-[50vh] max-sm:h-[35vh] bg-gray-100'>
+  //           <div className='absolute top-0 right-0 uppercase bg-gray-200 px-2 py-1'>
+  //               <p className='text-white text-[13px] font-semibold tracking-tightest h-5 w-16'></p>
+  //           </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
-  export function ProductDetailsImageSkeleton(){
-    return (
-      <div className={`${shimmer} relative bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
-      <div className='w-full h-[50vh] bg-gray-200'>
-        </div>
-      </div>
-    )
-  }
+  // export function ProductDetailsImageSkeleton(){
+  //   return (
+  //     <div className={`${shimmer} relative bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
+  //     <div className='w-full h-[50vh] bg-gray-200'>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
-  export function ProductDetailsMiniImageSkeleton(){
-    return (
-      <div className={`${shimmer} relative bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
-      <div className='w-[70px] h-[100px] bg-gray-200'>
-        </div>
-      </div>
-    )
-  }
+  // export function ProductDetailsMiniImageSkeleton(){
+  //   return (
+  //     <div className={`${shimmer} relative bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
+  //     <div className='w-[70px] h-[100px] bg-gray-200'>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   export function SimilarProductSkeleton(){
     return (
@@ -506,6 +533,16 @@ const shimmer =
             </div>
         </div>
       </div>
+      </div>
+    )
+  }
+
+  export function ImageSkeleton() {
+    return (
+      <div className={`${shimmer} relative overflow-hidden w-full h-full`}>
+        <div className="bg-gray-200 w-full h-full">
+
+        </div>
       </div>
     )
   }

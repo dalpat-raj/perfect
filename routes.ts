@@ -13,7 +13,6 @@ export const authRoutes = [
 export const apiAuthPrifix = "/api/auth";
 
 export const privateRoutes = [
-    '/checkout',
     '/profile',
     '/profile/orders',
     '/profile/address',

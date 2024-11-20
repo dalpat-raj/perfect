@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NameSchema } from '@/schema';
@@ -22,6 +22,7 @@ const NameForm: React.FC<UserNameData> = ({ userId, userName}) => {
     const parts = userName?.split(" ");
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
+    const nameInputRef = useRef<HTMLInputElement>(null);
     const { 
       register, 
       handleSubmit, 
@@ -48,6 +49,13 @@ const NameForm: React.FC<UserNameData> = ({ userId, userName}) => {
           })
         });
     }
+
+    useEffect(() => {
+        if (open && nameInputRef.current) {
+            nameInputRef.current.focus(); // Focus the input element
+        }
+    }, [open]);
+
   return (
     <div className='w-3/5 max-lg:w-full'>
         <div className='mb-4 flex items-center gap-6'>
@@ -66,7 +74,8 @@ const NameForm: React.FC<UserNameData> = ({ userId, userName}) => {
                     type="text"
                     name='firstName'
                     placeholder='first name'
-                    className='w-full py-2 px-4 border border-gray-200 bg-white rounded-sm outline-none focus:border-gray-400 text-sm text-gray-500'
+                    className='w-full py-2 px-4 border border-gray-200 bg-white rounded-sm outline-none focus:border-gray-500 text-sm text-gray-500'
+                    ref={nameInputRef}
                 />
             ) : (
                 <input

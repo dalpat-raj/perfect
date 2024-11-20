@@ -1,13 +1,11 @@
 'use client'
-import React from 'react'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import Autoplay from "embla-carousel-autoplay"
 import { Product } from '@/lib/definations'
-import ProductCard from '../product/ProductCard'
+import ProductCard from '@/app/ui/product/ProductCard'
 
 interface ProductProps {
   products: Product[]
@@ -15,11 +13,7 @@ interface ProductProps {
 
 const ProductSlider: React.FC<ProductProps> = ({products}) => {
   return (
-    <Carousel plugins={[
-        Autoplay({
-          delay: 2000,
-        }),
-        ]} 
+    <Carousel
         className="w-full">
         <CarouselContent className="-ml-1">
           {products.map((item: any, index: number) => (

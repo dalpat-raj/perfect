@@ -1,8 +1,7 @@
 import { getOrderDetails } from '@/lib/data'
-import React from 'react'
 import Image from 'next/image';
-import { RatingButton } from './OrderButton';
-import OrderStatus from './OrderStatus';
+import { RatingButton } from '@/app/ui/homePage/profile/orders/orderDetails/OrderButton';
+import OrderStatus from '@/app/ui/homePage/profile/orders/orderDetails/OrderStatus';
 import { TbFileInvoice } from 'react-icons/tb';
 import { formatDate } from '@/lib/helpers';
 

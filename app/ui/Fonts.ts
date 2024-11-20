@@ -1,14 +1,12 @@
-import { Inter, Roboto, Caveat } from 'next/font/google';
+import { Inter, Nunito, Caveat } from 'next/font/google';
  
 export const inter = Inter({ subsets: ['latin'] });
  
 
-export const poppins = Roboto({
+export const poppins = Nunito({
   subsets: ['latin'],
   display: 'swap',
-  weight: ['100', '300', '400', '500',
-    '700'
-  ]
+  weight: ['200' ,'300', '400', '500', '700', '800']
 })
 
 

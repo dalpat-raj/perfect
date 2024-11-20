@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 import { HiOutlineMailOpen } from "react-icons/hi";
 import { FiInstagram } from "react-icons/fi";
 import { CiTwitter } from "react-icons/ci";

@@ -1,9 +1,11 @@
 "use client";
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { ImageSkeleton } from '@/app/ui/skeletons';
 
 const ProductImage = ({ productImages }: { productImages: string[] }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [imageLoading, setImageLoading] = useState(true)
     const [isHovered, setIsHovered] = useState(false);
     let interval: NodeJS.Timeout | null = null;
 
@@ -68,15 +70,20 @@ const ProductImage = ({ productImages }: { productImages: string[] }) => {
             </div>
             <div className="flex gap-2 mt-4 overflow-x-scroll no-scrollbar">
                 {productImages.map((image, index) => (
-                    <Image 
-                        key={index}
+                    <div className='w-[80px] h-[90px]' key={index}>
+                        {imageLoading && <ImageSkeleton/>}
+                        <Image 
                         src={image} 
                         alt={`Thumbnail ${index + 1}`} 
-                        width={74}
-                        height={54}
+                        width={0}
+                        height={0}
+                        sizes='100vw'
+                        style={{width: "100%", height: "100%", objectFit: 'cover'}}
                         className={`cursor-pointer ${currentIndex === index ? 'border-2 border-[#333]' : ''}`} 
                         onClick={() => changeImage(index)} 
-                    />
+                        onLoad={()=>setImageLoading(false)}
+                        />
+                    </div>
                 ))}
             </div>
         </div>

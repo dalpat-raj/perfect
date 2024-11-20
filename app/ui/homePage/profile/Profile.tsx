@@ -10,11 +10,11 @@ interface UserProps {
 const Profile: React.FC<UserProps> = ({user}) => { 
   return (
     <div className='p-6 max-sm:px-0 max-sm:py-4 flex flex-col gap-6 max-sm:gap-0'>
-        <NameForm userId={user.id} userName={user.name}/>
+        <NameForm userId={user?.id} userName={user?.name}/>
      
-        <EmailForm userId={user.id} userEmail={user.email}/>
+        <EmailForm userId={user?.id} userEmail={user?.email}/>
 
-        <PhoneForm userId={user.id} userPhone={user.address.phone}/>
+        <PhoneForm userId={user?.id} userPhone={user?.address?.phone}/>
     </div>
   )
 }

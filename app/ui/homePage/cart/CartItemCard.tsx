@@ -4,6 +4,7 @@ import { useAppDispatch } from '@/lib/store/hooks'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { FaMinus, FaPlus } from 'react-icons/fa6'
+import { ImageSkeleton } from '@/app/ui/skeletons'
 
 interface CartItemCardProps {
     item: CartItem;
@@ -12,6 +13,7 @@ interface CartItemCardProps {
 
 const CartItemCard: React.FC<CartItemCardProps> = ({ item, quantityChangeHandler }) => {
     const [value, setValue] = useState(item?.quantity);
+    const [imageLoading, setImageLoading] = useState(true);
     const dispatch = useAppDispatch();
   
     const increment = (item: CartItem) => {
@@ -37,15 +39,16 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ item, quantityChangeHandler
 
   return (
         <div className='flex justify-start items-center gap-2'>
-            <div>
+            <div className='w-[80px] h-[80px]'>
+            {imageLoading && <ImageSkeleton/>}
             <Image
             src={item.image}
             alt={item.image + item.model}
             width={0}
             height={0}
             sizes='100vw'
-            style={{width: "80px", height: '80px', objectFit: 'cover'}}
-            unoptimized
+            style={{width: "100%", height: '100%', objectFit: 'cover'}}
+            onLoad={()=>setImageLoading(false)}
             />
             </div>
             <div className='w-full'>

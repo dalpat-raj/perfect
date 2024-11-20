@@ -1,9 +1,9 @@
 "use client"
-import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
-import FilterButton from '../collections/FilterButton';
-import ProductCard from './ProductCard';
+import { useEffect, useState, ChangeEvent, useRef } from 'react';
+import FilterButton from '@/app/ui/collections/FilterButton';
+import ProductCard from '@/app/ui/product/ProductCard';
 import { Product } from '@/lib/definations';
-import { ProductFilterSkeletons } from '../skeletons';
+import { ProductFilterSkeletons } from '@/app/ui/skeletons';
 
 
 const Products = ({ titles }: { titles: string }) => {

@@ -1,6 +1,6 @@
 import { getCurrentUserReviews } from '@/lib/data'
 import React from 'react'
-import ReviewCard from './ReviewCard'
+import ReviewCard from '@/app/ui/homePage/profile/reviews/ReviewCard'
 import Link from 'next/link';
 
 
