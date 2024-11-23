@@ -9,6 +9,7 @@ import { CouponCreateSchema } from '@/schema';
 import { toast } from 'sonner';
 import { CouponCreate } from '@/lib/definations';
 import { useRouter } from 'next/navigation';
+import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner';
 
 
 const CreateCoupon = () => {
@@ -97,13 +98,10 @@ const CreateCoupon = () => {
               </div>
             </div>
 
-            <div className='mt-4'>
-              <button 
-              disabled={isPending}
-              type='submit' 
-              className="w-full bg-[#333] text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">
-                { isPending ? "wait" : "Create Coupon"}
-              </button>
+            <div className='mt-4 w-full h-10'>
+              <ButtonWithSpinner loading={isPending}>
+                Create Coupons
+              </ButtonWithSpinner>
             </div>
           </form>
         </div>

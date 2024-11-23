@@ -6,6 +6,7 @@ import { PhoneSchema } from '@/schema';
 import { toast } from 'sonner';
 import { PhoneUpdate } from '@/action/user';
 import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner';
+import Link from 'next/link';
 
 interface UserPhone {
     phone: string,
@@ -33,7 +34,7 @@ const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
     })
   
   
-    async function handleAddressSubmit(data:UserPhone){
+    async function handlePhoneSubmit(data:UserPhone){
       startTransition(() => {
           PhoneUpdate(data , userId)
         .then((res)=>{
@@ -49,7 +50,7 @@ const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
 
     useEffect(() => {
       if (open && phoneInputRef.current) {
-        phoneInputRef.current.focus(); // Focus the input element
+        phoneInputRef.current.focus();
       }
     }, [open]);
 
@@ -59,7 +60,7 @@ const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
             <h2 className={`text-[18px] font-bold text-gray-800`}>Mobile Number</h2>
             <button onClick={()=>setOpen(!open)} className='text-[16px] font-semibold text-blue-500'>Edit</button>
         </div>
-        <form onSubmit={handleSubmit(handleAddressSubmit)}>
+        <form onSubmit={handleSubmit(handlePhoneSubmit)}>
             <div className='flex items-end max-sm:flex-col max-sm:items-start gap-6'>
                 <div className='w-4/5 max-sm:w-full'>
                     <label htmlFor="phone" className='text-[13px] text-gray-400'>Mobile Number</label>
@@ -92,11 +93,13 @@ const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
                 </div>
                 <div className='w-1/5 h-9'>
                 {
-                    open && (
-                        <ButtonWithSpinner loading={isPending}>
-                            SAVE
-                        </ButtonWithSpinner>
-                    )
+                  open && userPhone ? (
+                    <ButtonWithSpinner loading={isPending}>
+                        SAVE
+                    </ButtonWithSpinner>
+                  ) : (
+                    <Link href={"/profile/address"} className='w-full text-sm bg-[#333333] text-white rounded-md font-bold py-2 px-3'>Update</Link>
+                  )
                 }
                 </div>
             </div>

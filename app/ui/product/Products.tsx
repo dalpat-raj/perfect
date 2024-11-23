@@ -1,6 +1,7 @@
 "use client"
+import dynamic from 'next/dynamic';
 import { useEffect, useState, ChangeEvent, useRef } from 'react';
-import FilterButton from '@/app/ui/collections/FilterButton';
+const FilterButton = dynamic(()=> import('@/app/ui/collections/FilterButton'), {ssr: false})
 import ProductCard from '@/app/ui/product/ProductCard';
 import { Product } from '@/lib/definations';
 import { ProductFilterSkeletons } from '@/app/ui/skeletons';
@@ -11,8 +12,8 @@ const Products = ({ titles }: { titles: string }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filters, setFilters] = useState({
     collection: titles,
-    minPrice: '',
-    maxPrice: '',
+    minPrice: 0,
+    maxPrice: 500,
   });
 
   const [page, setPage] = useState(1);  
@@ -41,16 +42,16 @@ const Products = ({ titles }: { titles: string }) => {
     
     const query = new URLSearchParams();
     if (filters.collection) query.append('collection', filters.collection);
-    if (filters.minPrice) query.append('minPrice', filters.minPrice);
-    if (filters.maxPrice) query.append('maxPrice', filters.maxPrice);
+    if (filters.minPrice) query.append('minPrice', filters.minPrice.toString());
+    if (filters.maxPrice) query.append('maxPrice', filters.maxPrice.toString());
     query.append('page', currentPage.toString());
     query.append('limit', limit.toString());
     
-    const response = await fetch(`/api/products?${query.toString()}`);
-    const data = await response.json();
+    // const response = await fetch(`/api/products?${query.toString()}`);
+    // const data = await response.json();
 
-    setProducts(prevProducts => [...prevProducts, ...data.products]);
-    setTotalProducts(data.totalProducts);
+    // setProducts(prevProducts => [...prevProducts, ...data.products]);
+    // setTotalProducts(data.totalProducts);
     setIsFetching(false);
     
     if (isFirstLoad) setIsFirstLoad(false); 
@@ -64,7 +65,7 @@ const Products = ({ titles }: { titles: string }) => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 500 && !isFetching && products.length < totalProducts) {
-        setPage(prevPage => prevPage + 1);  // Load next page
+        setPage(prevPage => prevPage + 1);
       }
     };
 
@@ -87,7 +88,7 @@ const Products = ({ titles }: { titles: string }) => {
   return (
     <div>
       <div>
-        <FilterButton setOpenFilter={setOpenFilter} openFilter={openFilter} handleFilterChange={handleFilterChange} totalProducts={totalProducts} />
+        <FilterButton setOpenFilter={setOpenFilter} openFilter={openFilter} handleFilterChange={handleFilterChange} totalProducts={totalProducts} filters={filters}/>
       </div>
 
       <div className='mt-4'>

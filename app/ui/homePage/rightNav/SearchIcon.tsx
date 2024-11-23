@@ -4,22 +4,26 @@ import { CiSearch } from "react-icons/ci";
 import Search from "@/app/ui/homePage/rightNav/Search";
 import { RxCross2 } from "react-icons/rx";
 import clsx from 'clsx';
-import { caveat } from '../../Fonts';
+import { caveat } from '@/app/ui/Fonts';
 import { useSearchParams } from "next/navigation";
 import Image from 'next/image';
 import { Product } from '@/lib/definations';
-import { ImageSkeleton, SearchProductSkeleton } from '../../skeletons';
+import { ImageSkeleton, SearchProductSkeleton } from '@/app/ui/skeletons';
+import Link from 'next/link';
+import { formatTitle } from '@/lib/helpers';
 
 const SearchIcon = () => {
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(false);
   const [imageLoading, setImageLoading] = useState<boolean>(true);
   const searchParams = useSearchParams();
 
   const query = searchParams.get("query");
 
   const fetchProducts = async (searchTerm: string) => {
+    setIsFirstLoad(true);
     const query = new URLSearchParams();
     query.append('query', searchTerm);
     
@@ -35,8 +39,9 @@ const SearchIcon = () => {
     if(query){
       fetchProducts(query);
     }else{
-      setIsFetching(false)
-      setProducts([])
+      setIsFirstLoad(false);
+      setIsFetching(false);
+      setProducts([]);
     }
   }, [query]);
   
@@ -76,23 +81,33 @@ const SearchIcon = () => {
               </div>
             )
           }
+
+          {
+            !isFetching && isFirstLoad && products?.length === 0 && (
+              <div className='text-[14px] font-semibold'>
+                ❌ Product not found !
+              </div>
+            )
+          }
           {
             products?.map((item,i)=>(
-              <div key={i} className='flex items-center gap-4 mb-2'>
-                <div className='w-[70px] h-[80px]'>
-                  {imageLoading && <ImageSkeleton/>}
-                  <Image
-                    src={item?.images[0] || item?.images[1]}
-                    alt={item.title}
-                    width={0}
-                    height={0}
-                    sizes='100vw'
-                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                    onLoad={()=>setImageLoading(false)}
-                  />
+              <Link href={`/products/${formatTitle(item?.title)}`} key={i}>
+                <div className='flex items-center gap-4 mb-2'>
+                  <div className='w-[70px] h-[80px]'>
+                    {imageLoading && <ImageSkeleton/>}
+                    <Image
+                      src={item?.images[0] || item?.images[1]}
+                      alt={item.title}
+                      width={0}
+                      height={0}
+                      sizes='100vw'
+                      style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                      onLoad={()=>setImageLoading(false)}
+                    />
+                  </div>
+                  <p>{item?.title.slice(0,20)}</p>
                 </div>
-                <p>{item?.title.slice(0,20)}</p>
-              </div>
+              </Link>
             ))
           }
         </div>

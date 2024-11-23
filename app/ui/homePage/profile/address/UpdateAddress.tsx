@@ -1,5 +1,5 @@
 import Label from '@/app/ui/label/Label';
-import React, { useTransition } from 'react';
+import React, { useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateAddressSchema } from '@/schema';
@@ -39,6 +39,10 @@ const UpdateAddress: React.FC<AddressProps> = ({ address, setOpenAddress}) => {
       })
     });
   }
+
+  useEffect(() => {
+    reset(address);  // Update form with the new address
+  }, [address, reset]);
 
   return (
     <div className='bg-gray-50 p-4 max-sm:px-0'>

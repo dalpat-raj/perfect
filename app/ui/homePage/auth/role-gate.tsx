@@ -2,7 +2,7 @@
 
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserRole } from "@prisma/client";
-import { FormError } from "@/components/form-error";
+import { notFound } from "next/navigation";
 
 interface RoleGateProps {
     children: React.ReactNode;
@@ -16,9 +16,7 @@ export const RoleGate = ({
     const role = useCurrentRole();
 
     if(role !== allowedRole){
-        return (
-            <FormError message="This Routes Is Protected Please Do Not Try Access!" />
-        )
+        notFound();
     }
 
     return (

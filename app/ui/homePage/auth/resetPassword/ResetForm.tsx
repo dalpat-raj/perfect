@@ -13,9 +13,9 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form"
-import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Reset } from "@/action/auth";
+import ButtonWithSpinner from "@/app/ui/button/ButtonWithSpinner";
 
 const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("")
@@ -68,16 +68,12 @@ const ResetForm = () => {
           
         </div>
         <div className="mt-4">
-            <FormSuccess message={success}/>
-            <button
-            disabled={isPending}
-            type="submit"
-            className={`${
-                isPending ? "bg-gray-600" : "bg-[#333]"
-            } rounded-md w-full px-12 py-3 text-sm font-medium text-white`}
-            >
-            {isPending ? "Loading..." : "Next"}
-            </button>
+          <FormSuccess message={success}/>
+          <div className='w-full h-10'>
+            <ButtonWithSpinner loading={isPending}>
+              Next
+            </ButtonWithSpinner>
+          </div>
         </div>
       </form>
     </Form>

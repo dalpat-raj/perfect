@@ -18,6 +18,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Login } from "@/action/auth";
 import Link from "next/link";
+import ButtonWithSpinner from "@/app/ui/button/ButtonWithSpinner";
 
 const SignInForm = () => {
   const searchParam = useSearchParams();
@@ -94,15 +95,11 @@ const SignInForm = () => {
         <div className="mt-4">
           <FormError message={error || urlError}/>
           <FormSuccess message={success}/>
-          <button
-            disabled={isPending}
-            type="submit"
-            className={`${
-              isPending ? "bg-gray-600" : "bg-[#333]"
-            } rounded-md w-full px-12 py-3 text-sm font-medium text-white`}
-          >
-            {isPending ? "Loading..." : "Sign in"}
-          </button>
+          <div className='w-full h-10'>
+            <ButtonWithSpinner loading={isPending}>
+              Sign in
+            </ButtonWithSpinner>
+          </div>
         </div>
       </form>
     </Form>

@@ -16,6 +16,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { RegisterSchema } from "@/schema";
 import { Register } from "@/action/auth";
+import ButtonWithSpinner from "@/app/ui/button/ButtonWithSpinner";
 
 const SignUpForm = () => {
   const [error, setError] = useState<string | undefined>("")
@@ -103,15 +104,11 @@ const SignUpForm = () => {
       <div className="my-4">
       <FormError message={error}/>
       <FormSuccess message={success}/>
-      <button
-        disabled={isPending}
-        type="submit"
-        className={`${
-          isPending ? "bg-gray-600" : "bg-[#333]"
-        } rounded-md w-full px-12 py-3 text-sm font-medium text-white`}
-      >
-        {isPending ? "Loading..." : "Create an account"}
-      </button>
+      <div className='w-full h-10'>
+        <ButtonWithSpinner loading={isPending}>
+          Create an account
+        </ButtonWithSpinner>
+      </div>
       </div>
     </form>
   </Form>

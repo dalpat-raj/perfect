@@ -19,7 +19,7 @@ const Coupon = async() => {
           <h4 className='text-[14px] font-semibold '>Action</h4>
         </div>
         {
-          coupons.map((item,i)=>(
+          coupons?.map((item,i)=>(
             <CouponCard AllCoupons={item} key={i}/>
           ))
         }

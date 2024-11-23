@@ -1,12 +1,21 @@
+import { Slider } from '@/components/ui/slider';
 import React, { ChangeEvent } from 'react';
 import { RxCross1 } from 'react-icons/rx';
 
 interface FilterSidebarProps {
   setOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   handleFilterChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  filters: {
+    collection: string;
+    minPrice: number;
+    maxPrice: number;
+  }
 }
 
-const FilterSidebar = ({ setOpenFilter, handleFilterChange }: FilterSidebarProps) => {
+const FilterSidebar = ({ setOpenFilter, handleFilterChange, filters }: FilterSidebarProps) => {
+
+  const DEFAULT_CUSTOM_PRICE = [0,500] as [number, number];
+
   return (
     <div className='p-12 max-md:px-4 max-sm:px-4 relative'>
 
@@ -19,7 +28,8 @@ const FilterSidebar = ({ setOpenFilter, handleFilterChange }: FilterSidebarProps
 
       {/* Filter Form */}
       <div className="bg-white">
-        <div className="my-4">
+        <div className="my-6">
+          <h4 className='text-[15px] font-semibold mb-2'>Collections</h4>
           <select
             name='collection'
             onChange={handleFilterChange}
@@ -32,33 +42,35 @@ const FilterSidebar = ({ setOpenFilter, handleFilterChange }: FilterSidebarProps
         </div>
 
         {/* Price Range Filter */}
-        <div className="my-4">
-          <label className="block">Price Range</label>
-          <input
-            type="number"
-            onChange={handleFilterChange}
-            name="minPrice"
-            className="mt-2 border rounded p-2"
-            placeholder="Min Price"
-          />
-          <input
-            type="number"
-            onChange={handleFilterChange}
-            name="maxPrice"
-            className="mt-2 border rounded p-2"
-            placeholder="Max Price"
+        <div className="my-6">
+          <h4 className='text-[15px] font-semibold mb-2'>Price</h4>
+          <div className='flex justify-between w-full overflow-hidden mb-3'>
+            <p className='text-[14px]'>Custom Price</p>
+            <div className='flex gap-2 items-end'>
+                <p className='text-gray-400'>₹</p>
+                <p className='text-gray-600 text-[14px]'>{filters.minPrice}</p>
+              <span className='text-[14px] font-semibold text-gray-800'>To</span> 
+                <p className='text-gray-600 text-[14px]'>{filters.maxPrice}</p>
+            </div>
+          </div>
+          <Slider
+          onValueChange={(range)=>{
+            const [newMin, newMax] = range;
+            handleFilterChange({ target: { name: 'minPrice', value: newMin.toString() } } as ChangeEvent<HTMLInputElement>);
+            handleFilterChange({ target: { name: 'maxPrice', value: newMax.toString() } } as ChangeEvent<HTMLInputElement>);
+          }}
+          value={[filters.minPrice, filters.maxPrice]}
+          min={DEFAULT_CUSTOM_PRICE[0]}
+          defaultValue={DEFAULT_CUSTOM_PRICE}
+          max={DEFAULT_CUSTOM_PRICE[1]}
+          step={5}
+          name='price'
           />
         </div>
 
 
       </div>
-
-      <div className='bg-white py-4 w-1/4 max-md:w-2/4 max-sm:w-3/4 fixed bottom-0 left-0 px-12 max-sm:px-4'>
-        <div className='w-full flex justify-between items-center gap-4'>
-          <button className='w-full bg-[#333] px-4 py-2 text-white font-semibold rounded-sm'>Clear</button>
-          <button onClick={() => setOpenFilter(prev => !prev)} className='w-full bg-[#333] px-4 py-2 text-white font-semibold rounded-sm'>Apply</button>
-        </div>
-      </div>
+      
     </div>
   );
 }

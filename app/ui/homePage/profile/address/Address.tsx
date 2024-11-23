@@ -2,7 +2,8 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic';
 import { CiLocationOn } from "react-icons/ci";
-const UpdateAddress = dynamic(()=> import('@/app/ui/homePage/profile/address/UpdateAddress'),{ssr:false}) 
+import UpdateAddress from '@/app/ui/homePage/profile/address/UpdateAddress';
+// const UpdateAddress = dynamic(()=> import('@/app/ui/homePage/profile/address/UpdateAddress'),{ssr:false}) 
 const AddressForm = dynamic(()=> import('@/app/ui/homePage/profile/address/AddressForm'),{ssr:false}) 
 import { UserProfile } from '@/lib/definations';
 import clsx from 'clsx';

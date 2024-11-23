@@ -1,7 +1,7 @@
 "use client"
 import React, { ChangeEvent } from 'react'
 import { CiFilter } from 'react-icons/ci'
-import FilterSidebar from './filterSidebar/FilterSidebar';
+import FilterSidebar from '@/app/ui/collections/filterSidebar/FilterSidebar';
 import clsx from 'clsx';
 
 interface FilterSidebarProps {
@@ -9,9 +9,14 @@ interface FilterSidebarProps {
   openFilter: boolean;
   handleFilterChange: (event: ChangeEvent <HTMLInputElement | HTMLSelectElement>) => void;
   totalProducts: number,
+  filters: {
+    collection: string;
+    minPrice: number;
+    maxPrice: number;
+  }
 }
 
-const FilterButton = ({ setOpenFilter, openFilter, handleFilterChange, totalProducts }: FilterSidebarProps) => {
+const FilterButton = ({ setOpenFilter, openFilter, handleFilterChange, totalProducts, filters }: FilterSidebarProps) => {
   
   return (
   <>
@@ -28,9 +33,8 @@ const FilterButton = ({ setOpenFilter, openFilter, handleFilterChange, totalProd
       <div onClick={()=>setOpenFilter(!openFilter)} className={clsx("h-screen w-3/4 max-md:w-2/4 max-sm:w-1/4 fixed -top-0 right-0 z-50 cursor-pointer bg-blackOverlay addExtra", { 'hidden fixed -top-0 -right-3/4' : openFilter !== true})}>
       </div>
       <div className={clsx("h-screen no-scrollbar overflow-scroll bg-white w-1/4 max-md:w-2/4 max-sm:w-3/4 fixed -top-0 left-0 z-50 addFilter", { 'hidden fixed -top-0 -left-1/4' : openFilter !== true})}>
-        <FilterSidebar setOpenFilter={setOpenFilter} handleFilterChange={handleFilterChange}/>
+        <FilterSidebar setOpenFilter={setOpenFilter} handleFilterChange={handleFilterChange} filters={filters}/>
       </div>
-      {/* raj  */}
   </>
   )
 }

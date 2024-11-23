@@ -13,7 +13,7 @@ export async function couponCreate(data: CouponCreate) {
             return {error: "User not verify!"}
           }
         const { code, discount, expirationDate } = CouponCreateSchema.parse(data);
-        const discountValue = parseFloat(discount) / 100;
+        const discountValue = parseFloat(discount);
         await db.coupon.create({
             data: {
                 code: code,
@@ -25,5 +25,30 @@ export async function couponCreate(data: CouponCreate) {
         return {success: "Coupon Created ✅"}; 
     } catch (error) {
         return {error: "Database Error Failed To Create Coupon ❌"}
+    }
+}
+
+
+export async function deleteCoupon(id:number) {
+    const role = await currentRole()
+    try {
+        if (role !== UserRole.ADMIN) {
+            return {error: "User not verify!"}
+        }
+        
+        const isDeleted = await db.coupon.delete({
+            where: {
+                id: id
+            }
+        })
+        
+        if(!isDeleted){
+            return {error: "Failed To Delete Coupon ❌"}
+        }
+        
+        revalidatePath("/dashboard/coupon")
+        return {success: "Coupon Deleted ✅"}; 
+    } catch (error) {
+        return {error: "Database Error Failed To Delete Coupon ❌"}
     }
 }
