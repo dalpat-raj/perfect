@@ -1,4 +1,6 @@
-import Products from '@/app/ui/product/Products'
+import dynamic from 'next/dynamic'
+import { ProductFilterSkeletons } from '@/app/ui/skeletons'
+const Products = dynamic(()=> import('@/app/ui/product/Products'), {loading: ()=><ProductFilterSkeletons/>}) 
 
 const page = () => {
 
