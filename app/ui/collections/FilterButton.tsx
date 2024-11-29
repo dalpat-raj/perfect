@@ -11,6 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+
+type SortFilter = {
+  popular: boolean;
+  newest: boolean;
+  plth: boolean;
+  phtl: boolean;
+};
+
 interface FilterSidebarProps {
   setOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   openFilter: boolean;
@@ -23,9 +31,20 @@ interface FilterSidebarProps {
     stock: string;
   },
   isFetching: boolean;
+  setSortFilter: React.Dispatch<React.SetStateAction<SortFilter>>;
+  handleSelectChange: (value: string) => void;
 }
 
-const FilterButton = ({ setOpenFilter, openFilter, handleFilterChange, totalProducts, filters, isFetching }: FilterSidebarProps) => {
+const FilterButton = ({ 
+  setOpenFilter, 
+  openFilter, 
+  handleFilterChange, 
+  totalProducts, 
+  filters, 
+  isFetching, 
+  setSortFilter, 
+  handleSelectChange 
+}: FilterSidebarProps) => {
   
 
   return (
@@ -33,21 +52,21 @@ const FilterButton = ({ setOpenFilter, openFilter, handleFilterChange, totalProd
         <div className='flex items-center justify-between'>
         <div onClick={() => setOpenFilter(prev => !prev)} className='flex items-center justify-start gap-2 border border-gray-300 px-4 py-2 rounded-lg cursor-pointer'>
           <CiFilter size={20}/>
-          <button className='text-[16px]'>Filter</button>
+          <button className='text-[15px] font-semibold text-gray-900'>Filter</button>
         </div>
         <div>
           <p className='text-[14px] font-semibold'>{totalProducts} Products</p>
         </div>
-        <div>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort" />
+        <div className=''>
+        <Select onValueChange={handleSelectChange} >
+          <SelectTrigger  className="w-[180px] max-sm:w-[140px] text-[15px] font-semibold text-gray-900 focus:outline-none">
+            <SelectValue  placeholder="Sort" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="light">Popularity</SelectItem>
-            <SelectItem value="dark">Newest First</SelectItem>
-            <SelectItem value="system">Price-- Low To High</SelectItem>
-            <SelectItem value="system">Price-- High To Low</SelectItem>
+            <SelectItem value="popularity">Popularity</SelectItem>
+            <SelectItem value="newest">Newest First</SelectItem>
+            <SelectItem value="plth">Price-- Low To High</SelectItem>
+            <SelectItem value="phtl">Price-- High To Low</SelectItem>
           </SelectContent>
         </Select>
         </div>

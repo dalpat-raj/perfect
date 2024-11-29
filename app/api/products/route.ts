@@ -13,6 +13,9 @@ export async function GET(request: Request) {
     const stock = url.searchParams.get('stock') || undefined;
     const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
     const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get('limit') || '10')));
+
+    const sortBy = url.searchParams.get('sortBy') || 'createdAt';  
+    const order = url.searchParams.get('order') || 'desc';  
     
     const where: { 
       title?: { contains: string, mode: 'insensitive' }; 
@@ -38,6 +41,18 @@ export async function GET(request: Request) {
       where.stock = { gt: 0 }; 
     } else if (stock === 'false') {
       where.stock = { equals: 0 };
+    }
+
+    const orderBy: any = {};
+
+    if (sortBy === 'popularity') {
+      orderBy.rating = order === 'desc' ? 'desc' : 'asc';
+    } else if (sortBy === 'newest') {
+      orderBy.createdAt = order === 'desc' ? 'desc' : 'asc';
+    } else if (sortBy === 'price') {
+      orderBy.sellingPrice = order === 'desc' ? 'desc' : 'asc';
+    } else {
+      orderBy.createdAt = order === 'desc' ? 'desc' : 'asc';
     }
 
     const products = await db.product.findMany({

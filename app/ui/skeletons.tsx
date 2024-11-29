@@ -6,7 +6,7 @@ const shimmer =
     return (
       <div className='w-full my-8 max-md:my-4 px-12 max-md:px-4 max-sm:px-2'>
         <div className='text-center mb-4 max-sm:mb-2'>
-            <h2 className='text-[1.5rem] font-semibold'>Tranding Items</h2>
+            <h2 className='h-8 w-24 bg-gray-100'></h2>
         </div>
         
         <div className='mt-6 grid grid-cols-5 gap-4 grid-rows-2 max-md:grid-cols-3 max-sm:grid-cols-2'>

@@ -63,7 +63,7 @@ const SearchIcon = () => {
       ></div>
       <div
         className={clsx(
-          "h-screen no-scrollbar overflow-scroll bg-white w-2/6 max-lg:w-2/4 max-sm:w-full fixed top-0 right-0 z-50 addCart p-6 max-sm:p-2",
+          "h-screen no-scrollbar overflow-scroll bg-white w-2/6 max-lg:w-2/4 max-sm:w-full fixed top-0 right-0 z-50 addCart p-6 max-sm:p-2 max-sm:pt-6",
           { "hidden fixed -top-0 -right-1/4": openSearch !== true }
         )}
       >
@@ -72,6 +72,8 @@ const SearchIcon = () => {
           <RxCross2 size={25} onClick={() => setOpenSearch(!openSearch)} className='cursor-pointer'/>
         </div>
         <Search setIsFetching={setIsFetching} setProducts={setProducts}/>
+        
+
         <div className='mt-6'>
           {
             isFetching && (
@@ -105,7 +107,7 @@ const SearchIcon = () => {
                       onLoad={()=>setImageLoading(false)}
                     />
                   </div>
-                  <p>{item?.title.slice(0,20)}</p>
+                  <p className='text-[14px] text-gray-700'>{item?.title.slice(0,30)}</p>
                 </div>
               </Link>
             ))

@@ -1,7 +1,7 @@
-import { CiSearch } from 'react-icons/ci'
+import { CiSearch } from 'react-icons/ci';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import React from 'react';
+import React, { useState } from 'react';
 import { Product } from '@/lib/definations';
 
 interface SearchProps {
@@ -9,43 +9,68 @@ interface SearchProps {
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
-const Search: React.FC<SearchProps> = ({setIsFetching, setProducts}) => {
-
+const Search: React.FC<SearchProps> = ({ setIsFetching, setProducts }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
   const handleSearch = useDebouncedCallback((term: string) => {
-    
-    setProducts([])
-    setIsFetching(true)
+    setProducts([]);
+    setActiveTag("")
+    setIsFetching(true);
     const params = new URLSearchParams(searchParams);
-    
+
     if (term) {
       params.set('query', term);
     } else {
       params.delete('query');
     }
     replace(`${pathname}?${params.toString()}`);
-  },150);
+  }, 150);
 
+  const handleTagClick = (tag: string) => {
+    setActiveTag(tag);  
+    setProducts([]);
+    setIsFetching(true);
+    const params = new URLSearchParams(searchParams);
+    params.set('query', tag);  
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (
-    <div className='relative mt-4'>
-      <input 
-      type="text"
-      placeholder='Search here' 
-      className='z-50 w-full text-sm border border-gray-300 outline-0 rounded-xl pl-2 py-[8px] bg-gray-100'
-      onChange={(e) => {
-        handleSearch(e.target.value);
-      }}
-      defaultValue={searchParams.get('query')?.toString()}
-      />
-      <div className='absolute top-0 h-full border border-gray-300 py-[1px] cursor-pointer rounded-xl px-4 right-0 bg-white flex items-center justify-center'>
-        <CiSearch size={20}/>
+    <>
+      <div className="relative mt-4">
+        <input
+          type="text"
+          placeholder="Search here"
+          className="z-50 w-full text-sm border border-gray-300 outline-0 rounded-xl pl-2 py-[8px] max-sm:py-[12px]"
+          onChange={(e) => {
+            handleSearch(e.target.value);
+          }}
+          defaultValue={searchParams.get('query')?.toString()}
+        />
+        <div className="absolute top-0 h-full border border-gray-300 py-[1px] cursor-pointer rounded-xl px-8 right-0 flex items-center justify-center bg-gray-100">
+          <CiSearch size={20} />
+        </div>
       </div>
-    </div>
-  )
-}
 
-export default Search
+      <div className="mt-6 flex gap-6">
+        {['iphone', 'vivo', 'samsung'].map((tag) => (
+          <p
+            key={tag}
+            className={`bg-gray-100 px-3 py-1 text-[13px] text-gray-500 cursor-pointer ${
+              activeTag === tag ? 'bg-gray-200 text-black' : ''
+            }`}
+            onClick={() => handleTagClick(tag)}
+          >
+            # {tag}
+          </p>
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default Search;

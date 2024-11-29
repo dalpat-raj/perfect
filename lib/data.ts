@@ -187,6 +187,7 @@ export async function editProducts({id,formData}: {id: number, formData: FormDat
   } 
 }
 
+// please delete this function in production
 export async function getCollections() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   const products = await db.product.findMany({
@@ -200,7 +201,7 @@ export async function getCollections() {
   return products
   
 }
-
+// please delete this function in production
 export async function getUniqueCollections(){
   const products = await getCollections()
   const uniqueCollections = products.reduce<Collections[]>((acc, product) => { 
@@ -211,6 +212,16 @@ export async function getUniqueCollections(){
   }, [] as Collections[]);
 
   return uniqueCollections;
+}
+
+export async function getCollection(){
+  try {
+    const collection = await db.collection.findMany()
+    if(!collection) throw new Error("Something went wrong plasea retry")
+  } catch (error) {
+    console.error("Error fetching collections:", error);
+    throw new Error("Failed to fetch collections");
+  }
 }
 
 export async function getProductByCollection(titles: string) {
@@ -294,8 +305,7 @@ export async function getMyOrders(id: string){
 
     return orders
   } catch (error) {
-    console.error("Error fetching orders:", error);
-      throw new Error("Failed to fetch orders");
+    throw new Error("Failed to fetch orders");
   }
 }
 
