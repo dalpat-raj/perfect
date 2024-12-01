@@ -93,7 +93,7 @@ const PhoneForm: React.FC<UserData> = ({userId, userPhone}) => {
                 </div>
                 <div className='w-1/5 h-9'>
                 {
-                  open && userPhone ? (
+                  open ? (
                     <ButtonWithSpinner loading={isPending}>
                         SAVE
                     </ButtonWithSpinner>

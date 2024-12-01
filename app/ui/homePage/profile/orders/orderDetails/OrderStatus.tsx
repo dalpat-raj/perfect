@@ -22,7 +22,7 @@ const OrderStatus: React.FC<StatusHistory[] | any> = ({statusHistory}) => {
       {steps.map((step, index) => {
         const isCompleted = completedStatuses.includes(step.name);
         const stepHistory = statusHistory.find(
-          (history) => history.status === step.name
+          (history: any) => history.status === step.name
         );
 
         return (
@@ -69,7 +69,8 @@ const OrderStatus: React.FC<StatusHistory[] | any> = ({statusHistory}) => {
               </div>
             </div>
           </div>
-          <div key={index} className="items-start justify-center  mb-1 w-full hidden max-sm:flex">
+          
+          <div className="items-start justify-center  mb-1 w-full hidden max-sm:flex">
           <div className="flex flex-col items-center w-1/4">
             <p
               className={`text-sm text-center mb-1 ${

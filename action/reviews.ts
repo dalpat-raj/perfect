@@ -54,12 +54,7 @@ export async function reviewAdd(values: z.infer<typeof reviewSchema>, id: number
         return {success: "Review Added ✅"};       
     } catch (error) {
       console.log(error);
-      
-        // if (error instanceof z.ZodError) {
-          return {error: "Something went wrong ❌"}
-        //   } else {
-        //     return {error: "Something went wrong ❌"}
-        //   }
+      return {error: "Something went wrong ❌"}
     }
 }
 

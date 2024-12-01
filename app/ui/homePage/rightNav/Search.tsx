@@ -28,7 +28,7 @@ const Search: React.FC<SearchProps> = ({ setIsFetching, setProducts }) => {
       params.delete('query');
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 150);
+  }, 600);
 
   const handleTagClick = (tag: string) => {
     setActiveTag(tag);  
@@ -56,11 +56,11 @@ const Search: React.FC<SearchProps> = ({ setIsFetching, setProducts }) => {
         </div>
       </div>
 
-      <div className="mt-6 flex gap-6">
-        {['iphone', 'vivo', 'samsung'].map((tag) => (
+      <div className="mt-6 flex justify-between flex-wrap gap-2">
+        {['iphone', 'vivo', 'samsung', 'oppo', 'redmi'].map((tag) => (
           <p
             key={tag}
-            className={`bg-gray-100 px-3 py-1 text-[13px] text-gray-500 cursor-pointer ${
+            className={`bg-gray-100 px-3 py-1 text-[15px] text-gray-500 cursor-pointer ${
               activeTag === tag ? 'bg-gray-200 text-black' : ''
             }`}
             onClick={() => handleTagClick(tag)}

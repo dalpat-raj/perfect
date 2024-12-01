@@ -7,9 +7,7 @@ import { currentUser } from '@/lib/data';
 const SideNav = async() => {
     const user = await currentUser();
   return (
-    <div>
     <div className='flex flex-col gap-6 max-sm:block'>
-       
             <div className='bg-white shadow-custom-shadow rounded-md flex items-center gap-2 p-2 py-3'>
                 <div className='rounded-full overflow-hidden'>
                     <Image
@@ -33,7 +31,6 @@ const SideNav = async() => {
         
         
     </div>
-</div>
   )
 }
 

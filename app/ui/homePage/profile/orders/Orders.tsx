@@ -1,15 +1,15 @@
-import { currentUser, getMyOrders } from '@/lib/data';
-import OrderCard from './OrderCard';
+import { getMyOrders } from '@/lib/data';
+import OrderCard from '@/app/ui/homePage/profile/orders/OrderCard';
+import { auth } from '@/auth';
 
 
 
 const Orders = async() => {
-    const user = await currentUser()
-    
-    const orders = await getMyOrders(user?.id as string);
+    const session = await auth()
+    const orders = await getMyOrders(session?.user?.id as string);
     
   return (
-    <div>
+    <div className='h-full'>
         <div className='py-2 shadow-lg mb-4'>
             <div className='grid grid-cols-4 max-sm:grid-cols-3 px-4'>
                 <div className='col-span-1 text-[14px] font-semibold'>Product</div>
@@ -21,7 +21,9 @@ const Orders = async() => {
         <div className='px-2'>
         {
             orders.map((item,i)=>(
-                <OrderCard order={item} key={i}/>
+                <div key={i}>
+                    <OrderCard order={item}/>         
+                </div>
             ))
             }
         </div>

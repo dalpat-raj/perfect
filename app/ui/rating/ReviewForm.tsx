@@ -15,7 +15,7 @@ import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner';
 import { CiImageOn } from "react-icons/ci";
 import { z } from 'zod';
 import { UploadButton } from '@/lib/uploadthing';
-import { ImageSkeleton } from '../skeletons'
+import { ImageSkeleton } from '@/app/ui/skeletons'
 
 type ProductDetailsProps = {
   setReviewBox: React.Dispatch<React.SetStateAction<boolean>>,
@@ -78,29 +78,27 @@ const ReviewForm: React.FC<ProductDetailsProps> = ({setReviewBox, user, product}
       </div>
 
       <div className='border-2 border-gray-200 p-2 mt-2'>
-              <div className='flex justify-start items-center gap-4'>
-                <div className='w-[50px] h-[50px]'>
-                  { imageLoading1 && <ImageSkeleton/>}
-                  <Image
-                  src={product?.images[0] ? product?.images[0] : "/e22.png"}
-                  alt='al'
-                  width={0}
-                  height={0}
-                  sizes='100vw'
-                  style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                  onLoad={()=>setImageLoading1(false)}
-                  />
-                </div>
-                <div>
-                  <p className='text-[14px] font-bold'>{product?.title}</p>
-                <div className='flex justify-start items-center gap-2'>
-                  <Rating rating={product?.rating}/>
-                  <p className='text-[14px] text-gray-500'>{product?.review.length} reviews</p>
-                </div>
-                </div>
-              </div>
-         
-            
+        <div className='flex justify-start items-center gap-4'>
+          <div className='w-[50px] h-[50px]'>
+            { imageLoading1 && <ImageSkeleton/>}
+            <Image
+            src={product?.images[0] ? product?.images[0] : "/e22.png"}
+            alt='al'
+            width={0}
+            height={0}
+            sizes='100vw'
+            style={{width: '100%', height: '100%', objectFit: 'cover'}}
+            onLoad={()=>setImageLoading1(false)}
+            />
+          </div>
+          <div>
+            <p className='text-[14px] font-bold'>{product?.title}</p>
+          <div className='flex justify-start items-center gap-2'>
+            <Rating rating={product?.rating}/>
+            <p className='text-[14px] text-gray-500'>{product?.review.length} reviews</p>
+          </div>
+          </div>
+        </div>           
       </div>
 
       <div className='w-full my-4 h-[2px] border border-gray-200'></div>

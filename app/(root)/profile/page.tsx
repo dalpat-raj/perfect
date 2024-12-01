@@ -5,7 +5,7 @@ const page = async() => {
   const user = await getCurrentUser();
   
   return (
-      <Profile user={user}/>
+    <Profile user={user}/>
   )
 }
 

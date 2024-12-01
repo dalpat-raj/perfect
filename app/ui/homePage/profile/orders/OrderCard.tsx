@@ -1,8 +1,10 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import { UserOrders } from '@/lib/definations'
 import Link from 'next/link'
 import clsx from 'clsx';
 import Image from 'next/image';
+import { ImageSkeleton } from '@/app/ui/skeletons';
 import { formatDate } from '@/lib/helpers';
 
 type Props = {
@@ -10,17 +12,23 @@ type Props = {
 }
 
 const OrderCard: React.FC<Props> = ({order}) => {
+  const [imageLoading, setImageLoading] = useState(true);
+  const image1 = order?.items[0]?.image;
   
   return (
     <Link href={`/profile/orders/${order.id}`}>
     <div className='w-full grid grid-cols-4 items-center max-sm:grid-cols-4 shadow-custom-shadow rounded-xl mb-4 px-2 py-2'>
-        <div className='text-[14px] font-semibold col-span-1 text-gray-600'>
-            <Image
-                src={order.items[0].image}
-                alt={"order"}
-                width={50}
-                height={50}
-            />
+        <div className='col-span-1 w-[50px] h-[60px]'>
+        {imageLoading && <ImageSkeleton/>}
+          <Image
+            src={image1}
+            alt={"order"}
+            width={0}
+            height={0}
+            sizes='100vw'
+            style={{width: '100%', height: '100%', objectFit: 'cover' }}
+            onLoad={()=>setImageLoading(false)}
+          />
         </div>
         <div className='text-[14px] col-span-1 text-gray-600 max-sm:hidden'>Rs. {order.totalAmount}</div>
         <div className='text-[14px] col-span-1 text-gray-600'>{formatDate(order.createdAt)}</div>
