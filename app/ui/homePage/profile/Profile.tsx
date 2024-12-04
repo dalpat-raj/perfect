@@ -9,7 +9,7 @@ interface UserProps {
 
 const Profile: React.FC<UserProps> = ({user}) => { 
   return (
-    <div className='p-6 max-sm:px-0 max-sm:py-4 flex flex-col gap-6 max-sm:gap-0'>
+    <div className='p-6 max-sm:px-2 max-sm:py-4 flex flex-col gap-6 max-sm:gap-0'>
         <NameForm userId={user?.id} userName={user?.name}/>
      
         <EmailForm userId={user?.id} userEmail={user?.email}/>

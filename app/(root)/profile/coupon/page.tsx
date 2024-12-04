@@ -1,8 +1,10 @@
 import Coupon from "@/app/ui/homePage/profile/coupon/Coupon"
+import { getCoupons } from "@/lib/data"
 
-const page = () => {
+const page = async() => {
+  const coupons = await getCoupons()
   return (
-    <Coupon/>
+    <Coupon coupons={coupons}/>
   )
 }
 
