@@ -195,7 +195,7 @@ export interface AddFeaturelProps {
 export interface Collections {
   id: number,
   title: string,
-  images: string[]
+  image: string
 }
 
 

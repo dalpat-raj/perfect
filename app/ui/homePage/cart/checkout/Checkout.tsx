@@ -54,42 +54,86 @@ const Checkout: React.FC<UserProps> = ({user}: UserProps) => {
     }
   };
 
+  // const orderHandlerr = async (data: any) => {
+  //   setLoading(true);
+  //   const orderData = {
+  //     items: cart.map(item => ({
+  //       productId: item.productId,
+  //       title: item.title,
+  //       price: item.price,
+  //       stock: item.stock,
+  //       modelNumber: item.modelNumber,
+  //       image: item.image,
+  //       color: item.color,
+  //       rating: item.rating,
+  //       model: item.model,
+  //       quantity: item.quantity,
+  //     })),
+  //     paymentInfo,
+  //     subTotal,
+  //     shippingCharge,
+  //     totalAmount: totalPrice || subTotal,
+  //     discountPrice,
+  //     address: data, 
+  //     saveAddress,
+  //     userId: user?.id || null,
+  //   };
+
+  //   try {
+  //     const res = await axios.post("/api/createOrder", orderData);
+  //     if (res?.data?.success) toast.success(res?.data?.success);
+  //     toast.success("order success ✅")
+  //     Confetti();
+  //   } catch (error: any) {
+  //     setLoading(false);
+  //     toast.error(error?.response?.data?.error);
+  //   } finally {
+  //     setLoading(false);
+  //     dispatch(clearCart())
+  //   }
+  // };
+
   const orderHandler = async (data: any) => {
     setLoading(true);
-    const orderData = {
-      items: cart.map(item => ({
-        productId: item.productId,
-        title: item.title,
-        price: item.price,
-        stock: item.stock,
-        modelNumber: item.modelNumber,
-        image: item.image,
-        color: item.color,
-        rating: item.rating,
-        model: item.model,
-        quantity: item.quantity,
-      })),
-      paymentInfo,
-      subTotal,
-      shippingCharge,
-      totalAmount: totalPrice || subTotal,
-      discountPrice,
-      address: data, 
-      saveAddress,
-      userId: user?.id || null,
-    };
-
+  
+    // Iterating through each cart item to place individual orders
     try {
-      const res = await axios.post("/api/createOrder", orderData);
-      if (res?.data?.success) toast.success(res?.data?.success);
-      toast.success("order success ✅")
+      for (const item of cart) {
+        const orderData = {
+          items: [{
+            productId: item.productId,
+            title: item.title,
+            price: item.price,
+            stock: item.stock,
+            modelNumber: item.modelNumber,
+            image: item.image,
+            color: item.color,
+            rating: item.rating,
+            model: item.model,
+            quantity: item.quantity,
+          }],
+          paymentInfo,
+          subTotal: item.price * item.quantity,  // Subtotal for each item
+          shippingCharge,
+          totalAmount: (item.price * item.quantity) + shippingCharge - discountPrice,
+          discountPrice,
+          address: data,
+          saveAddress,
+          userId: user?.id || null,
+        };
+  
+        const res = await axios.post("/api/createOrder", orderData);
+      }
+      
+      toast.success(`Order for placed successfully ✅`);
+      // Confetti animation when all orders are placed successfully
       Confetti();
     } catch (error: any) {
       setLoading(false);
-      toast.error(error?.response?.data?.error);
+      toast.error(error?.response?.data?.error || "Error placing orders");
     } finally {
       setLoading(false);
-      dispatch(clearCart())
+      // dispatch(clearCart());  // Clear the cart after all orders are placed
     }
   };
 

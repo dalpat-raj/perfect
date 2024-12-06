@@ -62,8 +62,8 @@ const AddressForm:React.FC<AddressProps> = ({userId, setOpenAddress}) => {
                 }
             </div>
             
-            <div className='flex gap-4 mb-4'>
-                <div className='w-1/2'>
+            <div className='flex max-sm:block gap-4 mb-4'>
+                <div className='w-1/2 max-sm:w-full'>
                     <Label htmlFor="phone" title="Phone Number" />
                     <input
                         {...register("phone")} 
@@ -79,7 +79,7 @@ const AddressForm:React.FC<AddressProps> = ({userId, setOpenAddress}) => {
                 </div>
         
 
-                <div className='w-1/2'>
+                <div className='w-1/2 max-sm:w-full'>
                 <Label htmlFor="city" title="City" />
                 <input
                     {...register("city")}
@@ -97,8 +97,8 @@ const AddressForm:React.FC<AddressProps> = ({userId, setOpenAddress}) => {
                 </div>
             </div>
 
-            <div className='flex gap-4 mb-4'>
-                <div className='w-1/2'>
+            <div className='flex max-sm:block gap-4 mb-4'>
+                <div className='w-1/2 max-sm:w-full'>
                 <Label htmlFor="state" title="State" />
                 <input
                     {...register("state")}
@@ -114,7 +114,7 @@ const AddressForm:React.FC<AddressProps> = ({userId, setOpenAddress}) => {
                 )
                 }
                 </div>
-                <div className='w-1/2'>
+                <div className='w-1/2 max-sm:w-full'>
                 <Label htmlFor="city" title="Pin Code" />
                 <input
                     {...register("pinCode")}

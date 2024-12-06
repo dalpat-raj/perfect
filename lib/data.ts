@@ -140,23 +140,6 @@ export async function getProductDetails(title: string){
   
 }
 
-// export async function getProductDetailsById(id: number | string){
-
-//   try {
-//     const product = await db.product.findFirst({
-//       where: {
-//         id: Number(id)
-//       },
-
-//     })
-  
-//     return product;
-//   } catch (error: any) {
-//     throw new Error("product not found")
-//   }
-  
-// }
-
 export async function editProducts({id,formData}: {id: number, formData: FormData}){
   try {
     const updatedProduct = db.product.update({
@@ -187,37 +170,25 @@ export async function editProducts({id,formData}: {id: number, formData: FormDat
   } 
 }
 
-// please delete this function in production
-export async function getCollections() {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  const products = await db.product.findMany({
-    select: {
-      id: true,
-      collection: true,
-      images: true, 
-    },
-  });
 
-  return products
-  
-}
-// please delete this function in production
-export async function getUniqueCollections(){
-  const products = await getCollections()
-  const uniqueCollections = products.reduce<Collections[]>((acc, product) => { 
-    if (!acc.some(item => item.collection === product.collection)) {
-      acc.push(product);
-    }
-    return acc;
-  }, [] as Collections[]);
+// // please delete this function in production
+// export async function getUniqueCollections(){
+//   const products = await getCollections()
+//   const uniqueCollections = products.reduce<Collections[]>((acc, product) => { 
+//     if (!acc.some(item => item.collection === product.collection)) {
+//       acc.push(product);
+//     }
+//     return acc;
+//   }, [] as Collections[]);
 
-  return uniqueCollections;
-}
+//   return uniqueCollections;
+// }
 
-export async function getCollection(){
+export async function getCollections(){
   try {
-    const collection = await db.collection.findMany()
-    if(!collection) throw new Error("Something went wrong plasea retry")
+    const collections = await db.collection.findMany()
+    if(!collections) throw new Error("Something went wrong plasea retry")
+    return collections
   } catch (error) {
     console.error("Error fetching collections:", error);
     throw new Error("Failed to fetch collections");
@@ -341,35 +312,6 @@ export async function getOrderDetails(id: number) {
   }
 }
 
-// export async function getOrderByType(ordersType: string) {
-//   try {
-//     await new Promise((resolve) => setTimeout(resolve, 3000));
-
-//     const orders = await db.order.findMany({
-//       orderBy: {
-//         createdAt: 'desc',
-//       },
-//       where: {
-//         status: ordersType,
-//       },
-//       include:{
-//         user: {
-//           select: {
-//             name: true,
-//           }
-//         },
-//         paymentInfo: true,
-//       },
-//       take: 7, 
-//     });
-
-//     return orders;
-
-//   } catch (error) {
-//     console.error("Error fetching orders:", error);
-//     throw new Error("Failed to fetch orders");
-//   }
-// }
 
 export async function getReviews(){
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -450,10 +392,6 @@ export async function getEventRunning(){
         }
       })
 
-      if(!events){
-        throw new Error("no event");
-      }
-
     return events;
   } catch (error) {
     console.error("events does not exists:", error);
@@ -480,7 +418,6 @@ export async function getCoupons(){
     console.error("coupon does not exists:", error);
     throw new Error("coupons does not exists");
   } 
-  
 }
 
 export async function getBanner(){

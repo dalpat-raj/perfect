@@ -39,7 +39,7 @@ const Footer = () => {
         <div>
           <h2 className='text-[17px] pb-2'>Contact</h2>
           <ul>
-            <li className='list-none py-1 text-[14px] font-normal'>Entity Of Pankaj Gaur</li>
+            <li className='list-none py-1 text-[14px] font-normal'>Entity Of Dalpat Raj</li>
             <li className='list-none py-1 text-[14px] font-normal'>2024 © Perfect Cover</li>
             <li className='list-none py-1 text-[14px] font-normal'>Made With ❤️ In World</li>
             <li className='list-none py-1 text-[14px] font-normal'>Call Us @ 6356060606</li>
@@ -62,7 +62,7 @@ const Footer = () => {
       
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
-          <AccordionTrigger><h6 className='text-[13px] uppercase font-extrabold'>Company</h6></AccordionTrigger>
+          <AccordionTrigger className='hover:no-underline'><h6 className='text-[13px] uppercase font-extrabold'>Company</h6></AccordionTrigger>
           <AccordionContent>
           <div className="py-4 transition duration-500 ease-in opacity-100">
           <ul className='text-[14px] font-semibold'>
@@ -74,11 +74,9 @@ const Footer = () => {
         </div>
           </AccordionContent>
         </AccordionItem>
-      </Accordion>
 
-      <Accordion type="single" collapsible>
         <AccordionItem value="item-2">
-          <AccordionTrigger><h6 className='text-[13px] uppercase font-extrabold'>Need Help ?</h6></AccordionTrigger>
+          <AccordionTrigger className='hover:no-underline'><h6 className='text-[13px] uppercase font-extrabold'>Need Help ?</h6></AccordionTrigger>
           <AccordionContent>
           <div className="py-4 transition duration-500 ease-in opacity-100">
             <ul className='text-[14px] font-semibold'>
@@ -91,14 +89,12 @@ const Footer = () => {
           </AccordionContent>
         </AccordionItem>
 
-      </Accordion>
-      <Accordion type="single" collapsible>
         <AccordionItem value="item-3">
-          <AccordionTrigger><h6 className='text-[13px] uppercase font-extrabold'>Contact</h6></AccordionTrigger>
+          <AccordionTrigger className='hover:no-underline'><h6 className='text-[13px] uppercase font-extrabold'>Contact</h6></AccordionTrigger>
           <AccordionContent>
           <div className={"py-4 transition duration-500 ease-in opacity-100"}>
             <ul className='text-[14px] font-semibold'>
-              <li className='list-none py-1 text-[14px] font-normal'>Entity Of Pankaj Gaur</li>
+              <li className='list-none py-1 text-[14px] font-normal'>Entity Of Dalpat Raj</li>
               <li className='list-none py-1 text-[14px] font-normal'>2024 © Perfect Cover</li>
               <li className='list-none py-1 text-[14px] font-normal'>Made With ❤️ In World</li>
               <li className='list-none py-1 text-[14px] font-normal'>Call Us @ 6356060606</li>

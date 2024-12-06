@@ -1,11 +1,11 @@
-
-import {  getUniqueCollections } from '@/lib/data'
 import { caveat } from '@/app/ui/Fonts'
+import {  getCollections } from '@/lib/data'
 import CollectionCarousel from '@/app/ui/collections/CollectionCarousel'
 
 
+
 const Collections = async () => {
-  const collections = await getUniqueCollections();
+  const collections = await getCollections();
   
   return (
     <div className='w-full my-8 max-md:my-8 max-sd:my-4 px-12 max-md:px-4 max-sm:px-2'>

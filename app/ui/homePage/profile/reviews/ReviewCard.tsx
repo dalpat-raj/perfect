@@ -56,11 +56,11 @@ const ReviewCard = ({item}: {item : Review}) => {
         </div>
         <div className='my-2'><Rating rating={item.rating} /></div>
         <div>
-            <p className='text-gray-500 leading-none'>{item.message}</p>
+            <p className='text-gray-500 text-[14px] leading-none'>{item.message}</p>
         </div>
-        <div className='mt-4 flex gap-2'>
+        <div className='my-4 flex gap-2'>
             {item.images?.map((item,i)=>(
-            <div className='w-[70px] h-[70px]' key={i}>
+            <div className='w-[70px] h-[70px] ' key={i}>
                 {imageLoading && <ImageSkeleton/>}
                 <Image
                 src={item}

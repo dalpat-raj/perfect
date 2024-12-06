@@ -16,7 +16,7 @@ type UserProps = {
 const Addresses: React.FC<UserProps> = ({user}) => {
   const [openAddress, setOpenAddress] = useState<boolean>(false)
   return (
-    <div className='p-6 max-sm:px-0 max-sm:py-4'>
+    <div className='p-6 max-sm:px-2 max-sm:py-4'>
         {
             user.address ? (
                 <div className='flex flex-col gap-4'>

@@ -17,7 +17,7 @@ const OrderDetails = async({id}: {id: number}) => {
     <div className='max-sm:px-0'>
         <div className='flex flex-col gap-6'>
 
-            <div className='bg-white grid grid-cols-3 max-md:grid-cols-1 shadow-custom-shadow'>
+            <div className='bg-white grid grid-cols-3 max-md:grid-cols-1 max-lg:shadow-none shadow-custom-shadow'>
                 <div className='col-span-1 p-6 max-sm:px-4 border-r border-gray-100'>
                     <h2 className='text-[17px] capitalize font-bold'>Delivery Adderss</h2>
                     <p className='text-[14px] font-semibold py-2'>{order?.user?.name}</p>
@@ -58,7 +58,7 @@ const OrderDetails = async({id}: {id: number}) => {
 
             {
                 order?.items?.map((item, i)=>(
-                    <div className='bg-white grid grid-cols-4 max-md:grid-cols-1 shadow-custom-shadow' key={i}>
+                    <div className='bg-white grid grid-cols-4 max-md:grid-cols-1 max-sm:shadow-custom-shadow ' key={i}>
                         <div className='w-full col-span-1 p-6 max-sm:px-4 flex gap-2'>
                             <OrderImage image={item?.image}/>
                             <div>
