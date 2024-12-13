@@ -1,9 +1,10 @@
-import { getCoupons } from '@/lib/data';
-import React from 'react'
-import CouponCard from './couponCard';
+import { getCoupons, deactivateCoupons } from '@/lib/data';
+import CouponCard from '@/app/ui/dashboard/coupon/couponCard';
 
 
 const Coupon = async() => {
+  
+  await deactivateCoupons();
   const coupons = await getCoupons();
 
   return (

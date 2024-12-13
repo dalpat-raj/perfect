@@ -420,6 +420,31 @@ export async function getCoupons(){
   } 
 }
 
+export async function deactivateCoupons(){
+  try {
+    const currentDate = new Date();
+
+    const result = await db.coupon.updateMany({
+      where: {
+        expirationDate: {
+          lt: currentDate, 
+        },
+      },
+      data: {
+        isActive: false, 
+      },
+    });
+
+
+
+    return "coupons";
+  } catch (error) {
+    console.error("coupon does not exists:", error);
+    throw new Error("coupons does not exists");
+  } 
+}
+
+
 export async function getBanner(){
   try {
       const banners = await db.banner.findMany({

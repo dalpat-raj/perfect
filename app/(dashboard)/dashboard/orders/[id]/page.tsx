@@ -1,14 +1,12 @@
-import OrderDetail from '@/app/ui/dashboard/orders/orderDetails/OrderDetail'
+import dynamic from 'next/dynamic';
 import { OrderDetailsSkeleton } from '@/app/ui/skeletons';
-import React, { Suspense } from 'react'
+const OrderDetail = dynamic(()=>import("@/app/ui/dashboard/orders/orderDetails/OrderDetail"), {loading:()=><OrderDetailsSkeleton/>})
 
 
 const page = ({ params }: { params: { id: number } }) => {
   const id = params.id;
   return (
-   <Suspense fallback={<OrderDetailsSkeleton/>}>
       <OrderDetail id={id}/>
-   </Suspense>
   )
 }
 

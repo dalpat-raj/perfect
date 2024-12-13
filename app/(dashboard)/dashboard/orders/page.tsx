@@ -1,6 +1,4 @@
-import AllOrders from '@/app/ui/dashboard/orders/allOrders/AllOrders'
-import React from 'react'
-
+import AllOrders from '@/app/ui/dashboard/orders/AllOrders'
 
 const page = () => {
   return (

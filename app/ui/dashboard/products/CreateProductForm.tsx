@@ -12,31 +12,6 @@ import Image from "next/image";
 import { toast } from "sonner";
 
 
-// const productToFormData = async (product: Product): Promise<FormData> => {
-//   const fileImages = await Promise.all(
-//     product.images.map(async (url) => {
-//       const response = await fetch(url);
-//       const blob = await response.blob();
-//       return new File([blob], url, { type: blob.type });
-//     })
-//   );
-
-//   return {
-//     title: product.title,
-//     description: product.description,
-//     modelNumber: product.modelNumber,
-//     stock: product.stock,
-//     originalPrice: product.originalPrice,
-//     sellingPrice: product.sellingPrice,
-//     collection: product.collection,
-//     model: product.model,
-//     color: product.color,
-//     feature: product.feature,
-//     images: fileImages,
-//     // map other fields...
-//   };
-// };
-
 const CreateProductForm = () => {
   
   const [addFeature, setAddFeature] = useState<string>("")
@@ -78,12 +53,15 @@ const CreateProductForm = () => {
 
   const handleSubmit:React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
+    
     try{
       setCreateProduct(true);
         
-        const response = await axios.post("/api/addProduct",formData)
+        const response = await axios.post("/api/addProduct", formData);
         if (response) {
-          router.push('/dashboard/products')
+          // router.push('/dashboard/products')
+          console.log(response);
+          
         } else {
           toast.error("Failed to create product");
         }

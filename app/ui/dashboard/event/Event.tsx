@@ -18,11 +18,11 @@ const Event = async() => {
           <h4 className='text-[14px] font-semibold max-sm:hidden'>End</h4>
           <h4 className='text-[14px] font-semibold '>Action</h4>
         </div>
-        {/* {
-          events.map((item, i)=>(
+        {
+          events?.map((item, i)=>(
             <EventCard AllEvents={item} key={i}/>
           ))
-        } */}
+        }
       </div>
     </div>
   )

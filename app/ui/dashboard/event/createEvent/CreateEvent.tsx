@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { EventCreateSchema } from '@/schema';
 import { EventCreate } from '@/lib/definations';
 import { useRouter } from 'next/navigation';
+import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner';
 
 
 const CreateEvent = () => {
@@ -138,11 +139,11 @@ const CreateEvent = () => {
                    Add
                  </button>
                </div>
-               {products.length > 0 && (
+               {products?.length > 0 && (
                  <div className='mt-2 border border-gray-200 p-4'>
                    <p className='text-[14px]'>Selected Products: ID</p>
                    <ul className='flex gap-2'>
-                     {products.map((id) => (
+                     {products?.map((id) => (
                        <li className='text-[13px]' key={id}>{id}</li>
                      ))}
                    </ul>
@@ -150,15 +151,10 @@ const CreateEvent = () => {
                )}
              </div> 
 
-            <div className='mt-4'>
-              <button 
-                type='submit' 
-                disabled={isPending} 
-                className="w-full hover:bg-gray-800 text-white px-4 py-2 rounded-md bg-[#333] transition">
-                  {
-                    isPending ? "Wait" : "Create"
-                  }
-                </button>
+            <div className='mt-4 h-8'>
+              <ButtonWithSpinner loading={isPending}>
+                Create
+              </ButtonWithSpinner>
             </div>
           </form>
         </div>

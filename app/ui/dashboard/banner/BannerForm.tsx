@@ -6,33 +6,29 @@ import Image from "next/image";
 import { RxCross1 } from "react-icons/rx";
 import { caveat } from "@/app/ui/Fonts";
 import { toast } from "sonner";
+import { ImageSkeleton } from "@/app/ui/skeletons";
+import ButtonWithSpinner from "@/app/ui/button/ButtonWithSpinner";
 
 type Props = {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-export function BannerForm({setOpen, setLoading}: Props) {
-
+export function BannerForm({setOpen}: Props) {
+    const [loading, setLoading] = useState(false)
     const [images, setImages] = useState<string[]>([])
-    const [uploading, setUploading] = useState(false);
+    const [imageLoading, setImageLoading] = useState(true);
 
-    const handleUploadProgress=()=>{
-        setUploading(false)
-      }
     
-      const handleUploadComplete = (res: any) => {
-        if (res) {
-          const urls = res.map((file: { url: string }) => file.url);
-          setImages(urls)
-          setUploading(true)
-          return urls
-        }
-      };
+    const handleUploadComplete = (res: any) => {
+    if (res) {
+        const urls = res.map((file: { url: string }) => file.url);
+        setImages(urls)
+        return urls
+    }
+    };
 
     const handleSubmit=async(event: React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        setOpen(false)
         setLoading(true)
         const formData = new FormData(event.currentTarget);
         try {
@@ -44,12 +40,12 @@ export function BannerForm({setOpen, setLoading}: Props) {
             console.log(error?.message);
             toast.error('Error submitting form 😢')
         } finally {
+            setOpen(false)
             setLoading(false)
         }
     }
 
     const handleChange=()=>{
-        setUploading(false);
         setImages([])
     }
 
@@ -74,16 +70,17 @@ export function BannerForm({setOpen, setLoading}: Props) {
       
             <div className="my-4">
             {
-                uploading || images[0] ? (
+                images?.length >= 1 ? (
                     <div className="border border-gray-200 p-2">
                         <div className="flex justify-between items-center mb-4">
                             <p className="text-gray-600 text-[14px] font-semibold">Images</p>
                             <button onClick={handleChange} className="rounded-lg bg-gray-700 text-white text-[14px] px-2 py-1">Change</button>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="">
                             {
                                 images.map((img,i)=>(
-                                    <div className="w-full h-auto rounded-sm" key={i}>
+                                    <div className="w-full h-[250px] rounded-sm" key={i}>
+                                        {imageLoading && <ImageSkeleton/>}
                                         <Image
                                         src={img}
                                         alt={img}
@@ -91,6 +88,7 @@ export function BannerForm({setOpen, setLoading}: Props) {
                                         height={0}
                                         sizes="100vw"
                                         style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                                        onLoad={()=>setImageLoading(false)}
                                         />
                                     </div>
                                 ))
@@ -100,18 +98,22 @@ export function BannerForm({setOpen, setLoading}: Props) {
                 ) : (
                     <div className="">
                         <UploadDropzone
-                            endpoint="imageUploader"
+                            endpoint="bannerImage"
                             onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
-                            onUploadError={() => alert("Upload error ❌")}
-                            onUploadProgress={()=>handleUploadProgress()}
+                            onUploadError={() => {
+                                toast.success("Upload error ❌")                        
+                              }}
                         /> 
                     </div>
                 )
             }
             </div>
       
-
-            <button type="submit" className="w-full rounded-lg bg-[#080808] hover:bg-gray-800 text-white text-[14px] px-2 py-1">Create banner</button>
+            <div className="w-full h-8">
+                <ButtonWithSpinner loading={loading}>
+                    Create Banner
+                </ButtonWithSpinner>
+            </div>
         </form>
         </div>
    </div>

@@ -7,51 +7,49 @@ import { RxCross1 } from "react-icons/rx";
 import { BannerData } from "@/lib/definations";
 import { caveat } from "@/app/ui/Fonts";
 import { toast } from "sonner";
+import { ImageSkeleton } from "@/app/ui/skeletons";
+import ButtonWithSpinner from "@/app/ui/button/ButtonWithSpinner";
 
 type Props = {
     editData: BannerData | any,
     setEditOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-export function EditForm({editData, setEditOpen, setLoading}: Props) {
+export function EditForm({editData, setEditOpen}: Props) {
     
     const [images, setImagess] = useState<string[]>(editData?.images)
-    const [uploading, setUploading] = useState(false);
+    const [imageLoading, setImageLoading] = useState(true);
+    const [loading, setLoading] = useState(false)
 
-    const handleUploadProgress=()=>{
-        setUploading(false)
-      }
+    
     
       const handleUploadComplete = (res: any) => {
         if (res) {
           const urls = res.map((file: { url: string }) => file.url);
           setImagess(urls)
-          setUploading(true)
           return urls
         }
       };
 
     const handleSubmit=async(event: React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        setEditOpen(false)
         setLoading(true)
         const formData = new FormData(event.currentTarget);
         try {
             const bannerEditAction = EditBanner.bind(null, editData?.id, images);
             const data = await bannerEditAction(formData);
             if(data?.success) toast.success(data.success)
-            if(data?.error) toast.error(data.error)
-        } catch (error) {
+                if(data?.error) toast.error(data.error)
+                } catch (error) {
             console.log(error);
             toast.error('Error submitting form 😢')
         } finally {
+            setEditOpen(false)
             setLoading(false)
         }
     }
 
     const handleImageChange=()=>{
-        setUploading(false);
         setImagess([])
     }
 
@@ -77,7 +75,7 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
       
             <div className="my-4">
             {
-                uploading || images[0] ? (
+                images?.length >= 1 ? (
                     <div className="border border-gray-200 p-2">
                         <div className="flex justify-between items-center mb-4">
                             <p className="text-gray-600 text-[14px] font-semibold">Images</p>
@@ -86,14 +84,16 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
                         <div className="flex gap-2">
                             {
                                 images?.map((img,i)=>(
-                                    <div className="w-full h-auto rounded-sm" key={i}>
+                                    <div className="w-full h-[250px] rounded-sm" key={i}>
+                                        {imageLoading && <ImageSkeleton/>}
                                         <Image
-                                        src={img || '/e22.jpg'}
+                                        src={img}
                                         alt={img}
                                         width={0}
                                         height={0}
                                         sizes="100vw"
                                         style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                                        onLoad={()=>setImageLoading(false)}
                                         />
                                     </div>
                                 ))
@@ -103,10 +103,11 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
                 ) : (
                     <div className="">
                         <UploadDropzone
-                            endpoint="imageUploader"
+                            endpoint="bannerImage"
                             onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
-                            onUploadError={() => alert("Upload error:")}
-                            onUploadProgress={()=>handleUploadProgress()}
+                            onUploadError={() => {
+                                toast.success("Upload error ❌")                        
+                              }}
                         /> 
                     </div>
                 )
@@ -114,7 +115,11 @@ export function EditForm({editData, setEditOpen, setLoading}: Props) {
             </div>
       
 
-            <button type="submit" className="w-full rounded-lg bg-[#333] text-white text-[14px] px-2 py-1">Create banner</button>
+            <div className="w-full h-8">
+                <ButtonWithSpinner loading={loading}>
+                    Update Banner
+                </ButtonWithSpinner>
+            </div>
         </form>
         </div>
    </div>

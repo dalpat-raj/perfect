@@ -364,7 +364,7 @@ export interface AllEventData {
       reviewId: number | null;
       createdAt: string;
       updatedAt: string;
-      review: Review[];
+      review: Review[] | null;
     }>
   }>
 }

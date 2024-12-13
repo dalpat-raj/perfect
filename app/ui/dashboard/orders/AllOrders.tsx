@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import OrderCard from '../OrderCard';
+import { useEffect, useState } from 'react';
 import Pagination from '@/app/(dashboard)/dashboard/pagination/Pagination';
 import { useSearchParams } from 'next/navigation';
-import TopNav from '../TopNav';
+import TopNav from '@/app/ui/dashboard/orders/TopNav';
+import OrderCard from '@/app/ui/dashboard/orders/OrderCard';
 import LoaderBall from '@/app/ui/loader/BallLoader';
 import { toast } from 'sonner';
 

@@ -28,11 +28,10 @@ export async function orderStatusChange(formData: FormData) {
         });
 
         revalidatePath(`/dashboard/orders/order-details/${id}`);
-        return updatedOrder
+        return {success: "Order Updated ✅"};
           
     } catch (error) {
-        console.error("Error updating order status:", error);
-        throw new Error("Failed to update order status");
+        return {error: "Database Error Failed To Update Order ❌"}
     }
 
 }

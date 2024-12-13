@@ -1,7 +1,8 @@
 import { getAdminCollctions } from '@/lib/data';
 import Image from 'next/image';
 import React from 'react'
-import CollectionButton from './CollectionButton';
+import CollectionDelete from './CollectionDelete';
+import CollectionEdit from './CollectionEdit';
 
 
 
@@ -22,8 +23,8 @@ const Collection = async() => {
                 <div className='flex justify-between items-center border border-gray-200 my-4 rounded-lg px-4' key={i}>
                     <div className='w-[200px] h-[50px] max-sm:w-[100px]'>
                         <Image
-                        src={item?.image ? item?.image : ''}
-                        alt={item.title}
+                        src={item?.image}
+                        alt={item?.title}
                         width={0}
                         height={0}
                         sizes='100vw'
@@ -33,7 +34,10 @@ const Collection = async() => {
                     <div>
                         <p>{item.title}</p>
                     </div>
-                    <CollectionButton items={item}/>
+                    <div className='flex items-center gap-2'>
+                        <CollectionEdit items={item}/>
+                        <CollectionDelete id={item?.id} />
+                    </div>
                 </div>
             ))
         }

@@ -4,7 +4,8 @@ import { db } from "@/lib/db";
 import { UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export const deleteProduct = async (id: number) => {
+export const deleteProduct = async (formData: FormData) => {
+  const id = formData.get("id") as string;
   const role = await currentRole();
 
       try {
@@ -14,7 +15,7 @@ export const deleteProduct = async (id: number) => {
   
         const isDeleted = await db.product.delete({
           where: {
-            id: id
+            id: Number(id)
           }
     
         })

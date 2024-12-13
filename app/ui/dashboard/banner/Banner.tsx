@@ -1,15 +1,13 @@
 'use client'
-import React, { useState } from 'react'
-import { FaPlus } from 'react-icons/fa6'
-import { caveat } from '@/app/ui/Fonts'
-import { BannerForm } from './BannerForm'
-import LoaderBall from '../../loader/BallLoader'
+import { useState } from 'react'
 import Image from 'next/image'
-import { BannerData } from '@/lib/definations'
+import { FaPlus } from 'react-icons/fa6'
 import { CiEdit } from 'react-icons/ci'
-import { DeleteBanner } from '@/action/banner'
-import { EditForm } from './EditFrom'
-import { toast } from 'sonner'
+import { caveat } from '@/app/ui/Fonts'
+import { BannerData } from '@/lib/definations'
+import { BannerForm } from '@/app/ui/dashboard/banner/BannerForm'
+import { EditForm } from '@/app/ui/dashboard/banner/EditFrom'
+import BannerDelete from '@/app/ui/dashboard/banner/BannerDelete'
 
 type Props = {
   banners: BannerData[],
@@ -19,28 +17,7 @@ const Banner = ({banners}: Props) => {
   const [editData, setEditData] = useState<BannerData>();
   const [editOpen, setEditOpen] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleDelete=async(event: React.FormEvent<HTMLFormElement>)=>{
-    event.preventDefault()
-    setEditOpen(false)
-    setLoading(true)
-    const formData = new FormData(event.currentTarget)
-    try {
-      const data = await DeleteBanner(formData)
-      if(data?.success) toast.success(data.success)
-      if(data?.error) toast.error(data.error)
-    } catch (error) {
-      console.log(error);
-      toast.error('Error submitting form 😢')
-    } finally {
-        setLoading(false)
-    }
-}
-
-  if(loading){
-    return <LoaderBall/>
-  }
+  
   return (
     <div className='px-4 my-4 relative'>
         <div className='my-4 text-center flex justify-between items-center'>
@@ -66,10 +43,7 @@ const Banner = ({banners}: Props) => {
               <button onClick={()=>{setEditData(item); setEditOpen(true)}} className='text-[13px] text-white bg-[#333] py-1 px-2 rounded-sm'>
                   <CiEdit size={20} />
               </button>
-              <form onSubmit={handleDelete}>
-              <input type="number" defaultValue={item?.id} name="id" className='hidden'/>
-              <button type='submit' className='text-[13px] text-white bg-[#333] py-1 px-2 rounded-sm'>Delete</button>
-              </form>
+              <BannerDelete id={item?.id}/>
               </div>
               </div>
               </div>
@@ -83,14 +57,14 @@ const Banner = ({banners}: Props) => {
         {
           open && (
             <div className='w-full h-screen fixed top-0 left-0 bg-blackOverlay'>
-              <BannerForm setOpen={setOpen} setLoading={setLoading}/>
+              <BannerForm setOpen={setOpen}/>
             </div>
           )
         }
         {
           editOpen && (
             <div className='w-full h-screen fixed top-0 left-0 bg-blackOverlay'>
-              <EditForm editData={editData} setEditOpen={setEditOpen} setLoading={setLoading}/>
+              <EditForm editData={editData} setEditOpen={setEditOpen}/>
             </div>
           )
         }

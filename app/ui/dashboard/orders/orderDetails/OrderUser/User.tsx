@@ -34,20 +34,20 @@ const User = ({users, address}: {users: UserData | null, address: Address | null
             />
         </div>
         <div className='flex justify-start gap-2 items-center mb-1'>
-            <p className='text-[13px] font-semibold text-gray-700'>Name:</p>
-            <p className='text-[13px] text-gray-800'>{users?.name}</p>
+            <p className='text-[14px] font-semibold text-gray-800'>Name:</p>
+            <p className='text-[14px] text-gray-600'>{users?.name}</p>
         </div>
         <div className='flex justify-start gap-2 items-center mb-1'>
-            <p className='text-[13px] font-semibold text-gray-700'>Email:</p>
-            <p className='text-[13px] text-gray-800'>{users?.email.slice(0,12)}...</p>
+            <p className='text-[14px] font-semibold text-gray-800'>Email:</p>
+            <p className='text-[14px] text-gray-600'>{users?.email.slice(0,12)}...</p>
         </div>
         <div className='flex justify-start gap-2 items-center mb-1'>
-            <p className='text-[13px] font-semibold text-gray-700'>Phone:</p>
-            <p className='text-[13px] text-gray-800'>{address?.phone}</p>
+            <p className='text-[14px] font-semibold text-gray-800'>Phone:</p>
+            <p className='text-[14px] text-gray-600'>{address?.phone}</p>
         </div>
         <div className='flex justify-start gap-2 items-center mb-1'>
-            <p className='text-[13px] font-semibold text-gray-700'>Join Us:</p>
-            <p className='text-[13px] text-gray-800'>{formatDate(users?.createdAt)}</p>
+            <p className='text-[14px] font-semibold text-gray-800'>Join Us:</p>
+            <p className='text-[14px] text-gray-600'>{formatDate(users?.createdAt)}</p>
         </div>
     </div>
   )

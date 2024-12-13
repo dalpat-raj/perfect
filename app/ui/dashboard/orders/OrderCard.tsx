@@ -11,6 +11,7 @@ type Props = {
 
 
 const OrderCard = ({order}:Props) => {
+  console.log(order);
   
   return (
     <Link href={`/dashboard/orders/${order.id}`}>

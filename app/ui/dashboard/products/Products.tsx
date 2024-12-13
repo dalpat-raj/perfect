@@ -1,27 +1,26 @@
 'use client';
-
+import React from 'react'
+import { toast } from 'sonner'
 import Pagination from '@/app/(dashboard)/dashboard/pagination/Pagination';
 import { Product } from '@/lib/definations';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import ProductsCard from './ProductsCard';
-import LoaderBall from '../../loader/BallLoader';
+import ProductsCard from '@/app/ui/dashboard/products/ProductsCard';
+import LoaderBall from '@/app/ui/loader/BallLoader';
+import { deleteProduct } from '@/action/product'  
 
 
 const Products = () => {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
   const limit = 8;
-  const [loading, setLoading] = useState<boolean>(false)
-  const [isFetching, setIsFetching] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
-  const [error, setError] = useState<string | unknown>('');
 
   const fetchProducts = async (currentPage: number) => {
-    if (isFetching) return;
-    setIsFetching(true);
-
+    if (loading) return;
+    setLoading(true)
     const query = new URLSearchParams();
     query.append('page', currentPage.toString());
     query.append('limit', limit.toString());
@@ -35,12 +34,26 @@ const Products = () => {
       setProducts(data.products);
       setTotalPages(Math.ceil(data.totalProducts / limit)); 
     } catch (error) {
-      setError('Failed to fetch products');
+      toast.error('Failed to fetch products');
     } finally {
-      setIsFetching(false);
+      setLoading(false);
     }
   };
 
+
+
+const handleDelete = async(e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault(); 
+  setLoading(true)
+  const formData = new FormData(e.currentTarget);
+  const res = await deleteProduct(formData)
+  if(res.success){
+      toast.success(res.success)
+  }else {
+    if(res.error) toast.success(res.error)
+    }
+  fetchProducts(page);
+}
 
 
   useEffect(() => {
@@ -54,8 +67,8 @@ const Products = () => {
     <div className="bg-white rounded-md relative">
 
       <div className="py-2 shadow-lg mb-4">
-        <div className="grid grid-cols-8 max-sm:grid-cols-4 px-4">
-          <div className="col-span-2 max-sm:col-span-1 text-[14px] font-semibold max-sm:hidden">Image</div>
+        <div className="grid grid-cols-9 gap-2 max-sm:grid-cols-4 px-4">
+          <div className="col-span-3 max-sm:col-span-1 text-[14px] font-semibold max-sm:hidden">Image</div>
           <div className="col-span-1 text-[14px] font-semibold">Id</div>
           <div className="col-span-1 text-[14px] font-semibold">Price</div>
           <div className="col-span-1 text-[14px] font-semibold max-sm:hidden">Collection</div>
@@ -67,20 +80,21 @@ const Products = () => {
 
  
     {
-      isFetching || loading ? (
+      loading ? (
         <LoaderBall/>
       ) : (
-      <div className="px-2">
+        <div className="px-2">
         {products.map((item, i) => (
-          <ProductsCard product={item} key={i}/>
+          <ProductsCard product={item} handleDelete={handleDelete} key={i}/>
         ))}
       </div>
       )
     }
+     
 
       
     {
-      !isFetching && (
+      !loading && (
         <div className='w-full bg-white py-6'>
         <div className='absolute bottom-0 left-[50%] transform -translate-x-1/2'>
           <Pagination totalPages={totalPages} />

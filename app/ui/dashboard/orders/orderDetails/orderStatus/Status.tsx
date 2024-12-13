@@ -1,7 +1,9 @@
 'use client'
 import { orderStatusChange } from '@/action/order';
+import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner';
 import { UserOrders } from '@/lib/definations'
 import React, { useState } from 'react'
+import { toast } from 'sonner';
 
 
 type Props = {
@@ -12,16 +14,17 @@ const Status = ({order}: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setIsLoading(true)
     event.preventDefault(); 
+    setIsLoading(true)
     const formData = new FormData(event.currentTarget); 
     try {
-      const data = await orderStatusChange(formData);
-      if(data){
-        setIsLoading(false) 
-      }
+      const res = await orderStatusChange(formData);
+      if(res.success) toast.success(res.success)
+      if(res.error) toast.success(res.error)
     } catch (error) {
       console.error('Error submitting form:', error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -45,7 +48,11 @@ const Status = ({order}: Props) => {
             defaultValue={order?.id}
             className='hidden'
             />
-            <button type='submit' className='bg-[#333] py-1 rounded-lg w-full text-white font-semibold'>{isLoading ? "Wait" : "Submit"}</button>
+            </div>
+            <div className='h-8'>
+              <ButtonWithSpinner loading={isLoading}>
+                Submit
+              </ButtonWithSpinner>
             </div>
         </form>
     </div>

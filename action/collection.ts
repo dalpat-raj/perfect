@@ -47,17 +47,17 @@ export async function editCollction(id: number, image: string,formData: FormData
 }
 
 
-export async function deleteCollection(id: number){
-    console.log(id);
+export async function deleteCollection(formData: FormData){
+    const id = formData.get("id")
     await new Promise((resolve) => setTimeout(resolve, 3000));
     try {
-      const collections = await db.collection.delete({where: { id: id}})
+      const collections = await db.collection.delete({where: {id: Number(id)}})
       
       if(!collections) throw new Error("Fiailed to fetch Collction!")
         revalidatePath('/dashboard/collection')
-      return collections;
+      return {success: "Collection Deleted ✅"};
     } catch (error) {
       console.error("Error fetching reviews:", error);
-      throw new Error("Failed to fetch reviews");
+      return {error: "Opps... ❌"}
     }
   }

@@ -28,7 +28,7 @@ const CouponCard: React.FC<CouponProps> = ({AllCoupons}) => {
     
   return (
     <div className='border border-gray-200 mb-4 p-2 rounded-md'>
-        <div className='w-full grid grid-cols-7 max-sm:grid-cols-4 gap-2'>
+        <div className='w-full grid grid-cols-7 items-center max-sm:grid-cols-4 gap-2'>
             <div className=''>
                 <p className='text-[13px] text-gray-900'>#{AllCoupons.id}</p>
             </div>
@@ -38,9 +38,23 @@ const CouponCard: React.FC<CouponProps> = ({AllCoupons}) => {
             <div className='max-sm:hidden'>
                 <p className='text-[13px] text-gray-700'>{AllCoupons.discount} %</p>
             </div>
-            <div className='max-sm:hidden'>
-                <p className='text-[13px] text-gray-700 max-sm:hidden'>{AllCoupons.isActive ? "Active" : "Off"}</p>
-            </div>
+            {
+                AllCoupons?.isActive ? (
+                    <div className='max-sm:hidden flex gap-2 items-center'>
+                    <div className='w-3 h-3 border-[1px] border-green-500 rounded-full flex items-center justify-center'>
+                        <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                    </div>
+                    <p className='text-[13px] text-gray-700 max-sm:hidden'>Active</p>
+                </div>
+                ) : (
+                    <div className='max-sm:hidden flex gap-2 items-center'>
+                    <div className='w-3 h-3 border-[1px] border-red-500 rounded-full flex items-center justify-center'>
+                        <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                    </div>
+                    <p className='text-[13px] text-gray-700 max-sm:hidden'>Off</p>
+                </div>
+                )
+            }
             <div className='max-sm:hidden'>
                 <p className='text-[13px] text-gray-700 max-sm:hidden'>{formatDate(AllCoupons.createdAt)}</p>
             </div>

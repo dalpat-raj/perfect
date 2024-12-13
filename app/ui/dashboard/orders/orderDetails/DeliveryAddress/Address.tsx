@@ -7,27 +7,27 @@ const Addresses = ({address}: {address: Address | null}) => {
   return (
     <div>
         <div className='mb-2'>
-        <h2 className='text-[16px] font-bold text-gray-900'>Delivery Address</h2>
+        <h2 className='text-[16px] font-bold text-gray-800'>Delivery Address</h2>
         </div>
         <div className='flex justify-start items-center gap-2 mb-1'>
             <p className='text-[14px] font-semibold text-gray-700'>Address:</p>
-            <p className='text-[13px] text-gray-800'>{address?.completeAddress}</p>
+            <p className='text-[14px] text-gray-600'>{address?.completeAddress}</p>
         </div>
         <div className='flex justify-start items-center gap-2 mb-1'>
             <p className='text-[14px] font-semibold text-gray-700'>Landmark:</p>
-            <p className='text-[13px] text-gray-800'>{address?.nearbyLandmark}</p>
+            <p className='text-[14px] text-gray-600'>{address?.nearbyLandmark}</p>
         </div>
         <div className='flex justify-start items-center gap-2 mb-1'>
             <p className='text-[14px] font-semibold text-gray-700'>City:</p>
-            <p className='text-[13px] text-gray-800'>{address?.city}</p>
+            <p className='text-[14px] text-gray-600'>{address?.city}</p>
         </div>
         <div className='flex justify-start items-center gap-2 mb-1'>
             <p className='text-[14px] font-semibold text-gray-700'>State:</p>
-            <p className='text-[13px] text-gray-800'>{address?.state}</p>
+            <p className='text-[14px] text-gray-600'>{address?.state}</p>
         </div>
         <div className='flex justify-start items-center gap-2 mb-1'>
             <p className='text-[14px] font-semibold text-gray-700'>PinCode:</p>
-            <p className='text-[13px] text-gray-800'>{address?.pinCode}</p>
+            <p className='text-[14px] text-gray-600'>{address?.pinCode}</p>
         </div>
     </div>
   )

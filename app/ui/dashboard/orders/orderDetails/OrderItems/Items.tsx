@@ -1,4 +1,5 @@
 import { UserOrders } from '@/lib/definations'
+import { formatDate } from '@/lib/helpers'
 import Image from 'next/image'
 import React from 'react'
 
@@ -7,41 +8,52 @@ type Props = {
 }
 
 const Items = ({order}: Props) => {
+  const statusHistory = order?.statusHistory;
   const items = order?.items;
+  
   return (
     <div>
-        <div className='border-b border-gray-300 grid grid-cols-6 max-sm:grid-cols-4 gap-2 pb-2'>
-            <p className='text-[14px] font-semibold text-gray-700'>Items Summary</p>
-            <p className='text-[14px] font-semibold text-gray-700 max-sm:hidden'>Model</p>
-            <p className='text-[14px] font-semibold text-gray-700'>Model Number</p>
-            <p className='text-[14px] font-semibold text-gray-700'>Quantity</p>
-            <p className='text-[14px] font-semibold text-gray-700 max-sm:hidden'>Price</p>
-            <p className='text-[14px] font-semibold text-gray-700'>Total Price</p>
+        <div className='border-b border-gray-300'>
+          <p className='text-[16px] font-bold text-gray-800 py-2'>Items Summary</p>
         </div>
+        <div className='flex justify-between gap-2 flex-wrap'>
         {
           items?.map((item,i)=>(
-            <div key={i} className='grid grid-cols-6 max-sm:grid-cols-4  items-center gap-2 py-2 border-b border-gray-300'>
+            <div key={i} className='py-2'>
             <div className='flex gap-2'>
-              <div className='max-md:hidden'>
+              <div className=''>
                 <Image
                 src={item.image}
                 alt={item.title}
                 width={0}
                 height={0}
                 sizes='100vw'
-                style={{width:'50px', height: '50px', objectFit: 'cover'}}
+                style={{width:'70px', height: '80px', objectFit: 'cover'}}
                 />
               </div>
-                <p className='text-[14px] text-gray-500'>{item.title}</p>
+                <div className='flex flex-col gap-1'>
+                <p className='text-[14px] text-gray-800'>{item.title}</p>
+                <p className='text-gray-500 text-[14px] '>color: {item.color}</p>
+                <p className='text-gray-500 text-[14px] '>model: {item.model}</p>
+                </div>
             </div>
-            <div className='text-[15px] text-gray-600 max-sm:hidden'><p>{item.model}</p></div>
-            <div className='text-[15px] text-gray-600'><p>{item.modelNumber}</p></div>
-            <div className='text-[15px] text-gray-600'><p>{item.quantity}</p></div>
-            <div className='text-[15px] text-gray-600 max-sm:hidden'><p>RS. {item.price.toFixed(2)}</p></div>
-            <div className='text-[16px] text-gray-600 font-bold'><p>RS. {(item.price * item.quantity).toFixed(2)}</p></div>
+            <div className='text-[14px] pb-1 pt-1 text-gray-600'><p>model Number: {item.modelNumber}</p></div>
+            <div className='text-[14px] pb-1 text-gray-600'><p>quantity: {item.quantity}</p></div>
+            <div className='text-[14px] pb-1 text-gray-600 max-sm:hidden'><p>price: ₹{item.price.toFixed(2)}</p></div>
+            <div className='text-[14px] pb-1 text-gray-600 font-bold'><p>total Price: ₹{(item.price * item.quantity).toFixed(2)}</p></div>
           </div>
           ))
         }
+        <div className='py-2'>
+          {
+            statusHistory?.map((item, i)=>(
+              <p key={i} className='text-[14px] pb-1 text-gray-600'>{item?.status} <span className='px-1'>At</span> 
+              <span className='text-[13px] text-gray-500'>( {formatDate(item?.changedAt)} {item?.changedAt?.toLocaleTimeString()} )</span>
+              </p>
+            ))
+          }
+        </div>
+        </div>
 
     </div>
   )

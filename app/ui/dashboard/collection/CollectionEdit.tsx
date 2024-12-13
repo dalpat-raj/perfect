@@ -1,11 +1,13 @@
 'use client'
 import React, { useState } from 'react'
-import { deleteCollection, editCollction } from '@/action/collection';
+import { editCollction } from '@/action/collection';
 import Label from '../../label/Label';
 import Image from 'next/image';
 import { IoCamera } from 'react-icons/io5';
 import { UploadButton } from '@/lib/uploadthing';
 import { RxCross1 } from 'react-icons/rx';
+import ButtonWithSpinner from '../../button/ButtonWithSpinner';
+import { ImageSkeleton } from '../../skeletons';
 
 type Collction = {
     id: number,
@@ -13,12 +15,13 @@ type Collction = {
     image: string | null,
 }
 
-const CollectionButton = ({items}: {items:Collction}) => {   
+const CollectionEdit = ({items}: {items:Collction}) => {   
     const [editBoxOpen, setEditBoxOpen] = useState(false)
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [image, setImage] = useState<string>(items?.image ? items?.image: '')
     const [uploading, setUploading] = useState(false);
     const [imageUploaded, setImageUploaded] = useState(false);
+    const [imageLoading, setImageLoading] = useState(true);
 
 
     const handleUploadProgress=()=>{
@@ -52,18 +55,7 @@ const CollectionButton = ({items}: {items:Collction}) => {
           }
       };
 
-    const handleDelete = async (event: React.FormEvent<HTMLFormElement>) =>{
-        event.preventDefault(); 
-        setIsLoading(true);
-        try {
-            const collectionDeletetActions = deleteCollection.bind(null, items.id);
-            await collectionDeletetActions();
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        } finally {
-            setIsLoading(false)
-        }
-    }
+
 
       const closeEditBox = () => {
         setEditBoxOpen(false);
@@ -72,28 +64,8 @@ const CollectionButton = ({items}: {items:Collction}) => {
       return (
         <div className='flex gap-8 items-center'>
             
-            {
-                isLoading ? (
-                    <div className='animate-spin'>
-                        <p className=''>wait</p>
-                    </div>
-                ) : (
-                    <button className='text-[13px] text-white bg-[#333] py-1 px-4 rounded-sm'>Edit</button>
-                )
-            }
-
-            {
-                isLoading ? (
-                    <div className='animate-spin'>
-                        <p className=''>wait</p>
-                    </div>
-                ) : (
-                    <form onSubmit={handleDelete}>
-                        <button className='text-[13px] text-white bg-[#333] py-1 px-4 rounded-sm'>Delete</button>
-                    </form>
-                )
-            }
-
+            <button onClick={()=>setEditBoxOpen(true)} className='text-[13px] text-white bg-[#333] py-2 px-4 rounded-sm'>Edit</button>
+    
             {editBoxOpen && (
                 <div
                     className='w-full h-[100vh] fixed top-0 left-0 bg-blackOverlay'
@@ -136,16 +108,19 @@ const CollectionButton = ({items}: {items:Collction}) => {
 
                                                     {uploading ? (
                                                         <div className='w-[45px] h-[45px] flex justify-center items-center'>
-                                                            <p className='animate-spin'>wait</p>
+                                                            <ButtonWithSpinner loading={uploading}>no</ButtonWithSpinner>
                                                         </div>
                                                     ) : image ? (
-                                                        <div className='w-[45px] h-[45px] border border-gray-200'>
+                                                        <div className='w-[65px] h-[65px] border border-gray-200'>
+                                                            {imageLoading && <ImageSkeleton/>}
                                                             <Image
                                                                 src={image}
                                                                 alt='collection'
-                                                                width={45}
-                                                                height={45}
-                                                                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                                                width={0}
+                                                                height={0}
+                                                                sizes='100vw'
+                                                                style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                                                                onLoad={()=>setImageLoading(false)}
                                                             />
                                                         </div>
                                                     ) : (
@@ -162,6 +137,7 @@ const CollectionButton = ({items}: {items:Collction}) => {
                                                 </label>
                                             </div>
                                         </div>
+                                        
                                         <div>
                                             <button type='submit' className="w-full bg-[#333] text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">{ isLoading ? "wait" : 'Edit'}</button>
                                         </div>
@@ -176,4 +152,4 @@ const CollectionButton = ({items}: {items:Collction}) => {
     );
 };
 
-export default CollectionButton
+export default CollectionEdit
