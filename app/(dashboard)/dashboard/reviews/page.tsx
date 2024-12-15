@@ -1,14 +1,13 @@
-import ReviewsUi from '@/app/ui/dashboard/reviews/Reviews'
-import { getReviews } from '@/lib/data'
-import React from 'react'
+import dynamic from 'next/dynamic';
+import LoaderBall from '@/app/ui/loader/BallLoader'
+const ReviewsUi = dynamic(()=> import("@/app/ui/dashboard/reviews/Reviews"), {loading:()=> <LoaderBall/>});
 
 
 const page = async() => {
-  const Allreviews = await getReviews()
   
   return (
      <div>
-       <ReviewsUi reviews={Allreviews}/>
+       <ReviewsUi/>
      </div>
   )
 }

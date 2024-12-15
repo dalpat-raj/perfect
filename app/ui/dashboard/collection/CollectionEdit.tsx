@@ -8,6 +8,7 @@ import { UploadButton } from '@/lib/uploadthing';
 import { RxCross1 } from 'react-icons/rx';
 import ButtonWithSpinner from '../../button/ButtonWithSpinner';
 import { ImageSkeleton } from '../../skeletons';
+import { toast } from 'sonner';
 
 type Collction = {
     id: number,
@@ -20,7 +21,6 @@ const CollectionEdit = ({items}: {items:Collction}) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [image, setImage] = useState<string>(items?.image ? items?.image: '')
     const [uploading, setUploading] = useState(false);
-    const [imageUploaded, setImageUploaded] = useState(false);
     const [imageLoading, setImageLoading] = useState(true);
 
 
@@ -35,7 +35,6 @@ const CollectionEdit = ({items}: {items:Collction}) => {
           setUploading(false)
           return urls
         }
-        setImageUploaded(true);
       };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -43,15 +42,15 @@ const CollectionEdit = ({items}: {items:Collction}) => {
         setIsLoading(true)
         const formData = new FormData(event.currentTarget); 
         try {
-          const collectionEditActions = editCollction.bind(null, items.id, image);
-          await collectionEditActions(formData);
+          const res = await editCollction(items?.id, image, formData);
+          if(res.success) toast.success(res.success)
+          if(res.error) toast.error(res.error)
         } catch (error) {
-          console.error('Error submitting form:', error);
+          toast.error('Error submitting form:');
         } finally {
             setIsLoading(false) 
             setEditBoxOpen(false)
             setImage('')
-            alert("Collction Edited");
           }
       };
 
@@ -64,18 +63,18 @@ const CollectionEdit = ({items}: {items:Collction}) => {
       return (
         <div className='flex gap-8 items-center'>
             
-            <button onClick={()=>setEditBoxOpen(true)} className='text-[13px] text-white bg-[#333] py-2 px-4 rounded-sm'>Edit</button>
+            <button onClick={()=>setEditBoxOpen(true)} className='text-[14px] font-semibold text-white bg-[#333] h-8 px-4 rounded-sm'>Edit</button>
     
             {editBoxOpen && (
                 <div
                     className='w-full h-[100vh] fixed top-0 left-0 bg-blackOverlay'
                     onClick={closeEditBox} // Close on background click
                 >
-                    <div className='z-50' onClick={(e) => e.stopPropagation()}> {/* Prevent bubbling to the background */}
+                    <div className='z-50' onClick={(e) => e.stopPropagation()}> 
                         <div className='p-6 max-sm:p-0 flex justify-center items-center'>
                             <div className='w-2/4 max-sm:w-full bg-white shadow-custom-shadow p-6'>
                                 <div className='w-full flex justify-between items-center'>
-                                    <h2 className={`text-[20px] font-bold text-gray-600`}>Create Collections</h2>
+                                    <h2 className={`text-[20px] font-bold text-gray-600`}>Update Collections</h2>
                                     <div onClick={closeEditBox} className='cursor-pointer'>
                                         <RxCross1 size={20} />
                                     </div>
@@ -98,17 +97,16 @@ const CollectionEdit = ({items}: {items:Collction}) => {
                                                 <div className='relative'>
                                                     <div className='w-[45px] h-[45px] text-[14px] font-normal py-1 px-2 border border-gray-200 rounded-lg focus:outline-gray-400 opacity-0 absolute z-10 cursor-pointer'>
                                                         <UploadButton
-                                                            endpoint="imageUploader"
+                                                            endpoint="bannerImage"
                                                             onClientUploadComplete={handleUploadComplete}
                                                             onUploadError={(error) => console.error("Upload error:", error)}
                                                             onUploadProgress={handleUploadProgress}
-                                                            disabled={imageUploaded}
                                                         />
                                                     </div>
 
                                                     {uploading ? (
-                                                        <div className='w-[45px] h-[45px] flex justify-center items-center'>
-                                                            <ButtonWithSpinner loading={uploading}>no</ButtonWithSpinner>
+                                                        <div className='w-[65px] h-[65px] flex justify-center items-center'>
+                                                            <ImageSkeleton/>
                                                         </div>
                                                     ) : image ? (
                                                         <div className='w-[65px] h-[65px] border border-gray-200'>
@@ -138,8 +136,8 @@ const CollectionEdit = ({items}: {items:Collction}) => {
                                             </div>
                                         </div>
                                         
-                                        <div>
-                                            <button type='submit' className="w-full bg-[#333] text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">{ isLoading ? "wait" : 'Edit'}</button>
+                                        <div className='w-full h-8'>
+                                            <ButtonWithSpinner loading={isLoading}>Update</ButtonWithSpinner>
                                         </div>
                                     </form>
                                 </div>

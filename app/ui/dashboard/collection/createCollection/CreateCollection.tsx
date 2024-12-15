@@ -1,54 +1,51 @@
 'use client'
 import { createCollction } from '@/action/collection'
+import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner'
 import { caveat } from '@/app/ui/Fonts'
 import Label from '@/app/ui/label/Label'
 import LoaderBall from '@/app/ui/loader/BallLoader'
+import { ImageSkeleton } from '@/app/ui/skeletons'
 import { UploadButton } from '@/lib/uploadthing'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { IoCamera } from 'react-icons/io5'
+import { CiImageOn } from 'react-icons/ci'
+import { toast } from 'sonner'
 
 
 const CreateCollection = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [image, setImage] = useState<string>('')
-    const [uploading, setUploading] = useState(false);
-    const [imageUploaded, setImageUploaded] = useState(false);
+    const [imageLoading, setImageLoading] = useState(true);
+    
 
 
-    const handleUploadProgress=()=>{
-        setUploading(true)
-      }
+   
     
       const handleUploadComplete = (res: any) => {
         if (res) {
           const urls = res.map((file: { url: string }) => file.url);
           setImage(urls[0])
-          setUploading(false)
           return urls
         }
-        setImageUploaded(true);
       };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        setIsLoading(true)
-        event.preventDefault(); 
+      event.preventDefault(); 
+      setIsLoading(true)
         const formData = new FormData(event.currentTarget); 
         try {
-          const collectionAddActions = createCollction.bind(null, image);
-          await collectionAddActions(formData);
+          // const collectionAddActions = createCollction.bind(null, image);
+          const res = await createCollction(image, formData);
+          if(res.success) toast.success(res.success)
+          if(res.error) toast.error(res.error)
+
         } catch (error) {
           console.error('Error submitting form:', error);
         } finally {
             setIsLoading(false) 
             setImage('')
-            alert("Collction Added")
-          }
+        }
       };
-
-      if(isLoading) {
-        return <LoaderBall/>
-      }
 
   return (
     <div className='p-6 max-sm:p-0 flex justify-center'>
@@ -70,52 +67,54 @@ const CreateCollection = () => {
             </div>
             <div className="col-span-1 my-4">
             
-            <div className='mb-3 flex justify-start items-center gap-4'>
-              <div className='relative'>
-                <div className='w-[45px] h-[45px] text-[14px] font-normal py-1 px-2 border border-gray-200 rounded-lg focus:outline-gray-400 opacity-0 absolute z-10 cursor-pointer'>
-                    <UploadButton
-                    endpoint="imageUploader"
-                    onClientUploadComplete={handleUploadComplete} // This handles multiple uploads
-                    onUploadError={(error) => console.error("Upload error:", error)}
-                    onUploadProgress={()=>handleUploadProgress()}
-                    disabled={imageUploaded}
-                    /> 
+            {
+                image?.length >= 1 ? 
+                  <div className="flex justify-start gap-2 items-center my-2 mb-4 overflow-x-scroll no-scrollbar">
+                  {
+                      <div className='w-[50px] h-[60px]'>
+                      { imageLoading && <ImageSkeleton/> }
+                      <Image
+                      src={image || '/e22.jpg'}
+                      alt={`Image ${image + 1}`}
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{width:"100%", height:"100%", objectFit: "cover"}}
+                      onLoad={()=>setImageLoading(false)}
+                      />
+                      </div>
+                    
+                  }
                 </div>
-
-                {
-                    uploading ? (
-                        <div className='w-[45px] h-[45px] flex justify-center items-center'>
-                            <p className='animate-spin'>1</p>
-                        </div>
-                    ) : image ? (
-                        <div className='w-[45px] h-[45px]  border border-gray-200'>
-                          <Image
-                            src={image}
-                            alt='collection'
-                            width={0}
-                            height={0}
-                            sizes='100vw'
-                            style={{width: '100%', height: '100%', objectFit: 'contain'}}
-                          />
-                        </div>
-                    ) : (
-                        <div className='w-[45px] h-[45px] bg-gray-100 text-gray-300 flex justify-center items-center'>
-                          <label htmlFor="message" className='cursor-pointer'>
-                            <IoCamera size={28}/>
-                          </label>
-                        </div>
-                    )
-                }
-              </div>
-              <label htmlFor="message" className='text-[14px] font-semibold'>
-                <p className='text-[14px] font-semibold'>Upload Photos</p>
-                <small className='text-gray-300'>Accept .jpg, .png and max 10MB each</small>
-              </label>
-              </div>
+                : <div className="my-2 max-sm:my-4 w-[100%] flex justify-start items-start">
+                    <UploadButton
+                      className='ut-button:bg-white ut-button:justify-start ut-button:text-gray-600 ut-button:ut-readying:bg-gray-500 ut-allowed-content:ut-ready:text-gray-400'
+                      endpoint="bannerImage"
+                      onClientUploadComplete={handleUploadComplete}
+                      onUploadError={() => {
+                        toast.error("select maximum 1 image")                        
+                      }}
+                      content={{
+                        button({ ready }) {
+                          if (ready) return <div className='flex items-center justify-start gap-2'>
+                            <div className='bg-gray-100 p-2'><CiImageOn size={25} /></div> 
+                            <p>Images</p>
+                            </div>
+                          return "Getting ready...";
+                        },
+                        allowedContent({ ready, fileTypes, isUploading }) {
+                          if (!ready) return "Checking Wait";
+                          if (isUploading) return "image uploading...";
+                          return `Choose Images: ${fileTypes.join(", ")}`;
+                        },
+                      }}
+                     />
+                  </div> 
+              }
 
             </div>
-            <div>
-                <button className="w-full bg-[#333] text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">Create</button>
+            <div className='w-full h-8'>
+                <ButtonWithSpinner loading={isLoading}>Create</ButtonWithSpinner>
             </div>
             </form>
         </div>

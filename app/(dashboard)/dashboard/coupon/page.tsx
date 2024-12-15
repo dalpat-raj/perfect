@@ -1,14 +1,12 @@
-import Coupon from '@/app/ui/dashboard/coupon/Coupon'
+import dynamic from 'next/dynamic';
 import LoaderBall from '@/app/ui/loader/BallLoader'
-import React, { Suspense } from 'react'
+const Coupon = dynamic(()=> import("@/app/ui/dashboard/coupon/Coupon"), {loading:()=> <LoaderBall/>});
 
 
 
 const page = () => {
   return (
-      <Suspense fallback={<LoaderBall/>}>
-        <Coupon/>
-      </Suspense>
+    <Coupon/>
   )
 }
 

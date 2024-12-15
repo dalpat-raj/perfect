@@ -1,11 +1,10 @@
-import Customer from '@/app/ui/dashboard/customer/Customer'
-import React, { Suspense } from 'react'
+import dynamic from "next/dynamic"
+import LoaderBall from "@/app/ui/loader/BallLoader"
+const Customer = dynamic(()=>import('@/app/ui/dashboard/customer/Customer'), {loading:()=><LoaderBall/>}) 
 
 const page = () => {
   return (
-    <Suspense fallback="...loading">
-      <Customer/>
-    </Suspense>
+    <Customer/>
   )
 }
 

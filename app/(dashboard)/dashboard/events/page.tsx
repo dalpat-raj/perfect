@@ -1,13 +1,11 @@
-import Event from '@/app/ui/dashboard/event/Event'
+import dynamic from 'next/dynamic'
 import LoaderBall from '@/app/ui/loader/BallLoader'
-import React, { Suspense } from 'react'
+const Event = dynamic(()=> import("@/app/ui/dashboard/event/Event"), {loading:()=> <LoaderBall/>});
 
 
 const page = () => {
   return (
-    <Suspense fallback={<LoaderBall/>}>
-      <Event/>
-    </Suspense>
+    <Event/>
   )
 }
 

@@ -1,7 +1,6 @@
 import { getEvents } from '@/lib/data'
 import React from 'react'
 import EventCard from './EventCard'
-import { AllEventData } from '@/lib/definations'
 
 
 const Event = async() => {

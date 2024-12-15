@@ -1,5 +1,6 @@
-import React from 'react'
-import Banner from '@/app/ui/dashboard/banner/Banner'
+import dynamic from 'next/dynamic';
+import LoaderBall from '@/app/ui/loader/BallLoader';
+const Banner = dynamic(()=> import('@/app/ui/dashboard/banner/Banner'), {loading: ()=> <LoaderBall/>})
 import { getBanner } from '@/lib/data';
 
 

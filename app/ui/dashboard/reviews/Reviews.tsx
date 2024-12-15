@@ -1,13 +1,13 @@
-import { Review } from '@/lib/definations'
 import ReviewsCard from '@/app/ui/dashboard/reviews/ReviewsCard'
+import { getReviews } from '@/lib/data'
 
-const ReviewsUi = ({reviews}: {reviews: Review[]}) => {
-
-
+const ReviewsUi = async() => {
+    const Allreviews = await getReviews()
+    
     return (
         <div className='p-4 mt-4'>
             {
-                reviews?.map((item,i)=>(
+                Allreviews?.map((item,i)=>(
                     <div key={i}>
                         <ReviewsCard reviews={item}/>
                     </div>

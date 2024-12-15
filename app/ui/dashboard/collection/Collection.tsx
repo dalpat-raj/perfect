@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React from 'react'
 import CollectionDelete from './CollectionDelete';
 import CollectionEdit from './CollectionEdit';
+import CollectionImage from './CollectionImage';
 
 
 
@@ -17,21 +18,12 @@ const Collection = async() => {
     const collections:Collction[] | null = await getAdminCollctions();
 
   return (
-    <div className='p-4 relative'>
+    <div className='p-4 relative flex justify-start gap-4 flex-wrap items-center'>
         {
             collections?.map((item, i)=>(
-                <div className='flex justify-between items-center border border-gray-200 my-4 rounded-lg px-4' key={i}>
-                    <div className='w-[200px] h-[50px] max-sm:w-[100px]'>
-                        <Image
-                        src={item?.image}
-                        alt={item?.title}
-                        width={0}
-                        height={0}
-                        sizes='100vw'
-                        style={{width: '100%', height: '100%', objectFit: 'contain'}}
-                        />
-                    </div>
-                    <div>
+                <div className='border border-gray-200 rounded-lg p-4' key={i}>
+                    <CollectionImage image={item?.image}/>
+                    <div className='py-1'>
                         <p>{item.title}</p>
                     </div>
                     <div className='flex items-center gap-2'>

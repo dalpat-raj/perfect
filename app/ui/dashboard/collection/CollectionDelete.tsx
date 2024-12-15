@@ -16,7 +16,7 @@ const CollectionDelete = ({id}: {id: number}) => {
             if(res.success) toast.success(res.success)
             if(res.error) toast.error(res.error)
         } catch (error) {
-            toast.error('Error submitting form:');
+            toast.error('Error delete collection ❌');
         } finally {
             setLoading(false)
         }
@@ -24,7 +24,7 @@ const CollectionDelete = ({id}: {id: number}) => {
 
   return (
     <form onSubmit={handleDelete}>
-        <input type="number" value={id} className='hidden'/>
+        <input type="number" readOnly name='id' value={id} className='hidden'/>
         <div className='w-20 h-8'>
             <ButtonWithSpinner loading={loading}>
                 Delete

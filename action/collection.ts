@@ -21,14 +21,17 @@ export async function createCollction(image: string,formData: FormData) {
         })
         
         revalidatePath(`/dashboard/collection/createCollecion`);
+        return {success: "Collection Created ✅"}
     } catch (error) {
-        throw new Error("Failed to create collection");
+        console.log("error", error);
+        return {error: "Database error failed to create Collection ❌"}
+        
     }
     
 }
 
 
-export async function editCollction(id: number, image: string,formData: FormData) {
+export async function editCollction(id: number, image: string, formData: FormData) {
     const title = formData.get('title') as string;
     
     try {
@@ -40,8 +43,10 @@ export async function editCollction(id: number, image: string,formData: FormData
         }
      })
         revalidatePath(`/dashboard/collection`);
+        return {success: "Collection Updated ✅"}
     } catch (error) {
-        throw new Error("Failed to create collection");
+        console.log("error", error);
+        return {error: "failed to create Collection ❌"}
     }
     
 }

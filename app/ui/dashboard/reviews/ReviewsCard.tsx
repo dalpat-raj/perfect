@@ -6,9 +6,10 @@ import { formatDate } from '@/lib/helpers'
 import { toast } from 'sonner'
 import ButtonWithSpinner from '@/app/ui/button/ButtonWithSpinner'
 import Rating from '@/app/ui/rating/Rating'
+import ReviewImg from './ReviewImg'
 
 const ReviewsCard = ({reviews}: {reviews: Review}) => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const handleDelete = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
@@ -25,8 +26,7 @@ const ReviewsCard = ({reviews}: {reviews: Review}) => {
     }
 
   return (
-   
-    <div className='mb-6 border-b border-gray-100 pb-4'>
+    <div className='mb-6 border-b border-gray-200 pb-4'>
         <div className='flex justify-between'>
             <div className='flex justify-start items-center bg-gray-200 w-max pr-6 rounded-lg gap-1'>
                 <div className='w-6 h-6 rounded-full bg-green-500 flex justify-center items-center p-1 text-[16px] text-white font-bold'>{reviews.name.slice(0, 1)}</div>
@@ -54,6 +54,11 @@ const ReviewsCard = ({reviews}: {reviews: Review}) => {
         <div className='my-2'><Rating rating={reviews.rating} /></div>
         <div>
             <p className='text-gray-500 leading-none'>{reviews.message}</p>
+        </div>
+        <div className='my-4 flex gap-2'>
+            {reviews?.images?.map((item,i)=>(
+            <ReviewImg img={item} key={i}/>
+            ))}
         </div>
     </div>
           

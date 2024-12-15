@@ -490,7 +490,7 @@ export async function getBannerForHome(){
 
 // dashboard 
 export async function fetchCardData() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
     try {
       const totalProductsPromiss = db.product.count()
       const totalCustomersPromiss = db.user.count()
@@ -560,6 +560,7 @@ export async function OrderCountAdmin() {
 }
 
 export async function getMonthlyRevenueLast12Months() {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   const twelveMonthsAgo = subMonths(new Date(), 12);
   const now = new Date();
 
