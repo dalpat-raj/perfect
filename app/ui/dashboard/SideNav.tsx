@@ -23,7 +23,7 @@ const SideNav = () => {
             {/* logo  */}
             <div className='mb-8'>
                 <Image
-                src="/logowhite.jpg"
+                src={"https://utfs.io/f/MqHs9IJPs5ZRjS7ulmfsythvU61dKic5PTAzfrXMC2HxEgFS"}
                 alt='perfect cover logo'
                 width={0}
                 height={0}

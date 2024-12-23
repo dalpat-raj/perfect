@@ -22,7 +22,7 @@ const Navbar = async(props: Props) => {
                 <div className='w-[140px] max-sm:w-[100px]'>
                 <Link href="/">
                     <Image 
-                    src={"/logo.jpg"} 
+                    src={"https://utfs.io/f/MqHs9IJPs5ZRfLus5HR1Y20NgmF9yIXClZhWUEGOd5zkfwxv"} 
                     alt='logo'
                     width={0}
                     height={0}
