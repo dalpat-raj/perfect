@@ -8,7 +8,8 @@ const TradingCover = async () => {
   const products = await getProducts();
 
   return (
-    <div className='w-full my-8 max-md:my-4 px-12 max-md:px-4 max-sm:px-2 max-sm:mb-12'>
+    products?.length >= 1 && (
+      <div className='w-full my-8 max-md:my-4 px-12 max-md:px-4 max-sm:px-2 max-sm:mb-12'>
         <div className='text-center mb-4 max-sm:mb-2'>
             <h2 className={`${caveat.className} text-[37px] max-sm:text-[24px] font-bold`}>Tranding Item's</h2>
         </div>
@@ -28,6 +29,7 @@ const TradingCover = async () => {
         </div>
 
     </div>
+    )
   )
 }
 

@@ -8,14 +8,16 @@ const Collections = async () => {
   const collections = await getCollections();
   
   return (
-    <div className='w-full my-8 max-md:my-8 max-sd:my-4 px-12 max-md:px-4 max-sm:px-2'>
+    collections?.length >= 1 && (
+      <div className='w-full my-8 max-md:my-8 max-sd:my-4 px-12 max-md:px-4 max-sm:px-2'>
         <div className='text-center mb-8'>
             <h2 className={`${caveat.className} text-[37px] max-sm:text-[24px] font-bold`}>Our Collections</h2>
         </div>
         <div className='w-full'>
             <CollectionCarousel collections={collections} />
         </div>
-    </div>
+      </div>
+    )
   )
 }
 
