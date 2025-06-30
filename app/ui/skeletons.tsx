@@ -253,37 +253,6 @@ const shimmer =
     )
   }
 
-
-  // export function ProductCardImageSkeleton(){
-  //   return (
-  //     <div className={`${shimmer} relative w-full bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
-  //     <div className='h-[50vh] max-sm:h-[35vh] bg-gray-100'>
-  //           <div className='absolute top-0 right-0 uppercase bg-gray-200 px-2 py-1'>
-  //               <p className='text-white text-[13px] font-semibold tracking-tightest h-5 w-16'></p>
-  //           </div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
-
-  // export function ProductDetailsImageSkeleton(){
-  //   return (
-  //     <div className={`${shimmer} relative bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
-  //     <div className='w-full h-[50vh] bg-gray-200'>
-  //       </div>
-  //     </div>
-  //   )
-  // }
-
-  // export function ProductDetailsMiniImageSkeleton(){
-  //   return (
-  //     <div className={`${shimmer} relative bg-gray-100 overflow-hidden  rounded-xl shadow-sm`}>
-  //     <div className='w-[70px] h-[100px] bg-gray-200'>
-  //       </div>
-  //     </div>
-  //   )
-  // }
-
   export function SimilarProductSkeleton(){
     return (
 

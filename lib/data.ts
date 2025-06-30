@@ -170,20 +170,6 @@ export async function editProducts({id,formData}: {id: number, formData: FormDat
   } 
 }
 
-
-// // please delete this function in production
-// export async function getUniqueCollections(){
-//   const products = await getCollections()
-//   const uniqueCollections = products.reduce<Collections[]>((acc, product) => { 
-//     if (!acc.some(item => item.collection === product.collection)) {
-//       acc.push(product);
-//     }
-//     return acc;
-//   }, [] as Collections[]);
-
-//   return uniqueCollections;
-// }
-
 export async function getCollections(){
   try {
     const collections = await db.collection.findMany()
